@@ -1,10 +1,6 @@
 const vueinst = new Vue({
     el: '#app',
     data() {
-      return {
-        scTimer: 0,
-        scY: 0,
-      }
     },
 });
 
