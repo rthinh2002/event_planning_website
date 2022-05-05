@@ -6,43 +6,20 @@
 }
 
 body {
-    background-color: aquamarine;
-}
-
-.underline::before {
-    content: "";
-    display: block;
-    position: absolute;
-    bottom: 3px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: inherit;
-    transform: scale(0, 1);
-    transition: color 0.1s, transform 0.2s ease-out;
-}
-
-.underline:hover::before, .underline:focus::before {
-    transform-origin: left top;
-    transform: scale(1, 1);
+    background-color: white;
 }
 
 .underline {
-    color: inherit;
-    text-decoration: none;
-    margin-right: 50px;
-    position: relative;
-    font-family: sans-serif, Arial;
-    padding: 16px 0;
-    margin: 0 12px;
-    letter-spacing: 1px;
-    line-height: 16px;
-    font-weight: 700;
-    transition: color 0.1s, background-color 0.1s, padding 0.2s ease-in;
-    color: darkblue;
+    color: white;
+    background-color: #289BD2;
+    padding: 5px;
 }
 
-.button 
+.underline:hover {
+    background-color: white;
+    color: #289bd2;
+    text-decoration: underline solid 2px #289BD2; 
+}
 
 h1 {
     font-size: 200 em;
