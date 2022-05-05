@@ -7,21 +7,21 @@
     <script src="/wdc_project_2022/templatevue.js" defer></script>
 </head>
 <body>
-    <div class="app"><!--app body-->
+    <div id="app"><!--app body-->
         <div class="header"><!--sticky header-->
             <a href="/wdc_project_2022/template.html"><!--change this to our dashboard when we have one--><img src="/wdc_project_2022/images/W2M_icon.png" alt="W2M"></a>
-            <a href="/wdc_project_2022/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i class="fa-solid fa-arrow-right-to-bracket fa-2xl"></i></a>
+            <a href="/wdc_project_2022/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-2xl' : !loggedin, 'fa-regular fa-user fa-2xl' : loggedin }"></i></a>
         </div>
         <div class="sidebar"><!--sticky sidebar-->
             <p><a href="/wdc_project_2022/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a></p>
             <p><a href="/wdc_project_2022/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a></p>
-            <p><a href="/wdc_project_2022/login.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
+            <p><a href="/wdc_project_2022/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
+            <!-- <button onclick="vueinst.loggedin = true;">test</button> --> <!--log in test button-->
         </div>
         <div class="content"><!--content-->
-
         </div>
         <div><!--footer-->
-            <p class="bottomright" onclick="toTop()"><button class="fade"><i v-bind:class="{'fa-solid fa-angle-up fa-2xl' : !loggedin, 'fa-regular fa-user fa-2xl' : loggedin}"></i></button></p>
+            <p class="bottomright" onclick="toTop()"><button class="fade"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
         </div>
     </div>
 </body>

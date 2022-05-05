@@ -1,7 +1,9 @@
 const vueinst = new Vue({
     el: '#app',
-    data() {
-        loggedin: false;
+    data : 
+    {
+        loggedin: false,
+        baselink : "/wdc_project_2022/"
     },
 });
 
