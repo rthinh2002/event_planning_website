@@ -1,6 +1,7 @@
 const vueinst = new Vue({
     el: '#app',
     data() {
+        loggedin: false;
     },
 });
 
