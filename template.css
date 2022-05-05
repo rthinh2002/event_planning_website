@@ -1,5 +1,5 @@
 * {
-    font-family: sans-serif, Arial;
+    font-family: sans-serif, monospace;
     font-size: 11px;
     color: black;
     box-sizing: border-box;
@@ -74,17 +74,17 @@ button {
 }
 
 .sidebar a {
-    font-weight: bold;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 15px;
     display: block;
-    height: 2.5em;
+    height: 3.5em;
+    line-height: 2.5em;
     text-decoration: none;
 }
 
-.bottomright {
+.bottom {
     position: fixed;
-    bottom: 1.5em;
-    right: 1.5em;
+    bottom: 4em;
     z-index: 1;
 }
 
