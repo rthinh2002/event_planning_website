@@ -9,16 +9,20 @@ body {
     background-color: white;
 }
 
-.underline {
+.button {
     color: white;
     background-color: #289BD2;
     padding: 5px;
 }
 
-.underline:hover {
+.button:hover {
     background-color: white;
     color: #289bd2;
-    text-decoration: underline solid 2px #289BD2; 
+    text-decoration: underline solid 2px #289BD2;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
 }
 
 h1 {
