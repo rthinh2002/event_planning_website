@@ -22,7 +22,7 @@ body {
     transition: color 0.1s, transform 0.2s ease-out;
 }
 
-.underline::hover::before, .underline:focus::before {
+.underline:hover::before, .underline:focus::before {
     transform-origin: left top;
     transform: scale(1, 1);
 }
