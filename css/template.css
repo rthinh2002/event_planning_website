@@ -14,12 +14,8 @@
     font-size: 25px;
 }
 
-i {
+.sidebar-icon {
     color: white;
-}
-
-i:hover {
-    color: #289BD2;
 }
 
 img {
@@ -66,10 +62,14 @@ button {
 
 .fade {
     display: block;
-    margin: 0 auto;
     color: white;
     background-color: #289BD2;
     padding: 0.5em;
+    font-weight: 700;
+    font-size: 15px;
+    height: 3.5em;
+    line-height: 2.5em;
+    text-decoration: none;
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
     -o-transition: all 0.5s;
@@ -83,6 +83,10 @@ button {
     -moz-transition: all 0.5s;
     -o-transition: all 0.5s;
     transition: all 0.5s;
+}
+
+.fade:hover .sidebar-icon {
+    color: #289bd2;
 }
 
 .sidebar {
@@ -101,15 +105,6 @@ button {
     text-align: left;
 }
 
-.sidebar a {
-    font-weight: 700;
-    font-size: 15px;
-    display: block;
-    height: 3.5em;;
-    line-height: 2.5em;
-    text-decoration: none;
-}
-
 .bottom {
     position: fixed;
     bottom: 4em;
@@ -118,4 +113,24 @@ button {
 .right {
     position: fixed;
     right: 4em;
+}
+
+.blue-color {
+    color: #289BD2;
+}
+
+.selected {
+    display: block;
+    color: #289BD2;
+    background-color: white;
+    padding: 0.5em;
+    font-weight: 700;
+    font-size: 15px;
+    height: 3.5em;
+    line-height: 2.5em;
+    text-decoration: none;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
 }
