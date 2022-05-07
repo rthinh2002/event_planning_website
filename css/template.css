@@ -18,6 +18,10 @@ i {
     color: white;
 }
 
+i:hover {
+    color: #289BD2;
+}
+
 img {
     z-index: -1;
     display: inline-block;
