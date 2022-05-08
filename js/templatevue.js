@@ -4,7 +4,7 @@ const vueinst = new Vue({
     {
         loggedin : false,
         baselink : "/wdc_project_2022/",
-        desktop : true
+        desktop : true,
     },
 });
 
