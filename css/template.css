@@ -100,7 +100,6 @@ button {
     left: 15%;
     width: 50%;
     background-color: white;
-    color: black;
 }
 
 .set-padding {
@@ -181,4 +180,24 @@ button {
 }
 
 /*CSS for inner of dashboard1.html*/
+.event-text {
+    color: #289BD2;
+    font-size: 20px;
+}
 
+.organising-container-div {
+    background-color: white;
+    position: relative;
+    top: 2%;
+    width: 70%;
+    height: 40%;
+    overflow-y: auto;
+}
+
+.organising-inner-elements {
+    background-color: #D6EDF8;
+    top: 2%;
+    width: 462px;
+    height: 84px;
+    margin-bottom: 3em;
+}
