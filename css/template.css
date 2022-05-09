@@ -179,13 +179,6 @@ button {
     transition: all 0.5s;
 }
 
-/*CSS for inner of dashboard1.html*/
-.event-text {
-    color: #289BD2;
-    font-size: 20px;
-    margin-bottom: 0.5em;
-}
-
 .textmessage {
     border-radius: 1em;
     background-color: whitesmoke;
@@ -201,6 +194,13 @@ button {
     /* align the content to the right */
     text-align: right;
     vertical-align: bottom;
+}
+
+/*CSS for inner of dashboard1.html*/
+.event-text {
+    color: #289BD2;
+    font-size: 20px;
+    margin-bottom: 0.5em;
 }
 
 .organising-container-div {
@@ -291,5 +291,12 @@ button {
     transform: translateY(-250%);
     margin-right: 0.7em;
     font-size: 15px;
+}
+/*End CSS for dashboard1.html*/
+
+/*CSS for create_event_attendee.html*/
+.size-16-px-text {
+    font-size: 16px;
+    margin-top: 2.5em;
 }
 
