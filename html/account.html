@@ -19,7 +19,10 @@
                 <p><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
             </div>
             <div class="centred_div" style="font-size: 22px;"><!--content-->
-                <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">{{Username}}'s Account Details</h1></p>
+                <br>
+                <br>
+                <br>
+                <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">{{Username}}'s Account Details <a href="/wdc_project_2022/html/admin.html"><i class="fa-solid fa-hammer fa-lg" v-if="admin"></i></a></h1></p>
                 <br>
                 <!-- prepopulated textarea -->
                 <pre><span class="tips">Given name </span><input id="gn" type="text" class="textField" v-model="given" v-bind:placeholder="given" onchange="vueinst.changed = true"></textarea></pre>
@@ -56,6 +59,7 @@
                 </table>
                 <br>
                 <div class="fade"><button class="fade" style="padding: 7.5 7.5 7.5 7.5" v-if="changed">Save changes</button></div>
+
             </div>
             <div><!--footer-->
                 <p class="bottom right" onclick="toTop()"><button class="fade" style="padding: 1em 1em 1em 1em;"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>

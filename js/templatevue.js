@@ -11,6 +11,7 @@ const vueinst = new Vue({
         family : "",
         email : "",
         dob : "",
+        admin : false,
     },
 });
 
