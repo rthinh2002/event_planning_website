@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -6,12 +8,12 @@
 }
 
 #desktop {
-    font-family: sans-serif, monospace;
+    font-family: 'Montserrat', sans-serif, monospace;
     font-size: 11px;
 }
 
 #mobile {
-    font-family: sans-serif, monospace;
+    font-family: 'Montserrat', sans-serif, monospace;
     font-size: 25px;
 }
 
@@ -38,7 +40,7 @@ button {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    max-width: 250px
+    max-width: 250px;s
 }
 
 .textField {
@@ -65,7 +67,7 @@ button {
     height: 12%;
     position: fixed;
     background-color: #289BD2;
-    border-bottom: 0.1em solid #ccc;
+    /*border-bottom: 0.1em solid #ccc;*/
     display: flex;
     justify-content: space-between;
     align-items: center;
