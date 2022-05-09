@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -6,12 +8,12 @@
 }
 
 #desktop {
-    font-family: sans-serif, monospace;
+    font-family: 'Montserrat', sans-serif, monospace;
     font-size: 11px;
 }
 
 #mobile {
-    font-family: sans-serif, monospace;
+    font-family: 'Montserrat', sans-serif, monospace;
     font-size: 25px;
 }
 
@@ -45,7 +47,7 @@ button {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    max-width: 250px
+    max-width: 250px;
 }
 
 .textField {
@@ -56,7 +58,6 @@ button {
     margin: 5px;
     padding-left: 0.5em;
     padding-right: 0.5em;
-
 }
 
 .centred_div {
@@ -72,7 +73,7 @@ button {
     height: 12%;
     position: fixed;
     background-color: #289BD2;
-    border-bottom: 0.1em solid #ccc;
+    /*border-bottom: 0.1em solid #ccc;*/
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -93,7 +94,13 @@ button {
 }
 
 .content {
+    position: fixed;
+    top: 15%;
+    bottom: 0;
+    left: 15%;
+    width: 50%;
     background-color: white;
+    color: black;
 }
 
 .set-padding {
@@ -171,4 +178,11 @@ button {
     -moz-transition: all 0.5s;
     -o-transition: all 0.5s;
     transition: all 0.5s;
+<<<<<<< HEAD
 }
+=======
+}
+
+/*CSS for inner of dashboard1.html*/
+
+>>>>>>> 908eaca638e8d85e5642a0cd6ebf63783af1e333

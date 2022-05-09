@@ -1,6 +1,6 @@
 const vueinst = new Vue({
     el: '#app',
-    data : 
+    data :
     {
         loggedin : false,
         baselink : "/wdc_project_2022/",
@@ -19,4 +19,16 @@ function toTop() {
         top: 0,
         behavior: 'smooth'
     });
+}
+
+function togglePword() {
+    var items = document.querySelectorAll(".pw");
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].type === "password") {
+            items[i].type = "text";
+          } else {
+            items[i].type = "password";
+          }
+    }
+
 }
