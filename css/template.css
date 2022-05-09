@@ -182,3 +182,19 @@ button {
 
 /*CSS for inner of dashboard1.html*/
 
+.textmessage {
+    border-radius: 1em;
+    background-color: whitesmoke;
+    border: 0.1em solid #ccc;
+    padding: 0.5em;
+    font-size: 1em;
+    font-weight: bold;
+    height: fit-content;
+    vertical-align: bottom;
+}
+
+.textbox {
+    /* align the content to the right */
+    text-align: right;
+    vertical-align: bottom;
+}
