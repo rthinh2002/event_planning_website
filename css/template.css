@@ -19,6 +19,13 @@
     color: white;
 }
 
+/* make the pre tag's content align vertically to the centre */
+pre {
+    text-align: center;
+    font-family: sans-serif, monospace;
+    line-height: 3em;
+}
+
 img {
     z-index: -1;
     display: inline-block;
@@ -49,6 +56,7 @@ button {
     margin: 5px;
     padding-left: 0.5em;
     padding-right: 0.5em;
+
 }
 
 .centred_div {

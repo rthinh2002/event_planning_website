@@ -14,12 +14,12 @@
                 <a href="/wdc_project_2022/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="sidebar"><!--sticky sidebar-->
-                <p><a href="/html/dashboard1.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a></p> <!--NOTE: It is a bad practice to give element style without giving them a class-->
+                <p><a href="/html/dashboard1.html" class="selected"><i class="fa-regular fa-calendar fa-lg blue-color"></i>  My Events</a></p>
                 <p><a class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
                 <p><a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
-            <div class="centred_div"><!--content-->
-                <p><h1>My account</h1></p>
+            <div class="content"><!--content-->
+                
             </div>
             <div><!--footer-->
                 <p class="bottom right" onclick="toTop()"><button class="fade set-padding"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
@@ -27,16 +27,14 @@
         </div>
         <div id="mobile" v-else>
             <div class="header"><!--sticky header-->
-                <a href="/wdc_project_2022/html/template.html"><!--change this to our dashboard when we have one--><img src="/wdc_project_2022/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
+                <a href="/wdc_project_2022/html/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
                 <a href="/wdc_project_2022/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
-            <div class="content"><!--content-->
-
-            </div>
             <div class="mobilenav">
-                <a href="/wdc_project_2022/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a><a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
+                <a href="/wdc_project_2022/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a><a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
             </div>
         </div>
+        <!--Dashboard 1 Create Event content-->    
     </div>
 </body>
 </html>
