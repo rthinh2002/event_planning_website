@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <title>Manage ADMIN</title>
+    <title>Event view ORGANISER</title>
     <link rel="stylesheet" type="text/css" href="/wdc_project_2022/css/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -42,7 +42,7 @@
                         <tr>
                             <th>Details</th>
                             <td>{{ event[0].details }}</td>
-                            <td><a href="/wdc_project_2022/html/">Edit</a></td>
+                            <td><a href="/wdc_project_2022/html/" style="text-decoration: none;">Edit</a></td>
                         </tr>
                     </table>
                 </div>
@@ -87,14 +87,14 @@
                 <br>
                 <!-- make a text message element here something similar to whatsapp-->
                 <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Message</h1></p>
-                <div class="textField" style="height: 10em; width: 30em;;">
-                    <div class="textmessage textbox">message that i feel like it will be more than 1 line or maybe if not than i will add more here <i class="fa-solid fa-messages fa-lg"></i></div>
+                <div class="textField" style="height: 10em; width: 30em;">
+                    <div class="textmessage textbox">message that i feel like it will be more than 1 line or maybe if not than i will add more here</div>
                 </div>
                 <div class="textField" style="height: fit-content; width: 30em;">
                     <!-- message sending element-->
                     <div class="textbox"> 
                         <input type="text" class="textmessage" placeholder="Type your message here..."></input>
-                        <button class="sendmessage">Send</button>
+                        <button class="sendmessage" style="vertical-align: middle;"><i class="fa-solid fa-paper-plane-top fa-lg blue-color"></i>+</button>
                     </div>
                 </div>
             </div>
