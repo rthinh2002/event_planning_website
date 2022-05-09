@@ -232,3 +232,35 @@ button {
     font-weight: bold;
     transform: translateY(-180%);
 }
+
+.event-name {
+    margin-left: 1.9em;
+    font-size: 32px;
+    font-weight: bold;
+    transform: translateY(-80%);
+}
+.organising-button {
+    transform: translateY(-300%);
+    padding: 0.4em !important;
+    border-radius: 0;
+}
+
+.organising-button:hover {
+    background-color: white;
+    color: #289BD2;
+}
+
+.button-container {
+    float: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.create-event-button {
+    transform: translateY(100%);
+}
+
+.create-event-button:hover {
+    background-color: #D6EDF8;
+    color: black;
+}
