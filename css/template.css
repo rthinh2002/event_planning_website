@@ -201,3 +201,17 @@ button {
     height: 84px;
     margin-bottom: 3em;
 }
+
+.icon-create-event {
+    color: #289BD2;
+    font-size: 4em;
+    transform: translateY(50%);
+    margin-left: 0.25em;
+}
+
+.organising-date {
+    margin-left: 4em;
+    font-size: 16px;
+    font-weight: bold;
+    transform: translateY(-180%);
+}
