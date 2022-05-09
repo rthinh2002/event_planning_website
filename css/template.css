@@ -183,6 +183,7 @@ button {
 .event-text {
     color: #289BD2;
     font-size: 20px;
+    margin-bottom: 0.5em;
 }
 
 .textmessage {
@@ -216,8 +217,19 @@ button {
     top: 2%;
     width: 462px;
     height: 84px;
+    border-radius: 2em;
     margin-bottom: 3em;
 }
+
+.organising-inner-elements:hover {
+    background-color: #289BD2;
+    color: white;
+}
+
+.organising-inner-elements:hover i, .organising-inner-elements:hover p, .organising-inner-elements:hover button {
+    color: white;
+}
+
 
 .icon-create-event {
     color: #289BD2;
@@ -239,15 +251,23 @@ button {
     font-weight: bold;
     transform: translateY(-80%);
 }
+
 .organising-button {
+    background-color: transparent;
+    color: black;
     transform: translateY(-300%);
     padding: 0.4em !important;
     border-radius: 0;
+    margin-right: 1em;
+    font-size: 12px;
 }
 
 .organising-button:hover {
-    background-color: white;
-    color: #289BD2;
+    text-decoration: underline;
+}
+
+.bottom-right-radius {
+    border-bottom-right-radius: 1em !important;
 }
 
 .button-container {
@@ -258,9 +278,18 @@ button {
 
 .create-event-button {
     transform: translateY(100%);
+    margin-bottom: 5em;
 }
 
 .create-event-button:hover {
     background-color: #D6EDF8;
     color: black;
 }
+
+.status {
+    float: right;
+    transform: translateY(-250%);
+    margin-right: 0.7em;
+    font-size: 15px;
+}
+
