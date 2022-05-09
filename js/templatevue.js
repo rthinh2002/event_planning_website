@@ -12,7 +12,7 @@ const vueinst = new Vue({
         email : "",
         dob : "",
         admin : false,
-        // event array with time, place, and details elements 
+        // event array with time, place, and details elements
         event : [ { date:'dd/mm/yyyy', place:'some place', details:'some details' } ],
     },
 });
@@ -26,12 +26,13 @@ function toTop() {
 
 function togglePword() {
     var items = document.querySelectorAll(".pw");
+
     for (var i = 0; i < items.length; i++) {
         if (items[i].type === "password") {
             items[i].type = "text";
-          } else {
+        } else {
             items[i].type = "password";
-          }
+        }
     }
-
 }
+

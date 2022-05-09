@@ -34,6 +34,12 @@ img {
     vertical-align: middle;
 }
 
+.socialMedia {
+    font-size: 18px;
+    color: black;
+    margin-top: 0.25em;
+}
+
 button {
     padding: 0.8em;
     color: white;
