@@ -18,18 +18,17 @@
                 <p><a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a></p>
                 <p><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
             </div>
-            <div class="centred_div"><!--content-->
+            <div class="centred_div" style="font-size: 22px;"><!--content-->
                 <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">{{Username}}'s Account Details</h1></p>
                 <br>
                 <!-- prepopulated textarea -->
-                <pre><span class="tips">Given name </span><textarea name="given" id="gn" cols="30" rows="1" class="textField" v-model="given" v-bind:placeholder="given" onchange="vueinst.changed = true"></textarea></pre>
-                <pre><span class="tips">Family name</span><textarea name="family_name" id="fn" cols="30" rows="1" class="textField" v-model="family" v-bind:placeholder="family" onchange="vueinst.changed = true"></textarea></pre>
-                <pre><span class="tips">Email            </span><textarea name="email" id="em" cols="30" rows="1" class="textField" v-model="email" v-bind:placeholder="email" onchange="vueinst.changed = true"></textarea></pre>
-                <pre><span title="Date Of Birth" class="tips">D.O.B           </span><textarea name="dob" id="db" cols="30" rows="1" class="textField" v-model="dob" v-bind:placeholder="dob" onchange="vueinst.changed = true"></textarea></pre>
+                <pre><span class="tips">Given name </span><input id="gn" type="text" class="textField" v-model="given" v-bind:placeholder="given" onchange="vueinst.changed = true"></textarea></pre>
+                <pre><span class="tips">Family name</span><input id="fn" type="text" class="textField" v-model="family" v-bind:placeholder="family" onchange="vueinst.changed = true"></textarea></pre>
+                <pre><span class="tips">Email            </span><input id="em" type="text" class="textField" v-model="email" v-bind:placeholder="email" onchange="vueinst.changed = true"></textarea></pre>
+                <pre><span title="Date Of Birth" class="tips">D.O.B           </span><input id="db" type="text" class="textField" v-model="dob" v-bind:placeholder="dob" onchange="vueinst.changed = true"></textarea></pre>
                 <pre><a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a></pre>
                 <pre><a href="password" style="text-decoration: none;"><i class="fa-solid fa-lock fa-2x blue-color"></i>   Connect my calendar</a></pre>
                 <!-- save changes button -->
-                <div class="fade"><button class="fade" style="padding: 7.5 7.5 7.5 7.5" v-if="changed">Save changes</button></div>
                 <p style="margin-top: 2em;"><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Email notification</h1></p>
                 <br>
                 <!-- 2 by 2 checkboxes with table-->
@@ -55,6 +54,8 @@
                         </td>
                     </tr>
                 </table>
+                <br>
+                <div class="fade"><button class="fade" style="padding: 7.5 7.5 7.5 7.5" v-if="changed">Save changes</button></div>
             </div>
             <div><!--footer-->
                 <p class="bottom right" onclick="toTop()"><button class="fade" style="padding: 1em 1em 1em 1em;"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
