@@ -12,6 +12,8 @@ const vueinst = new Vue({
         email : "",
         dob : "",
         admin : false,
+        // event array with time, place, and details elements 
+        event : [ { date:'dd/mm/yyyy', place:'some place', details:'some details' } ],
     },
 });
 

@@ -1,0 +1,119 @@
+<html lang="en">
+<head>
+    <title>Event view ORGANISER</title>
+    <link rel="stylesheet" type="text/css" href="/wdc_project_2022/css/template.css">
+    <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="/wdc_project_2022/js/templatevue.js" defer></script>
+</head>
+<body>
+    <div id="app"><!--app body-->
+        <div id="desktop" v-if="desktop">
+            <div class="header"><!--sticky header-->
+                <a href="/wdc_project_2022/html/template.html"><!--change this to our dashboard when we have one--><img src="/wdc_project_2022/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
+                <a href="/wdc_project_2022/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
+            </div>
+            <div class="sidebar"><!--sticky sidebar-->
+                <p><a href="/wdc_project_2022/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a></p>
+                <p><a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a></p>
+                <p><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
+            </div>
+            <div class="centred_div" style="font-size: 22px;"><!--content-->
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Event name</h1></p>
+                <div class="textField">
+                    <!-- a 3 by 3 table -->
+                    <table class="table" style="height:10em; width: 25em;">
+                        <tr>
+                            <th style="text-align: center;">Where</th>
+                            <td>{{ event[0].place }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>RSVP</th>
+                            <td>{{ event[0].date }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Details</th>
+                            <td>{{ event[0].details }}</td>
+                            <td><a href="/wdc_project_2022/html/" style="text-decoration: none;">Edit</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Responses</h1></p>
+                <div class="textField">
+                    <table class="table" style="height: 10em; width: 30em">
+                        <tr>
+                            <td></td>
+                            <th>Yes</th>
+                            <th>Maybe</th>
+                            <th>No</th>
+                            <th>Confirm</th>
+                        </tr>
+                        <!-- checkbox -->
+                        <tr>
+                            <th>{{ event[0].date }}</th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                            <td>Delete</td>
+                        </tr>
+                        <tr>
+                            <th>{{ event[0].date }}</th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                            <td>Delete</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Add date</td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <!-- make a text message element here something similar to whatsapp-->
+                <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Message</h1></p>
+                <div class="textField" style="height: 10em; width: 30em; margin: 0;">
+                    <div class="textmessage textbox">message that i feel like it will be more than 1 line or maybe if not than i will add more here</div>
+                </div>
+                <div class="textField" style="height: fit-content; width: 30em; margin: 0;" >
+                    <!-- message sending element-->
+                    <div class="textbox"> 
+                        <input type="text" class="textmessage" placeholder="Type your message here..."></input>
+                        <button class="sendmessage" style="vertical-align: middle;"><i class="fa-solid fa-paper-plane-top fa-lg blue-color"></i>+</button>
+                    </div>
+                </div>
+            </div>
+            <div><!--footer-->
+                <p class="bottom right" onclick="toTop()"><button class="fade" style="padding: 1em 1em 1em 1em;"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
+            </div>
+        </div>
+        <div id="mobile" v-else>
+            <div class="header"><!--sticky header-->
+                <a href="/wdc_project_2022/html/template.html"><!--change this to our dashboard when we have one--><img src="/wdc_project_2022/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
+                <a href="/wdc_project_2022/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
+            </div>
+            <div class="content"><!--content-->
+
+            </div>
+            <div class="mobilenav">
+                <a href="/wdc_project_2022/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a><a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -185,6 +185,23 @@ button {
     font-size: 20px;
 }
 
+.textmessage {
+    border-radius: 1em;
+    background-color: whitesmoke;
+    border: 0.1em solid #ccc;
+    padding: 0.5em;
+    font-size: 1em;
+    font-weight: bold;
+    height: fit-content;
+    vertical-align: bottom;
+}
+
+.textbox {
+    /* align the content to the right */
+    text-align: right;
+    vertical-align: bottom;
+}
+
 .organising-container-div {
     background-color: white;
     position: relative;
