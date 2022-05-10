@@ -20,7 +20,26 @@
             </div>
             <div class="content"><!--content-->
                 <h3 class="event-text">Event's Name</h3>
-                <p class="size-16-px-text">Organiser is inviting you to an event!</p> 
+                <p class="size-16-px-text">You're inviting to this event</p>
+                <div class="textField">
+                    <!-- a 3 by 3 table -->
+                    <table class="table" style="height:10em; width: 25em;">
+                        <tr>
+                            <th style="text-align: center;">Where</th>
+                            <td>{{ event[0].place }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>RSVP</th>
+                            <td>{{ event[0].date }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Details</th>
+                            <td>{{ event[0].details }}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div><!--footer-->
                 <p class="bottom right" onclick="toTop()"><button class="fade set-padding"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
