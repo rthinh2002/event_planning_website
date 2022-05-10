@@ -66,6 +66,38 @@ button {
     padding-right: 0.5em;
 }
 
+#users-message {
+    border-radius: 1em;
+    width: 95%;
+    margin-top: 0.5em;
+    vertical-align: center;
+}
+
+.conversation {
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 0.3em;
+    block-size: fit-content;
+    width: fit-content;
+    position: absolute;
+    bottom:9em;
+    right:1em;
+}
+
+.cancel-button {
+    background-color: transparent;
+    color: black;
+}
+
+.cancel-button:hover {
+    text-decoration: underline;
+}
+
+.save-button:hover {
+    color: black;
+    background-color: #D6EDF8;
+}
+
 .centred_div {
     margin: 0;
     position: absolute;
@@ -207,7 +239,7 @@ button {
 .event-text {
     color: #289BD2;
     font-size: 20px;
-    margin-bottom: 0.5em;
+    margin-bottom: 0;
 }
 
 .organising-container-div {
@@ -243,6 +275,12 @@ button {
     font-size: 4em;
     transform: translateY(50%);
     margin-left: 0.25em;
+}
+
+.calendar-icon {
+    color: white;
+    font-size: 1.5em;
+    margin-left: 0.5em;
 }
 
 .organising-date {
@@ -304,7 +342,34 @@ button {
 /*CSS for create_event_attendee.html*/
 .size-16-px-text {
     font-size: 16px;
-    margin-top: 1.5em;
+    margin-top: 0.5em;
+}
+
+.set-width {
+    width: 25% !important;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.height-increase {
+    height: 20%;
+    overflow-y: auto;
+}
+
+.check-calendar-button {
+    transform: translateY(15%); 
+    margin-bottom: 3em;
+}
+
+.check-calendar-button:hover {
+    background-color: #D6EDF8;
+    color: black;
+}
+
+.check-calendar-button:hover i{
+    color: #289BD2;
 }
 
 .logo {
