@@ -333,4 +333,5 @@ button {
 .items {
     display: block;
     height: fit-content;
+    background-color: #a8d9ffdb;
 }
