@@ -1,16 +1,16 @@
 <html lang="en">
 <head>
-    <title>Event view ORGANISER</title>
-    <link rel="stylesheet" type="text/css" href="/css/template.css">
+    <title>Admin</title>
+    <link rel="stylesheet" type="text/css" href="/wdc_project_2022/css/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/js/templatevue.js" defer></script>
+    <script src="/wdc_project_2022/js/templatevue.js" defer></script>
 </head>
 <body>
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
             <div class="header"><!--sticky header-->
-                <a href="/html/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
+                <a href="/html/template.html"><!--change this to our dashboard when we have one--><img src="/wdc_project_2022/images/W2M_icon.png" class="logo" alt="W2M"></a>
                 <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="sidebar"><!--sticky sidebar-->
@@ -18,7 +18,33 @@
                 <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a></p>
                 <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
             </div>
-            <div class="centred_div" style="font-size: 22px;"><!--content-->
+            <div class="centred_div" style="font-size: 22px; top: 50%;"><!--content-->
+                <p><h1 class="title blue-color">Manage users</h1></p>
+                <!-- search for user -->
+                <div>
+                    <input class="textField" type="text" placeholder="Search for user" v-model="search" @keyup="searchUser">
+                </div>
+                <ul class="list">
+                    <!-- li using vue for loop -->
+                    <li class="textField items" v-for="user in users">
+                        <p><span v-if="user.admin == 1"><i class="fa-solid fa-user fa-2x"></i></span><span v-else><i class="fa-regular fa-user fa-2x"></i></span>  {{user.firstname}} {{user.lastname}}</p>
+                        <p>Delete <span v-if="user.admin == 1">Make admin</span><span v-else>Make user</span></p>
+                    </li>
+                </ul>
+                <br>
+                <p><h1 class="title blue-color">Manage events</h1></p>
+                <!-- search for event -->
+                <div>
+                    <input class="textField" type="text" placeholder="Search for event" @keyup="searchEvent">
+                </div>
+                <ul class="list">
+                    <!-- li using vue for loop -->
+                    <li class="textField items" v-for="ev in event">
+                        <p><i class="fa-regular fa-calendar fa-2x"></i> {{ ev.title }} - {{ ev.organiser }}</p>
+                        <p><span>Delete</span>  <span>Edit</span></p>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div id="mobile" v-else>
             <div class="header"><!--sticky header-->

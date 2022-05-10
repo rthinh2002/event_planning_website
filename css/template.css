@@ -71,6 +71,7 @@ button {
     position: absolute;
     top: 40%;
     left: 50%;
+    vertical-align: middle;
     transform: translate(-50%, -50%);
 }
 
@@ -312,4 +313,24 @@ button {
     width: auto; 
     max-width: 100%; 
     max-height: 100%;
+}
+
+.title {
+    font-size: 18px; 
+    font-style: italic;
+}
+
+.list {
+    list-style-type: none;
+    /* align li to the centre of ul */
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.items {
+    display: block;
+    height: fit-content;
 }
