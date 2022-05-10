@@ -27,7 +27,7 @@
                 <ul class="list">
                     <!-- li using vue for loop -->
                     <li class="textField items" v-for="user in users">
-                        <p><span v-if="user.admin == 1"><i class="fa-solid fa-user fa-2x"></i></span><span v-else><i class="fa-regular fa-user fa-2x"></i></span>  {{user.firstname}} {{user.lastname}}</p>
+                        <p><span v-if="user.admin == 1"><i class="fa-solid fa-user fa-2x"></i></span><span v-else><i class="fa-regular fa-user fa-2x"></i></span>  {{user.firstname}}, {{user.lastname}}</p>
                         <p><a href="/html/admin.html">Delete</a>  <a  href="/html/admin.html" onclick="" v-if="user.admin == 1">Make admin</a><a href="/html/admin.html" onclick="" v-else>Make user</a></p>
                     </li>
                 </ul>
