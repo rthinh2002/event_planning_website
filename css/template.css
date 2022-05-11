@@ -40,16 +40,23 @@ img {
     margin-top: 0.25em;
 }
 
+button:hover {
+    background-color: #d6edf8;
+    color: #289BD2;
+    border: 1px solid #289BD2;
+}
+
 button {
     padding: 0.8em;
     color: white;
     background-color: #289BD2;
-    border: none;
+    border: 1px solid white;
     border-radius: 0.5em;
     font-weight: bold;
+    cursor: pointer;
 }
 
-.logo {
+.logoHome {
     display: block;
     margin-left: auto;
     margin-right: auto;
