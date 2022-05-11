@@ -1,0 +1,91 @@
+<html lang="en">
+<head>
+    <title>Create Event</title>
+    <link rel="stylesheet" type="text/css" href="/css/template.css">
+    <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="/js/templatevue.js" defer></script>
+</head>
+
+<body>
+    <div id="app"><!--app body-->
+        <div id="desktop" v-if="desktop">
+            <div class="header"><!--sticky header-->
+                <a href="/html/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
+                <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
+            </div>
+            <div class="sidebar"><!--sticky sidebar-->
+                <p><a href="/html/dashboard1.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a></p>
+                <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a></p>
+                <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
+            </div>
+            <div class="content set-width"><!--content-->
+                <h3 class="event-text">Create Event</h3>
+                <br>
+                <form>
+                    <table>
+                        <tr>
+                            <td text-align="left">What:</td>
+                            <td text-align="right">
+                                <input class="textField" type="text" placeholder="e.g. Concert/Movie/Party" id="eventWhat" name="eventWhat" size="50">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td text-align="left">Where:</td>
+                            <td text-align="right">
+                                <input class="textField" type="text" id="eventLocation" name="eventLocation" size="50">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td text-align="left">When</td>
+                            <td text-align="right">
+                                <input class="textField" type="text" placeholder="+  Add date" id="eventWhen" name="eventWhen" size="14">
+                                <input class="textField2" type="text" placeholder="+  Start" id="eventWhen" name="eventWhen" size="14">
+                                <input class="textField2" type="text" placeholder="+  End" id="eventWhen" name="eventWhen" size="14">
+                            </td>
+                        </tr>
+                    </table>
+
+                        <pre class="eventPre">                <a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a></pre>
+
+                    <table>
+                        <tr>
+                            <td text-align="left">Who:</td>
+                            <td text-align="right">
+                                <input class="textField2" type="text" placeholder="Name" id="eventWho" name="eventWho" size="14">
+                            </td>
+                            <td>
+                                <input class="textField2" type="text" placeholder="Email" id="eventWho" name="eventWho" size="32">
+                            </td>
+                        </tr>
+                    </table>
+
+                        <pre class="eventPre">                <a href="addFriend" style="text-decoration: none;"><i class="fa-regular fa-user-plus"></i>   Add another friend</a></pre>
+
+                    <table>
+                        <tr>
+                            <td text-align="left">RSVP:</td>
+                            <td text-align="right">
+                                <input class="textField" type="text" placeholder="+  Select date" id="eventRSVP" name="eventRSVP" size="14">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td text-align="left">Details:</td>
+                            <td text-align="right">
+                                <input class="textField" type="text" placeholder="Tell your guests anything they might need to know!" id="eventDetails" name="eventDetails" size="50" style="height: 8em;">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div style="float: right;">
+                        <button class="cancel-button">Cancel</button>
+                        <button class="save-button">Save</button>
+                    </div>
+                </form>
+            </div>
+
+</body>
+</html>

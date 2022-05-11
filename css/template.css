@@ -21,8 +21,8 @@
     color: white;
 }
 
-/* make the pre tag's content align vertically to the centre */
-pre {
+/* make the pre tag's content align vertically to the centre for manage account html */
+.accountPre {
     text-align: center;
     font-family: sans-serif, monospace;
     line-height: 3em;
@@ -61,9 +61,41 @@ button {
     border-radius: 0.5em;
     background-color: #d6edf8;
     line-height: 2em;
-    margin: 5px;
+    margin: 1em 0em 1em 0em;
     padding-left: 0.5em;
     padding-right: 0.5em;
+}
+
+#users-message {
+    border-radius: 1em;
+    width: 95%;
+    margin-top: 0.5em;
+    vertical-align: center;
+}
+
+.conversation {
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 0.3em;
+    block-size: fit-content;
+    width: fit-content;
+    position: absolute;
+    bottom:9em;
+    right:1em;
+}
+
+.cancel-button {
+    background-color: transparent;
+    color: black;
+}
+
+.cancel-button:hover {
+    text-decoration: underline;
+}
+
+.save-button:hover {
+    color: black;
+    background-color: #D6EDF8;
 }
 
 .centred_div {
@@ -71,6 +103,7 @@ button {
     position: absolute;
     top: 40%;
     left: 50%;
+    vertical-align: middle;
     transform: translate(-50%, -50%);
 }
 
@@ -206,7 +239,7 @@ button {
 .event-text {
     color: #289BD2;
     font-size: 20px;
-    margin-bottom: 0.5em;
+    margin-bottom: 0;
 }
 
 .organising-container-div {
@@ -242,6 +275,12 @@ button {
     font-size: 4em;
     transform: translateY(50%);
     margin-left: 0.25em;
+}
+
+.calendar-icon {
+    color: white;
+    font-size: 1.5em;
+    margin-left: 0.5em;
 }
 
 .organising-date {
@@ -303,6 +342,87 @@ button {
 /*CSS for create_event_attendee.html*/
 .size-16-px-text {
     font-size: 16px;
-    margin-top: 2.5em;
+    margin-top: 0.5em;
+}
+
+.set-width {
+    width: 25% !important;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.height-increase {
+    height: 20%;
+    overflow-y: auto;
+}
+
+.check-calendar-button {
+    transform: translateY(15%);
+    margin-bottom: 3em;
+}
+
+.check-calendar-button:hover {
+    background-color: #D6EDF8;
+    color: black;
+}
+
+.check-calendar-button:hover i{
+    color: #289BD2;
+}
+
+.logo {
+    padding-left: 3%;
+    height: 70%;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.title {
+    font-size: 18px;
+    font-style: italic;
+}
+
+.list {
+    list-style-type: none;
+    /* align li to the centre of ul */
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.items {
+    display: block;
+    height: fit-content;
+    background-color: #a8d9ffdb;
+}
+
+/*CSS for createEvent.html*/
+.eventPre {
+    font-family: sans-serif, monospace;
+    line-height: 3em;
+}
+
+.textField2 {
+    border: 1px solid;
+    border-radius: 0.5em;
+    background-color: #d6edf8;
+    line-height: 2em;
+    margin: 1em 0em 1em 0.95em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
+::placeholder {
+    font-weight: bold;
+}
+
+/*CSS for home.html*/
+.welcome_div {
+    font-size: 15px;
 }
 
