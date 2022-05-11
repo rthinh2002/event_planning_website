@@ -10,13 +10,13 @@
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
             <div class="header"><!--sticky header-->
-                <a href="/html/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
+                <a href="/html/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" class="logo" alt="W2M"></a>
                 <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="sidebar"><!--sticky sidebar-->
-                <p><a href="/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a></p>
-                <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a></p>
-                <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
+                <p><a href="/html/dashboard1.html" class="selected"><i class="fa-regular fa-calendar fa-lg blue-color"></i>  My Events</a></p>
+                <p><a class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
+                <p><a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
             <div class="centred_div" style="font-size: 22px;"><!--content-->
                 <br>
@@ -25,7 +25,7 @@
                 <br>
                 <br>
                 <br>
-                <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Event name</h1></p>
+                <p><h1 class="event-text">Event name</h1></p>
                 <div class="textField">
                     <!-- a 3 by 3 table -->
                     <table class="table" style="height:10em; width: 25em;">
@@ -42,12 +42,12 @@
                         <tr>
                             <th>Details</th>
                             <td>{{ event[0].details }}</td>
-                            <td><a href="/wdc_project_2022/html/" style="text-decoration: none;">Edit</a></td>
+                            <td><a href="/html/" style="text-decoration: none;">Edit</a></td>
                         </tr>
                     </table>
                 </div>
                 <br>
-                <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Responses</h1></p>
+                <p><h1 class="event-text">Responses</h1></p>
                 <div class="textField">
                     <table class="table" style="height: 10em; width: 30em">
                         <tr>
@@ -86,7 +86,7 @@
                 </div>
                 <br>
                 <!-- make a text message element here something similar to whatsapp-->
-                <p><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Message</h1></p>
+                <p><h1 class="event-text">Message</h1></p>
                 <div class="textField" style="height: 10em; width: 30em; margin: 0;">
                     <div class="textmessage textbox">message that i feel like it will be more than 1 line or maybe if not than i will add more here</div>
                 </div>

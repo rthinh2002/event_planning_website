@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <title>Dashboard</title>
+    <title>Event View</title>
     <link rel="stylesheet" type="text/css" href="/css/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -18,9 +18,63 @@
                 <p><a class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
                 <p><a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
-            <div class="content"><!--content-->
+            <div class="content set-width"><!--content-->
                 <h3 class="event-text">Event's Name</h3>
-                <p class="size-16-px-text">Organiser is inviting you to an event!</p> 
+                <p class="size-16-px-text">You're inviting to this event</p>
+                <div class="textField">
+                    <!-- a 3 by 3 table -->
+                    <table class="table" style="height:6em; width: 20em;">
+                        <tr>
+                            <th class="align-left">Where</th>
+                            <td>{{ event[0].place }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="align-left">RSVP</th>
+                            <td>{{ event[0].date }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="align-left">Details</th>
+                            <td>{{ event[0].details }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="size-16-px-text">Your availability for this event: </p>
+                <div class="textField height-increase">
+                    <table class="table" style="height: 10em; width: 30em">
+                        <tr>
+                            <td></td>
+                            <th>Yes</th>
+                            <th>Maybe</th>
+                            <th>No</th>
+                        </tr>
+                        <!-- checkbox -->
+                        <tr>
+                            <th class="align-left">{{ event[0].date }}</th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                        </tr>
+                        <tr>
+                            <th class="align-left">{{ event[0].date }}</th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                            <th><input type="checkbox"></th>
+                        </tr>
+                    </table>
+                </div>
+                <button class="check-calendar-button">CHECK YOUR CALENDAR<i class="fa-solid fa-calendar-day calendar-icon"></i></button>
+                <div class="textField" style="height: 20%; overflow-y: auto; margin-bottom: 0;">
+                    <p class="conversation">Can you make it to Friday?</p>
+                </div>
+                <div class="textField" style="height: 5%; margin-top: 0;">'
+                    <input type="text" id="users-message" name="users-message" value="Add your message...">
+                </div>
+                <div style="float: right;">
+                    <button class="cancel-button">Cancel</button>
+                    <button class="save-button">Save</button>
+                </div>
             </div>
             <div><!--footer-->
                 <p class="bottom right" onclick="toTop()"><button class="fade set-padding"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
