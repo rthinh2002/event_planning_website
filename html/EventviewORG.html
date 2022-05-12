@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <title>Event view ORGANISER</title>
+    <title>Event view</title>
     <link rel="stylesheet" type="text/css" href="/css/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -10,21 +10,15 @@
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
             <div class="header"><!--sticky header-->
-                <a href="/html/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" class="logo" alt="W2M"></a>
+                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" class="logo" alt="W2M"></a>
                 <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="sidebar"><!--sticky sidebar-->
-                <p><a href="/html/dashboard1.html" class="selected"><i class="fa-regular fa-calendar fa-lg blue-color"></i>  My Events</a></p>
-                <p><a class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
+                <p><a href="/html/EventviewORG.html" class="selected"><i class="fa-regular fa-calendar fa-lg blue-color"></i>  My Events</a></p>
+                <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
                 <p><a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
             <div class="centred_div" style="font-size: 22px;"><!--content-->
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
                 <p><h1 class="event-text">Event name</h1></p>
                 <div class="textField">
                     <!-- a 3 by 3 table -->

@@ -10,18 +10,15 @@
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
             <div class="header"><!--sticky header-->
-                <a href="/html/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
+                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M" class="logo"></a>
                 <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="sidebar"><!--sticky sidebar-->
-                <p><a href="/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a></p>
-                <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a></p>
-                <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a></p>
+                <p><a href="/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a></p>
+                <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
+                <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
             <div class="centred_div" style="font-size: 22px;"><!--content-->
-                <br>
-                <br>
-                <br>
                 <p><h1 class="blue-color event-text">{{Username}}'s Account Details <a href="/html/admin.html"><i class="fa-solid fa-hammer fa-lg" v-if="admin"></i></a></h1></p>
                 <br>
                 <!-- prepopulated textarea -->
