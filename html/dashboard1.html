@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Dashboard</title>
@@ -10,7 +11,7 @@
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
             <div class="header"><!--sticky header-->
-                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M" class="logo"></a>
+                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
                 <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="sidebar"><!--sticky sidebar-->
@@ -79,7 +80,7 @@
                 <a href="/wdc_project_2022/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a><a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
             </div>
         </div>
-        <!--Dashboard 1 Create Event content-->    
+        <!--Dashboard 1 Create Event content-->
     </div>
 </body>
 </html>

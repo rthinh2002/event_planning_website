@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Template</title>
+    <title>Create Account</title>
     <link rel="stylesheet" type="text/css" href="/css/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -9,40 +10,40 @@
 <body>
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
-            <div class="centred_div" style="margin: auto; max-width: 500">
+            <div class="centred_div" style="margin: auto; max-width: 500;">
                 <a href="/html/home.html"><img src="/images/logo_main.png" class="logo" alt="W2M"></a>
                 <br>
-                <p style="text-align: center">Create a new account</p>
+                <p style="text-align: center;">Create a new account</p>
                 <br>
                 <form>
-                    <table style="margin-left: auto; margin-right: auto">
+                    <table style="margin-left: auto; margin-right: auto;">
                         <tr>
-                          <td text-align="left">First name</td>
-                          <td text-align="right">
+                          <td>First name</td>
+                          <td>
                             <input class="textField" type="text" id="fname" name="fname">
                           </td>
-                          <td text-align="left">Last name</td>
-                          <td text-align="right">
+                          <td>Last name</td>
+                          <td>
                             <input class="textField" type="text" id="lname" name="lname">
                           </td>
                         </tr>
                         <tr>
-                            <td text-align="left">Email</td>
-                            <td text-align="right">
+                            <td>Email</td>
+                            <td>
                               <input class="textField" type="text" id="email" name="email">
                             </td>
-                            <td text-align="left">Username</td>
-                            <td text-align="right">
+                            <td>Username</td>
+                            <td>
                               <input class="textField" type="text" id="uname" name="uname">
                             </td>
                           </tr>
                           <tr>
-                            <td text-align="left">Password</td>
-                            <td text-align="right">
+                            <td>Password</td>
+                            <td>
                               <input class="textField pw" type="password" id="pword" name="pword">
                             </td>
-                            <td text-align="left">Confirm<br>password</td>
-                            <td text-align="right">
+                            <td>Confirm<br>password</td>
+                            <td>
                               <input class="textField pw" type="password" id="cpword" name="cpword">
                             </td>
                           </tr>
@@ -54,7 +55,7 @@
                             </td>
                           </tr>
                         </table>
-                        <div style="text-align: right"><button type="submit" value="submit">CREATE</button></div>
+                        <div style="text-align: right;"><button type="submit" value="submit">CREATE</button></div>
 
                   </form>
 
@@ -74,3 +75,4 @@
     </div>
 </body>
 </html>
+

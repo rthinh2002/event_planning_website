@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Login</title>
@@ -9,13 +10,13 @@
 <body>
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
-            <div class="centred_div" style="margin: auto; max-width: 500">
+            <div class="centred_div" style="margin: auto; max-width: 500;">
                 <a href="/html/home.html"><img src="/images/logo_main.png" class="logo" alt="W2M"></a>
                 <br>
-                <p style="text-align: center">Log in with</p>
-                <div style="text-align: center"><i class="socialMedia fa-brands fa-facebook fa-fw"></i> <i class="socialMedia fa-brands fa-google fa-fw"></i></div>
+                <p style="text-align: center;">Log in with</p>
+                <div style="text-align: center;"><i class="socialMedia fa-brands fa-facebook fa-fw"></i> <i class="socialMedia fa-brands fa-google fa-fw"></i></div>
                 <br>
-                <form>
+                <form style="text-align: center;">
                     <input class="textField" type="text" id="uname" name="uname" size="30" placeholder="Enter username/email address">
                     <br><br>
                     <input class="textField pw" type="password" id="pword" name="pword" size="30" placeholder="Enter password">
@@ -23,8 +24,8 @@
                     <input type="checkbox" id="showpword" name="showpword" value="showpword" onclick="togglePword()">
                     <label for="showpword">Show password</label>
                     <br><br>
-                    <div style="text-align: center"><button type="submit" value="submit">LOG IN <i class="fas fa-sign-in-alt" style="color: white"></i></button></div>
-                  </form>
+                    <div style="text-align: center;"><button type="submit" value="submit">LOG IN <i class="fas fa-sign-in-alt" style="color: white"></i></button></div>
+                </form>
             </div>
 
         </div>
@@ -39,4 +40,4 @@
         </div>
     </div>
 </body>
-</html>
+</html
