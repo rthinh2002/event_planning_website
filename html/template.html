@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Template</title>
@@ -10,16 +11,16 @@
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
             <div class="header"><!--sticky header-->
-                <a href="/html/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" class="logo" alt="W2M"></a>
+                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" class="logo" alt="W2M"></a>
                 <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="sidebar"><!--sticky sidebar-->
-                <p><a href="/html/dashboard1.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a></p> <!--NOTE: It is a bad practice to give element style without giving them a class-->
-                <p><a class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
+                <p><a href="/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a></p> <!--NOTE: It is a bad practice to give element style without giving them a class-->
+                <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
                 <p><a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
             <div class="centred_div"><!--content-->
-                <p><h1>My account</h1></p>
+                <h1>My account</h1>
             </div>
             <div><!--footer-->
                 <p class="bottom right" onclick="toTop()"><button class="fade set-padding"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Home</title>
@@ -10,21 +11,21 @@
 <body>
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
-            <div class="centred_div" style="margin: auto; max-width: 500">
-                <img src="/images/logo_main.png" class="logoHome" alt="W2M">
+            <div class="centred_div" style="margin: auto; max-width: 500;">
+                <a href="/html/home.html"><img src="/images/logo_main.png" class="logoHome" alt="W2M"></a>
                 <br><br>
-                <div class="welcome_div" style="text-align: center">
+                <div class="welcome_div" style="text-align: center;">
                     Quickly plan a time to meet up with friends using When2meet! <br><br>
                     Create your event - Let your friends know - Pick a date that works for everyone!
                 </div>
                 <br><br><br>
-                <p style="text-align: center"><b>GET STARTED!<b></p>
-                <br><br><br>
-                <form>
-                    <div style="text-align: center"><button type="submit" value="submit">LOG IN <i class="fas fa-sign-in-alt" style="color: white"></i></button></div>
-                    <br><br>
-                    <div style="text-align: center"><button type="submit" value="submit">CREATE ACCOUNT</button></div>
-                </form>
+                <p style="text-align: center;"><b>GET STARTED!<b></p>
+                <br><br>
+                <div style="text-align: center;">
+                <a href="/html/login.html"><button type="submit" value="submit">LOG IN <i class="fas fa-sign-in-alt" style="color: white;"></i></button></a>
+                <br><br>
+                <a href="/html/createAccount.html"><button type="submit" value="submit">CREATE ACCOUNT</button></a>
+                </div>
             </div>
         </div>
 
