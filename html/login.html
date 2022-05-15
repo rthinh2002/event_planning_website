@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Login</title>
@@ -9,34 +10,52 @@
 <body>
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
-            <div class="centred_div" style="margin: auto; max-width: 500">
-                <a href="/html/home.html"><img src="/images/logo_main.png" class="logo" alt="W2M"></a>
+            <div class="centred_div" style="margin: auto; max-width: 500;">
+                <a href="/html/home.html"><img src="/images/logo_main.png" class="logoHome" alt="W2M"></a>
                 <br>
-                <p style="text-align: center">Log in with</p>
-                <div style="text-align: center"><i class="socialMedia fa-brands fa-facebook fa-fw"></i> <i class="socialMedia fa-brands fa-google fa-fw"></i></div>
+                <p style="text-align: center;">Log in with</p>
+                <div style="text-align: center;"><i class="socialMedia fa-brands fa-facebook fa-fw"></i> <i class="socialMedia fa-brands fa-google fa-fw"></i></div>
                 <br>
+<<<<<<< HEAD
+                <form style="text-align: center;">
+                    <input class="textField" type="text" id="uname" name="uname" size="40" placeholder="Enter username/email address">
+                    <br><br>
+                    <input class="textField pw" type="password" id="pword" name="pword" size="40" placeholder="Enter password">
+                    <br><br>
+=======
                 <form>
-                    <input class="textField" type="text" id="uname" name="uname" size="30" placeholder="Enter username/email address">
-                    <br><br>
-                    <input class="textField pw" type="password" id="pword" name="pword" size="30" placeholder="Enter password">
-                    <br><br>
+                    <input class="textField" type="text" id="uname" name="uname" size="40" placeholder="Enter username/email address">
+                    <br>
+                    <input class="textField pw" type="password" id="pword" name="pword" size="40" placeholder="Enter password">
+                    <br>
+>>>>>>> 6912fdb3bb6723527955008f484d889d5f117b4e
                     <input type="checkbox" id="showpword" name="showpword" value="showpword" onclick="togglePword()">
-                    <label for="showpword">Show password</label>
+                    <label for="showpword" style="vertical-align: top">Show password</label>
                     <br><br>
+<<<<<<< HEAD
+                    <div style="text-align: center;"><button type="submit" value="submit">LOG IN <i class="fas fa-sign-in-alt" style="color: white;"></i></button></div>
+                </form>
+                <br>
+                <p style="text-align: center;"><a href="/html/createAccount.html">Create an account</a> <a href="/html/forgotPassword.html">Forgot your password?</a></p>
+=======
                     <div style="text-align: center"><button type="submit" value="submit">LOG IN <i class="fas fa-sign-in-alt" style="color: white"></i></button></div>
                   </form>
+                  <br>
+                  <p style="text-align: center"><a href="/create_account.html">Create an account</a> <a href="/forgotPassword.html">Forgot your password?</a></p>
+>>>>>>> 6912fdb3bb6723527955008f484d889d5f117b4e
             </div>
 
         </div>
         <div id="mobile" v-else>
             <div class="header"><!--sticky header-->
-                <a href="/wdc_project_2022/html/template.html"><!--change this to our dashboard when we have one--><img src="/wdc_project_2022/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
-                <a href="/wdc_project_2022/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
+                <a href="/template.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
+                <a href="/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="mobilenav">
-                <a href="/wdc_project_2022/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a><a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
+                <a href="/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a><a href="/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a><a href="/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
             </div>
         </div>
     </div>
 </body>
 </html>
+

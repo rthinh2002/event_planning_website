@@ -418,9 +418,13 @@ button {
     border-radius: 0.5em;
     background-color: #d6edf8;
     line-height: 2em;
-    margin: 1em 0em 1em 0.95em;
+    margin: 1em 0em 1em 0.6em;
     padding-left: 0.5em;
     padding-right: 0.5em;
+}
+
+.margin-increase {
+    margin: 1em 0em 1em 0.95em;
 }
 
 ::placeholder {
