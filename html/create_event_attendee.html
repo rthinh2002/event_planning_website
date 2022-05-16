@@ -11,8 +11,8 @@
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
             <div class="header"><!--sticky header-->
-                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M" class="logo"></a>
-                <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
+                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" title="W2M" class="logo"></a>
+                <a href="/html/login.html" title="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
             <div class="sidebar"><!--sticky sidebar-->
                 <p><a href="/html/EventviewORG.html" class="selected"><i class="fa-regular fa-calendar fa-lg blue-color"></i>  My Events</a></p>
@@ -38,6 +38,7 @@
                         <tr>
                             <th class="align-left">Details</th>
                             <td>{{ event[0].details }}</td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>
