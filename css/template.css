@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
+html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
 * {
     margin: 0;
     box-sizing: border-box;
@@ -17,15 +23,43 @@
     font-size: 25px;
 }
 
-.sidebar-icon {
-    color: white;
+.header {
+    width: 100%;
+    height: 12%;
+    position: fixed;
+    background-color: #289BD2;
+    /*border-bottom: 0.1em solid #ccc;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
 }
 
-/* make the pre tag's content align vertically to the centre for manage account html */
-.accountPre {
-    text-align: center;
-    font-family: sans-serif, monospace;
-    line-height: 3em;
+.mobilenav {
+    width: 100%;
+    height: 6em;
+    bottom: 0;
+    position: fixed;
+    background-color: #289BD2;
+    border-bottom: 0.1em solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+}
+
+.content {
+    position: fixed;
+    top: 15%;
+    bottom: 0;
+    left: 15%;
+    width: 50%;
+    background-color: white;
+    display: block;
+}
+
+.sidebar-icon {
+    color: white;
 }
 
 img {
@@ -73,24 +107,6 @@ button {
     padding-right: 0.5em;
 }
 
-#users-message {
-    border-radius: 1em;
-    width: 95%;
-    margin-top: 0.5em;
-    vertical-align: center;
-}
-
-.conversation {
-    background-color: white;
-    border-radius: 0.5em;
-    padding: 0.3em;
-    block-size: fit-content;
-    width: fit-content;
-    position: absolute;
-    bottom:9em;
-    right:1em;
-}
-
 .cancel-button {
     background-color: transparent;
     color: black;
@@ -111,40 +127,6 @@ button {
     left: 50%;
     margin: auto;
     transform: translate(-50%, -50%);
-}
-
-.header {
-    width: 100%;
-    height: 12%;
-    position: fixed;
-    background-color: #289BD2;
-    /*border-bottom: 0.1em solid #ccc;*/
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 2;
-}
-
-.mobilenav {
-    width: 100%;
-    height: 6em;
-    bottom: 0;
-    position: fixed;
-    background-color: #289BD2;
-    border-bottom: 0.1em solid #ccc;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 2;
-}
-
-.content {
-    position: fixed;
-    top: 15%;
-    bottom: 0;
-    left: 15%;
-    width: 50%;
-    background-color: white;
 }
 
 .set-padding {
@@ -184,10 +166,9 @@ button {
     top: 12%;
     bottom: 0;
     left: 0;
-    width: 11%;
+    width: 160px;
     background-color: #289BD2;
     color: white;
-    vertical-align: left;
     overflow-x: hidden;
     overflow-y: auto;
     z-index: 1;
@@ -224,21 +205,9 @@ button {
     transition: all 0.5s;
 }
 
-.textmessage {
-    border-radius: 1em;
-    background-color: whitesmoke;
-    border: 0.1em solid #ccc;
-    padding: 0.5em;
-    font-size: 1em;
-    font-weight: bold;
-    height: fit-content;
-    vertical-align: bottom;
-}
-
-.textbox {
-    /* align the content to the right */
-    text-align: right;
-    vertical-align: bottom;
+/*CSS for home.html*/
+.welcome_div {
+    font-size: 15px;
 }
 
 /*CSS for inner of dashboard1.html*/
@@ -359,6 +328,24 @@ button {
     text-align: left;
 }
 
+#users-message {
+    border-radius: 1em;
+    width: 95%;
+    margin-top: 0.5em;
+    vertical-align: center;
+}
+
+.conversation {
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 0.3em;
+    block-size: fit-content;
+    width: fit-content;
+    position: absolute;
+    bottom:9em;
+    right:1em;
+}
+
 .height-increase {
     height: 20%;
     overflow-y: auto;
@@ -407,10 +394,22 @@ button {
     background-color: #a8d9ffdb;
 }
 
+/* CSS for account.html*/
+/* make the pre tag's content align vertically to the left for manage account html */
+.accountPre {
+    text-align: left;
+    font-family: sans-serif, monospace;
+    line-height: 3em;
+}
+
 /*CSS for createEvent.html*/
 .eventPre {
     font-family: sans-serif, monospace;
     line-height: 3em;
+}
+
+.set-width2 {
+    width: 30% !important;
 }
 
 .textField2 {
@@ -431,7 +430,20 @@ button {
     font-weight: bold;
 }
 
-/*CSS for home.html*/
-.welcome_div {
-    font-size: 15px;
+/* CSS for EventviewORG.html*/
+.textmessage {
+    border-radius: 1em;
+    background-color: whitesmoke;
+    border: 0.1em solid #ccc;
+    padding: 0.5em;
+    font-size: 1em;
+    font-weight: bold;
+    height: fit-content;
+    vertical-align: bottom;
+}
+
+.textbox {
+    /* align the content to the right */
+    text-align: right;
+    vertical-align: bottom;
 }

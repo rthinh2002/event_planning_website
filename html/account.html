@@ -19,21 +19,23 @@
                 <p><a href="/html/account.html" class="selected"><i class="fa-solid fa-sliders fa-lg blue-color"></i>  My account</a></p>
                 <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
-            <div class="centred_div" style="font-size: 22px;"><!--content-->
+            <div class="content"><!--content-->
                 <h1 class="blue-color event-text">{{Username}}'s Account Details <a href="/html/admin.html"><i class="fa-solid fa-hammer fa-lg" v-if="admin"></i></a></h1>
                 <br>
                 <!-- prepopulated textarea -->
-                <pre class="accountPre"><span class="tips">Given name </span><input id="gn" type="text" class="textField" v-model="given" v-bind:placeholder="given" onchange="vueinst.changed = true"></textarea></pre>
-                <pre class="accountPre"><span class="tips">Family name</span><input id="fn" type="text" class="textField" v-model="family" v-bind:placeholder="family" onchange="vueinst.changed = true"></textarea></pre>
-                <pre class="accountPre"><span class="tips">Email            </span><input id="em" type="text" class="textField" v-model="email" v-bind:placeholder="email" onchange="vueinst.changed = true"></textarea></pre>
-                <pre class="accountPre"><span title="Date Of Birth" class="tips">D.O.B           </span><input id="db" type="text" class="textField" v-model="dob" v-bind:placeholder="dob" onchange="vueinst.changed = true"></textarea></pre>
-                <pre class="accountPre"><a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a></pre>
-                <pre class="accountPre"><a href="password" style="text-decoration: none;"><i class="fa-solid fa-lock fa-2x blue-color"></i>   Connect my calendar</a></pre>
+                <pre class="accountPre"><span class="tips">Given name </span><input id="gn" type="text" class="textField2" v-model="given" v-bind:placeholder="given" onchange="vueinst.changed = true" size="40"></textarea></pre>
+                <pre class="accountPre"><span class="tips">Family name</span><input id="fn" type="text" class="textField2" v-model="family" v-bind:placeholder="family" onchange="vueinst.changed = true" size="40"></textarea></pre>
+                <pre class="accountPre"><span class="tips">Email            </span><input id="em" type="text" class="textField2" v-model="email" v-bind:placeholder="email" onchange="vueinst.changed = true" size="40"></textarea></pre>
+                <pre class="accountPre"><span title="Date Of Birth" class="tips">D.O.B           </span><input id="db" type="text" class="textField2" v-model="dob" v-bind:placeholder="dob" onchange="vueinst.changed = true" size="40"></textarea></pre>
+
+                <pre class="accountPre"><a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>                 Connect my calendar</a></pre>
+                <br>
+                <pre class="accountPre"><a href="password" style="text-decoration: none;"><i class="fa-solid fa-lock fa-2x blue-color"></i>                 Change password</a></pre>
                 <!-- save changes button -->
                 <p style="margin-top: 2em;"><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Email notification</h1></p>
                 <br>
                 <!-- 2 by 2 checkboxes with table-->
-                <table class="checkbox_table">
+                <table>
                     <tr>
                         <td>
                             <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1" checked>
