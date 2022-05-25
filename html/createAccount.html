@@ -10,13 +10,50 @@
 <body>
     <div id="app"><!--app body-->
         <div id="desktop" v-if="desktop">
-            <div class="centred_div" style="margin: auto; max-width: 500 px;">
+            <div class="centred_div">
                 <a href="/html/home.html"><img src="/images/logo_main.png" class="logoHome" alt="W2M"></a>
                 <br>
                 <p style="text-align: center;">Create a new account</p>
                 <br>
+                <div class="form-div">
                 <form>
-                    <table style="margin-left: auto; margin-right: auto;">
+                    <div class="flex-container">
+                      <div>
+                        <label for="fname">First name</label><br>
+                        <input class="textField" type="text" id="fname" name="fname">
+                      </div>
+                      <div>
+                        <label for="lname">Last name</label><br>
+                        <input class="textField" type="text" id="lname" name="lname">
+                      </div>
+                      <div>
+                        <label for="email">Email</label><br>
+                        <input class="textField" type="text" id="email" name="email">
+                      </div>
+                      <div>
+                        <label for="html">Username</label><br>
+                        <input class="textField" type="text" id="uname" name="uname">
+                      </div>
+                      <div>
+                        <label for="pword">Password</label><br>
+                        <input class="textField" type="password" id="pword" name="pword">
+                      </div>
+                      <div>
+                        <label for="cpword">Confirm password</label><br>
+                        <input class="textField" type="password" id="cpword" name="cpword">
+                      </div>
+                    </div>
+                    <div style="float: left">
+                      <label for="showpword">
+                      <input type="checkbox" id="showpword" name="showpword" value="showpword" onclick="togglePword()">Show password
+                      </label>
+
+                    </div>
+                    <div style="text-align: right;"><button type="submit" value="submit">CREATE</button></div>
+                    </form>
+                  </div>
+
+<!--                    <table style="margin-left: auto; margin-right: auto;">
                         <tr>
                           <td>First name</td>
                           <td>
@@ -58,6 +95,7 @@
                         <div style="text-align: right;"><button type="submit" value="submit">CREATE</button></div>
 
                   </form>
+-->
 
             </div>
 

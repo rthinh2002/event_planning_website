@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
-html,body {
+html, body {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -22,6 +22,28 @@ html,body {
     font-family: 'Montserrat', sans-serif, monospace;
     font-size: 25px;
 }
+
+/* For responsivity - added KG 25/5 */
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 200px;
+}
+
+.flex-container > div {
+    margin: 10px;
+    min-width: 100px;
+    flex-grow: 1;
+}
+
+.form-div {
+    max-width: 450px;
+  }
+
+input {
+    width: 100%;
+}
+/* End code added KG 25/5 */
 
 .header {
     width: 100%;
@@ -97,12 +119,14 @@ button {
     max-width: 250px;
 }
 
+
+
 .textField {
     border: 1px solid;
     border-radius: 0.5em;
     background-color: #d6edf8;
     line-height: 2em;
-    margin: 1em 0em 1em 0em;
+    margin: 0.5em 0em 0.5em 0em;
     padding-left: 0.5em;
     padding-right: 0.5em;
 }
@@ -447,3 +471,20 @@ button {
     text-align: right;
     vertical-align: bottom;
 }
+
+/* For mobile screens - added KG 25/5 */
+@media only screen and (max-device-width: 30em) {
+    @media only screen and (orientation: portrait) {
+      .form-div {
+        max-width: 100%;
+      }
+
+      .flex-container > div {
+        min-width: 80%;
+      }
+
+      body {
+        font: 16px;
+      }
+    }
+  }
