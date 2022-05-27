@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>My Account</title>
     <link rel="stylesheet" type="text/css" href="/css/template.css">
@@ -7,61 +8,88 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="/js/templatevue.js" defer></script>
 </head>
-<body class="flex-container">
-    <div id="app" ><!--app body-->
-        <div id="desktop">
-            <div class="header"><!--sticky header-->
-                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" title="W2M" class="logo"></a>
-                <a href="/html/login.html" title="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
-            </div>
-            <div class="sidebar"><!--sticky sidebar-->
-                <p><a href="/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a></p>
-                <p><a href="/html/account.html" class="selected"><i class="fa-solid fa-sliders fa-lg blue-color"></i>  My account</a></p>
-                <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
-            </div>
-            <div class="centred_div set-width"><!--content-->
-                <h1 class="blue-color event-text">{{Username}}'s Account Details <a href="/html/admin.html"><i class="fa-solid fa-hammer fa-lg" v-if="admin"></i></a></h1>
-                <br>
-                <!-- prepopulated textarea -->
-                <pre class="accountPre"><span class="tips">Given name </span><input id="gn" type="text" class="textField" v-model="given" v-bind:placeholder="given" onchange="vueinst.changed = true"></pre>
-                <pre class="accountPre"><span class="tips">Family name</span><input id="fn" type="text" class="textField" v-model="family" v-bind:placeholder="family" onchange="vueinst.changed = true"></pre>
-                <pre class="accountPre"><span class="tips">Email            </span><input id="em" type="text" class="textField" v-model="email" v-bind:placeholder="email" onchange="vueinst.changed = true"></pre>
-                <pre class="accountPre"><span title="Date Of Birth" class="tips">D.O.B           </span><input id="db" type="text" class="textField" v-model="dob" v-bind:placeholder="dob" onchange="vueinst.changed = true"></pre>
-                <pre class="accountPre"><a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a></pre>
-                <pre class="accountPre"><a href="password" style="text-decoration: none;"><i class="fa-solid fa-lock fa-2x blue-color"></i>   Change password</a></pre>
-                <!-- save changes button -->
-                <p style="margin-top: 2em;"><h1 class="blue-color" style="font-size: 18px; font-style: italic;">Email notification</h1></p>
-                <br>
-                <!-- 2 by 2 checkboxes with table-->
-                <table>
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1" checked>
-                            <label for="checkbox1">Event responses</label>
-                        </td>
-                        <td>
-                            <input type="checkbox" id="checkbox2" name="checkbox2" value="checkbox2" checked>
-                            <label for="checkbox2">Event confirmation</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" id="checkbox3" name="checkbox3" value="checkbox3" checked>
-                            <label for="checkbox3">Event cancellation</label>
-                        </td>
-                        <td>
-                            <input type="checkbox" id="checkbox4" name="checkbox4" value="checkbox4" checked>
-                            <label for="checkbox4">Attendee availability</label>
-                        </td>
-                    </tr>
-                </table>
-                <br>
-                <div class="fade"><button class="fade" style="padding: 7.5 7.5 7.5 7.5" v-if="changed">Save changes</button></div>
 
+<body >
+    <div class="grid-container" id="app">
+
+        <!-- HEADER -->
+        <div class="header2">
+            <a href="/html/dashboard1.html">
+                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
+            </a>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="sidebar2">
+            <div>
+                <a href="/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>My Events</a>
             </div>
-            <div><!--footer-->
-                <p class="bottom right" onclick="toTop()"><button class="fade" style="padding: 1em 1em 1em 1em;"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
+            <div>
+                <a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My account</a>
             </div>
+            <div>
+                <a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="page-content">
+            <h1 class="content-header">{{Username}}'s Account Details
+                <a href="/html/admin.html"><i class="fa-solid fa-hammer fa-lg" v-if="admin"></i></a>
+            </h1>
+
+            <form>
+                <div class="flex-container form-div-2-columns">
+                  <div>
+                    <label for="fname">First name</label><br>
+                    <input class="textField" type="text" id="fname" name="fname">
+                  </div>
+                  <div>
+                    <label for="lname">Last name</label><br>
+                    <input class="textField" type="text" id="lname" name="lname">
+                  </div>
+                  <div>
+                    <label for="email">Email</label><br>
+                    <input class="textField" type="text" id="email" name="email">
+                  </div>
+                  <div>
+                    <label for="email">D.O.B.</label><br>
+                    <input class="textField" type="date" id="dob" name="dob">
+                  </div>
+                  <div>
+                    <a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a>
+                  </div>
+                  <div>
+                    <a href="password" style="text-decoration: none;"><i class="fa-solid fa-lock fa-2x blue-color"></i>   Change password</a>
+                  </div>
+                </div>
+                <h2 style="margin: 1em 0 0 0" class="content-header">Email preferences</h2>
+                <div class="flex-container form-div-2-columns">
+                  <div>
+                    <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1" checked>
+                    <label for="checkbox1">Event responses</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="checkbox2" name="checkbox2" value="checkbox2" checked>
+                    <label for="checkbox2">Event confirmation</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="checkbox3" name="checkbox3" value="checkbox3" checked>
+                    <label for="checkbox3">Event cancellation</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="checkbox4" name="checkbox4" value="checkbox4" checked>
+                    <label for="checkbox4">Attendee availability</label>
+                  </div>
+
+                 <button style="margin: 1em 0 0 0" type="submit" value="submit">SAVE CHANGES</button>
+                </div>
+            </form>
+
+            <div class="bottom right">
+                <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
+            </div>
+
         </div>
     </div>
 </body>

@@ -11,7 +11,7 @@ html, body {
     margin: 0;
     box-sizing: border-box;
     color: black;
-    font-size: 11px;
+    font-size: 12px;
 }
 
 #desktop {
@@ -22,24 +22,77 @@ html, body {
     font-size: 25px;
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: 150px auto ;
+    grid-template-rows: 70px auto ;
+}
+
+.header2 {
+    text-align: center;
+    height: 100%;
+    vertical-align: middle;
+    position: sticky;
+    top: 0;
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    background-color: #289BD2;
+}
+
+.sidebar2 {
+    grid-row: 2;
+    grid-column: 1;
+    position: fixed;
+    top: 70px;
+    width: 150px;
+    height: 100%;
+    background-color: #289BD2;
+    color: white;
+    text-align: left;
+}
+
+.page-content {
+    padding: 2em;
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.content-header {
+    color: #289BD2;
+    font-size: 20px;
+    padding: 0 0 0.5em 0;
+}
+
 /* For responsivity - added KG 25/5 */
 .flex-container {
     display: flex;
     flex-wrap: wrap;
-    min-width: 200px;
 }
 
-.flex-container > div {
+.form-div-2-columns > div {
     margin: 10px;
     min-width: 150px;
     flex-grow: 1;
+    flex-basis: 0;
 }
 
-.form-div {
-    max-width: 450px;
-  }
+.form-div-1-column > div {
+    margin: 5px;
+    min-width: 200px;
+    flex-grow: 1;
+    flex-basis: 0;
+}
 
-input[type=text], input[type=password] {
+.form-div-2-columns {
+    max-width: 450px;
+}
+
+.form-div-1-column {
+    flex-direction: column;
+    max-width: 300px;
+}
+
+input[type=text], input[type=password], input[type=date] {
     width: 100%;
 }
 /* End code added KG 25/5 */
@@ -79,6 +132,7 @@ input[type=text], input[type=password] {
 
 .sidebar-icon {
     color: white;
+    margin: 0.5em;
 }
 
 img {
@@ -110,7 +164,6 @@ button {
 }
 
 .logoHome {
-    display: block;
     margin-left: auto;
     margin-right: auto;
     max-width: 250px;
@@ -157,9 +210,9 @@ button {
 .fade {
     display: block;
     color: white;
-    padding: 0.5em 0.5em 0.5em 2em;
+    padding: 0.5em;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14px;
     height: 3.5em;
     line-height: 2.5em;
     text-decoration: none;
@@ -198,12 +251,12 @@ button {
 
 .bottom {
     position: fixed;
-    bottom: 4em;
+    bottom: 2em;
 }
 
 .right {
     position: fixed;
-    right: 4em;
+    right: 2em;
 }
 
 .blue-color {
@@ -387,12 +440,21 @@ button {
 }
 
 .logo {
-    padding-left: 3%;
+    vertical-align: middle;
+    padding-left: 1em;
     height: 70%;
+    max-height: 70px;
     width: auto;
-    max-width: 100%;
-    max-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto auto auto 0;
+
 }
+
+
 
 .title {
     font-size: 18px;
@@ -419,7 +481,7 @@ button {
 /* make the pre tag's content align vertically to the left for manage account html */
 .accountPre {
     text-align: left;
-    font-family: sans-serif, monospace;
+    /*font-family: sans-serif, monospace;*/
     line-height: 3em;
 }
 
