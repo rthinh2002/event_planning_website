@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="app"><!--app body-->
-        <div id="desktop" v-if="desktop">
+        <div id="desktop">
             <div class="header"><!--sticky header-->
                 <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" class="logo" alt="W2M"></a>
                 <a href="/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
@@ -19,11 +19,11 @@
                 <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
                 <p><a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
-            <div class="centred_div"><!--content-->
+            <div class="centred_div set-width2"><!--content-->
                 <h1 class="event-text">Event name</h1>
                 <div class="textField">
                     <!-- a 3 by 3 table -->
-                    <table class="table" style="height:10em; width: 25em;">
+                    <table class="table">
                         <tr>
                             <th style="text-align: center;">Where</th>
                             <td>{{ event[0].place }}</td>
@@ -44,7 +44,7 @@
                 <br>
                 <h1 class="event-text">Responses</h1>
                 <div class="textField">
-                    <table class="table" style="height: 10em; width: 30em;">
+                    <table class="table">
                         <tr>
                             <td></td>
                             <th>Yes</th>
