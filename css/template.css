@@ -128,6 +128,8 @@ input[type=text], input[type=password], input[type=date] {
     justify-content: center;
     width: 50%;
     background-color: white;
+    margin-left: 17em;
+    margin-top: 8em;
 }
 
 .sidebar-icon {
@@ -179,6 +181,15 @@ button {
     margin: 0.5em 0em 0.5em 0em;
     padding-left: 0.5em;
     padding-right: 0.5em;
+    overflow: auto;
+}
+
+.addMargin {
+    margin-left: 3em !important;
+}
+
+.addMargin-intense {
+    margin-left: 4em !important;
 }
 
 .cancel-button {
@@ -396,6 +407,7 @@ button {
 
 .set-width {
     width: 25% !important;
+    
 }
 
 .align-left {
@@ -506,7 +518,15 @@ button {
 }
 
 .margin-increase {
-    margin: 1em 0em 1em 0.95em;
+    margin: 1em 0em 1em 4em;
+}
+
+.setInputWidth {
+    width: 95% !important;
+}
+
+.setChildHeight {
+    height: 95% !important;
 }
 
 ::placeholder {
