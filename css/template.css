@@ -69,6 +69,7 @@ html, body {
     flex-wrap: wrap;
 }
 
+
 .form-div-2-columns > div {
     margin: 10px;
     min-width: 150px;
@@ -125,7 +126,7 @@ input[type=text], input[type=password], input[type=date] {
 }
 
 .content {
-    justify-content: center;
+    /*justify-content: center;*/
     width: 50%;
     background-color: white;
     margin-left: 17em;
@@ -312,16 +313,16 @@ button {
 .organising-container-div {
     background-color: white;
     position: relative;
-    top: 2%;
-    width: 70%;
-    height: 40%;
+/*    top: 2%;
+    width: 70%; */
+    max-height: 60%;
     overflow-y: auto;
 }
 
 .organising-inner-elements {
     background-color: #D6EDF8;
     top: 2%;
-    width: 462px;
+    /*width: 462px;*/
     height: 84px;
     border-radius: 2em;
     margin-bottom: 3em;
@@ -584,4 +585,9 @@ button {
 .list-item-name {
     font-size: 1.25em;
     font-weight: bold;
+}
+
+.standard-width {
+    min-width: 20em;
+    max-width: 30em;
 }

@@ -9,7 +9,7 @@
 </head>
 
 <body >
-    <div style="display: none">
+
     <div class="grid-container" id="app">
 
         <!-- HEADER -->
@@ -29,7 +29,7 @@
             </div>
             <div>
                 <!-- add authorisation validation for this -->
-                <span href="/html/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</span>
+                <a href="/html/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</a>
             </div>
             <div>
                 <a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
@@ -41,45 +41,66 @@
             <div class="flex-container">
 
             <div>
-                <h1 class="content-header">Manage users</h1>
+                <h1 class="content-header">Event name</h1>
+                <p class="size-16-px-text">You're invited to this event!</p>
 
-                <div style="min-width: 250px; margin-right: 3em">
-                    <input class="textField" type="text" placeholder="Search for user" v-model="search" @keyup="searchUser">
-
-                    <ul class="list">
-                        <li class="list-div items" v-for="user in users">
-                                <span v-if="user.admin == 1">
-                                    <i class="fa-solid fa-user fa-3x list-icon blue-color"></i>
-                                </span>
-                                <span v-else>
-                                    <i class="fa-regular fa-user fa-3x list-icon blue-color"></i>
-                                </span>
-                                <span class="list-item-name"> {{user.lastname}}, {{user.firstname}}</span>
-                                <br>
-                                <a href="/html/admin.html">Delete</a>
-                                <a href="/html/admin.html" onclick="" v-if="user.admin == 1">Make user</a>
-                                <a href="/html/admin.html" onclick="" v-else>Make admin</a>
-                        </li>
-                    </ul>
-
+                <div class="textField">
+                    <!-- a 3 by 3 table -->
+                    <table class="table" style="height: 6em; width: 20em;">
+                        <tr>
+                            <th class="align-left">Where</th>
+                            <td>{{ event[0].place }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="align-left">RSVP</th>
+                            <td>{{ event[0].date }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th class="align-left">Details</th>
+                            <td>{{ event[0].details }}</td>
+                            <td></td>
+                        </tr>
+                    </table>
                 </div>
-            </div>
 
-            <div>
-                <h1 class="content-header">Manage events</h1>
+                    <p class="size-16-px-text">Your availability for this event: </p>
+                    <div class="textField height-increase">
+                        <table class="table" style="height: 10em; width: 30em;">
+                            <tr>
+                                <td></td>
+                                <th>Yes</th>
+                                <th>Maybe</th>
+                                <th>No</th>
+                            </tr>
+                            <!-- checkbox -->
+                            <tr>
+                                <th class="align-left">{{ event[0].date }}</th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                            </tr>
+                            <tr>
+                                <th class="align-left">{{ event[0].date }}</th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                            </tr>
+                        </table>
+                    </div>
+                    <button class="check-calendar-button">CHECK YOUR CALENDAR<i class="fa-solid fa-calendar-day calendar-icon"></i></button>
+                    <div class="textField" style="height: 20%; overflow-y: auto; margin-bottom: 0;">
+                        <p class="conversation">Can you make it to Friday?</p>
+                    </div>
+                    <div class="textField" style="height: 5%; margin-top: 0;">'
+                        <input type="text" id="users-message" name="users-message" value="Add your message...">
+                    </div>
+                    <div style="float: right;">
+                        <button class="cancel-button">Cancel</button>
+                        <button class="save-button">Save</button>
+                    </div>
 
-                <div style="min-width: 250px">
-                    <input class="textField" type="text" placeholder="Search for event" @keyup="searchEvent">
-                    <ul class="list">
-                        <li class="list-div items" v-for="ev in event">
-                            <i class="fa-regular fa-calendar fa-3x list-icon blue-color"></i>
-                            <span class="list-item-name"> {{ ev.title }} - {{ ev.organiser }}</span>
-                            <br>
-                            <a href="/html/admin.html" onclick="">Delete</a>
-                            <a href="/html/admin.html" onclick="">Edit</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
             </div><!-- end flex-container -->
@@ -90,10 +111,10 @@
         <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
     </div>
 
-</div>
 
 
 
+<div style="display: none">
     <div id="app"><!--app body-->
         <div id="desktop">
             <div class="header"><!--sticky header-->
@@ -170,6 +191,7 @@
         </div>
         <!--Dashboard 1 Create Event content-->
     </div>
+</div>
 </div>
 
 </body>

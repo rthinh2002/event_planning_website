@@ -37,12 +37,10 @@
 
         <!-- CONTENT -->
         <div class="page-content">
-            <div class="flex-container">
+            <div class="flex-container" style="gap: 3em;">
 
-            <div>
-                <h1 class="content-header">Manage users</h1>
-
-                <div style="min-width: 250px; margin-right: 3em">
+                <div class="standard-width">
+                    <h1 class="content-header">Manage users</h1>
                     <input class="textField" type="text" placeholder="Search for user" v-model="search" @keyup="searchUser">
 
                     <ul class="list">
@@ -60,14 +58,10 @@
                                 <a href="/html/admin.html" onclick="" v-else>Make admin</a>
                         </li>
                     </ul>
-
                 </div>
-            </div>
 
-            <div>
-                <h1 class="content-header">Manage events</h1>
-
-                <div style="min-width: 250px">
+                <div class="standard-width">
+                    <h1 class="content-header">Manage events</h1>
                     <input class="textField" type="text" placeholder="Search for event" @keyup="searchEvent">
                     <ul class="list">
                         <li class="list-div items" v-for="ev in event">
@@ -79,7 +73,6 @@
                         </li>
                     </ul>
                 </div>
-            </div>
 
             </div><!-- end flex-container -->
         </div><!-- end page content -->
