@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Admin</title>
     <link rel="stylesheet" type="text/css" href="/css/template.css">
@@ -7,50 +8,86 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="/js/templatevue.js" defer></script>
 </head>
-<body>
-    <div id="app"><!--app body-->
-        <div id="desktop" v-if="desktop">
-            <div class="header"><!--sticky header-->
-                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" class="logo" title="W2M"></a>
-                <a href="/html/login.html" title="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
+
+<body >
+    <div class="grid-container" id="app">
+
+        <!-- HEADER -->
+        <div class="header2">
+            <a href="/html/dashboard1.html">
+                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
+            </a>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="sidebar2">
+            <div>
+                <a href="/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>My Events</a>
             </div>
-            <div class="sidebar"><!--sticky sidebar-->
-                <p><a href="/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a></p>
-                <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
-                <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
+            <div>
+                <a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
             </div>
-            <div class="centred_div set-width"><!--content-->
-                <p><h1 class="title blue-color">Manage users</h1></p>
-                <!-- search for user -->
-                <div>
-                    <input class="textField" type="text" placeholder="Search for user" v-model="search" @keyup="searchUser">
-                </div>
-                <ul class="list">
-                    <!-- li using vue for loop -->
-                    <li class="textField items" v-for="user in users">
-                        <p><span v-if="user.admin == 1"><i class="fa-solid fa-user fa-2x"></i></span><span v-else><i class="fa-regular fa-user fa-2x"></i></span>  {{user.firstname}}, {{user.lastname}}</p>
-                        <p><a href="/html/admin.html">Delete</a>  <a href="/html/admin.html" onclick="" v-if="user.admin == 1">Make admin</a><a href="/html/admin.html" onclick="" v-else>Make user</a></p>
-                    </li>
-                </ul>
-                <br>
-                <p><h1 class="title blue-color">Manage events</h1></p>
-                <!-- search for event -->
-                <div>
-                    <input class="textField" type="text" placeholder="Search for event" @keyup="searchEvent">
-                </div>
-                <ul class="list">
-                    <!-- li using vue for loop -->
-                    <li class="textField items" v-for="ev in event">
-                        <p><i class="fa-regular fa-calendar fa-2x"></i> {{ ev.title }} - {{ ev.organiser }}</p>
-                        <p><a href="/html/admin.html" onclick="">Delete</a>  <a href="/html/admin.html" onclick="">Edit</a></p>
-                    </li>
-                </ul>
+            <div>
+                <span class="selected"><i class="fa-solid fa-user-gear fa-lg sidebar-icon blue-color"></i>Admin</span>
             </div>
-            <div><!--footer-->
-                <p class="bottom right" onclick="toTop()"><button class="fade" style="padding: 1em 1em 1em 1em;"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
+            <div>
+                <a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
             </div>
         </div>
+
+        <!-- CONTENT -->
+        <div class="page-content">
+            <div class="flex-container">
+
+            <div>
+                <h1 class="content-header">Manage users</h1>
+
+                <div style="min-width: 250px; margin-right: 3em">
+                    <input class="textField" type="text" placeholder="Search for user" v-model="search" @keyup="searchUser">
+
+                    <ul class="list">
+                        <li class="list-div items" v-for="user in users">
+                                <span v-if="user.admin == 1">
+                                    <i class="fa-solid fa-user fa-3x list-icon blue-color"></i>
+                                </span>
+                                <span v-else>
+                                    <i class="fa-regular fa-user fa-3x list-icon blue-color"></i>
+                                </span>
+                                <span class="list-item-name"> {{user.lastname}}, {{user.firstname}}</span>
+                                <br>
+                                <a href="/html/admin.html">Delete</a>
+                                <a href="/html/admin.html" onclick="" v-if="user.admin == 1">Make user</a>
+                                <a href="/html/admin.html" onclick="" v-else>Make admin</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <div>
+                <h1 class="content-header">Manage events</h1>
+
+                <div style="min-width: 250px">
+                    <input class="textField" type="text" placeholder="Search for event" @keyup="searchEvent">
+                    <ul class="list">
+                        <li class="list-div items" v-for="ev in event">
+                            <i class="fa-regular fa-calendar fa-3x list-icon blue-color"></i>
+                            <span class="list-item-name"> {{ ev.title }} - {{ ev.organiser }}</span>
+                            <br>
+                            <a href="/html/admin.html" onclick="">Delete</a>
+                            <a href="/html/admin.html" onclick="">Edit</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            </div><!-- end flex-container -->
+        </div><!-- end page content -->
+    </div><!-- end grid-container -->
+
+    <div class="bottom right">
+        <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
     </div>
+
 </body>
 </html>
-
