@@ -9,35 +9,20 @@
 </head>
 
 <body>
-    <div class="grid-container" id="app">
-
-        <!-- HEADER -->
-        <div class="header2">
-            <a href="/html/dashboard1.html">
-                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
-            </a>
-        </div>
-
-        <!-- SIDEBAR -->
-        <div class="sidebar2">
-            <div>
-                <a href="/html/dashboard1   .html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
+    <div id="app"><!--app body-->
+        <div id="desktop" v-if="desktop">
+            <div class="header"><!--sticky header-->
+                <a href="/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M" class="logo"></a>
+                <a href="/html/login.html" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
             </div>
-            <div>
-                <a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
+            <div class="sidebar"><!--sticky sidebar-->
+                <p><a href="/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a></p>
+                <p><a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>  My account</a></p>
+                <p><a href="/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>  Log out</a></p>
             </div>
-            <div>
-                <a href="/html/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</a>
-            </div>
-            <div>
-                <a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
-            </div>
-        </div>
-
-        <!-- CONTENT -->
-        <div class="page-content">
-            <div class="standard-width">
-                <h1 class="content-header">Create Event</h1>
+            <div class="content set-width2"><!--content-->
+                <h3 class="event-text">Edit Event</h3>
+                <br>
                 <form>
                     <div>
                         <table>
@@ -105,7 +90,18 @@
                 </form>
             </div>
         </div>
-    </div>
+
+        <div id="mobile" v-else>
+            <div class="header"><!--sticky header-->
+                <a href="/wdc_project_2022/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M" class="logo"></a>
+                <a href="/wdc_project_2022/html/login.html" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
+            </div>
+            <div class="mobilenav">
+                <a href="/wdc_project_2022/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a>
+                <a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a>
+                <a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

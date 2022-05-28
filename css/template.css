@@ -25,7 +25,7 @@ html, body {
 .grid-container {
     display: grid;
     grid-template-columns: 150px auto ;
-    grid-template-rows: 70px auto ;
+    grid-template-rows: 80px auto ;
 }
 
 .header2 {
@@ -43,7 +43,7 @@ html, body {
     grid-row: 2;
     grid-column: 1;
     position: fixed;
-    top: 70px;
+    top: 80px;
     width: 150px;
     height: 100%;
     background-color: #289BD2;
@@ -68,6 +68,7 @@ html, body {
     display: flex;
     flex-wrap: wrap;
 }
+
 
 .form-div-2-columns > div {
     margin: 10px;
@@ -125,7 +126,7 @@ input[type=text], input[type=password], input[type=date] {
 }
 
 .content {
-    justify-content: center;
+    /*justify-content: center;*/
     width: 50%;
     background-color: white;
     margin-left: 17em;
@@ -171,7 +172,12 @@ button {
     max-width: 250px;
 }
 
+.list-div {
 
+    margin: 0.5em 0em 0.5em 0em;
+    padding: 0.5em;
+
+}
 
 .textField {
     border: 1px solid;
@@ -212,6 +218,10 @@ button {
     left: 50%;
     margin: auto;
     transform: translate(-50%, -50%);
+}
+
+.centered_text {
+    text-align: center;
 }
 
 .set-padding {
@@ -278,9 +288,9 @@ button {
     display: block;
     color: #289BD2;
     background-color: white;
-    padding: 0.5em 0.5em 0.5em 2em;
+    padding: 0.5em;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14px;
     height: 3.5em;
     line-height: 2.5em;
     text-decoration: none;
@@ -305,16 +315,16 @@ button {
 .organising-container-div {
     background-color: white;
     position: relative;
-    top: 2%;
-    width: 70%;
-    height: 40%;
+/*    top: 2%;
+    width: 70%; */
+    max-height: 60%;
     overflow-y: auto;
 }
 
 .organising-inner-elements {
     background-color: #D6EDF8;
     top: 2%;
-    width: 462px;
+    /*width: 462px;*/
     height: 84px;
     border-radius: 2em;
     margin-bottom: 3em;
@@ -407,7 +417,7 @@ button {
 
 .set-width {
     width: 25% !important;
-    
+
 }
 
 .align-left {
@@ -467,7 +477,6 @@ button {
 }
 
 
-
 .title {
     font-size: 18px;
     font-style: italic;
@@ -476,7 +485,7 @@ button {
 .list {
     list-style-type: none;
     /* align li to the centre of ul */
-    text-align: center;
+    /*text-align: center;*/
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -486,7 +495,7 @@ button {
 .items {
     display: block;
     height: fit-content;
-    background-color: #a8d9ffdb;
+    /*background-color: #a8d9ffdb;*/
 }
 
 /* CSS for account.html*/
@@ -567,4 +576,20 @@ button {
       }
     }
 
+}
+
+
+.list-icon {
+    float: left;
+    padding-right: 0.5em;
+}
+
+.list-item-name {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.standard-width {
+    min-width: 20em;
+    max-width: 30em;
 }
