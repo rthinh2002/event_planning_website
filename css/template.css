@@ -220,6 +220,10 @@ button {
     transform: translate(-50%, -50%);
 }
 
+.centered_text {
+    text-align: center;
+}
+
 .set-padding {
     padding: 0.5em !important;
 }
@@ -295,8 +299,6 @@ button {
     -o-transition: all 0.5s;
     transition: all 0.5s;
 }
-
-
 
 /*CSS for home.html*/
 .welcome_div {
