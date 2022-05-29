@@ -173,7 +173,7 @@ button {
 }
 
 .list-div {
-
+    border-radius: 0.5em;
     margin: 0.5em 0em 0.5em 0em;
     padding: 0.5em;
 
@@ -473,7 +473,6 @@ button {
     left: 0;
     right: 0;
     margin: auto auto auto 0;
-
 }
 
 
@@ -483,19 +482,18 @@ button {
 }
 
 .list {
-    list-style-type: none;
-    /* align li to the centre of ul */
-    /*text-align: center;*/
+    background-color: white;
     margin: 0;
     padding: 0;
-    overflow: hidden;
     width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .items {
     display: block;
     height: fit-content;
-    /*background-color: #a8d9ffdb;*/
+
 }
 
 /* CSS for account.html*/
@@ -581,7 +579,7 @@ button {
 
 .list-icon {
     float: left;
-    padding-right: 0.5em;
+    padding-right: 0.25em;
 }
 
 .list-item-name {
@@ -592,4 +590,11 @@ button {
 .standard-width {
     min-width: 20em;
     max-width: 30em;
+}
+
+.event-container {
+    background-color: #d6edf8;
+    border-radius: 0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.5em;
 }

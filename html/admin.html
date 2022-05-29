@@ -43,8 +43,8 @@
                     <h1 class="content-header">Manage users</h1>
                     <input class="textField" type="text" placeholder="Search for user" v-model="search" @keyup="searchUser">
 
-                    <ul class="list">
-                        <li class="list-div items" v-for="user in users">
+                    <div class="list">
+                        <div class="list-div items" v-for="user in users">
                                 <span v-if="user.admin == 1">
                                     <i class="fa-solid fa-user fa-3x list-icon blue-color"></i>
                                 </span>
@@ -56,22 +56,22 @@
                                 <a href="/html/admin.html">Delete</a>
                                 <a href="/html/admin.html" onclick="" v-if="user.admin == 1">Make user</a>
                                 <a href="/html/admin.html" onclick="" v-else>Make admin</a>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="standard-width">
                     <h1 class="content-header">Manage events</h1>
                     <input class="textField" type="text" placeholder="Search for event" @keyup="searchEvent">
-                    <ul class="list">
-                        <li class="list-div items" v-for="ev in event">
+                    <div class="list">
+                        <div class="list-div items" v-for="ev in event">
                             <i class="fa-regular fa-calendar fa-3x list-icon blue-color"></i>
                             <span class="list-item-name"> {{ ev.title }} - {{ ev.organiser }}</span>
                             <br>
                             <a href="/html/admin.html" onclick="">Delete</a>
                             <a href="/html/admin.html" onclick="">Edit</a>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
 
             </div><!-- end flex-container -->

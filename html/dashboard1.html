@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="/css/template.css">
@@ -7,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="/js/templatevue.js" defer></script>
 </head>
+
 <body>
     <div class="grid-container" id="app">
 
@@ -36,66 +38,215 @@
 
         <!-- CONTENT -->
         <div class="page-content">
+            <div class="flex-container" style="gap: 3em;">
 
+                <div style="min-width: 30em; max-width: 40em">
+                    <h1 class="content-header">Events I'm organising</h1>
 
-            <div class="content"><!--content-->
-                <h3 class="event-text">Events I'm organising</h3>
-                <div class="organising-container-div">
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Saturday May 1</p>
-                        <p class="event-name">Event name</p>
-                        <div class="button-container">
-                            <button class="organising-button">Edit</button>
-                            <button class="organising-button bottom-right-radius">Delete</button>
+                    <div class="list" class="organising-container-div">
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
                         </div>
-                    </div>
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Monday May 28</p>
-                        <p class="event-name">Event name</p>
-                        <div class="button-container">
-                            <button class="organising-button">Edit</button>
-                            <button class="organising-button bottom-right-radius">Delete</button>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
                         </div>
-                    </div>
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Thursday June 6</p>
-                        <p class="event-name">Event name</p>
-                        <div class="button-container">
-                            <button class="organising-button">Edit</button>
-                            <button class="organising-button bottom-right-radius">Delete</button>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Very very long event name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
                         </div>
-                    </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Longer name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div><!-- end list -->
+                    <button style="margin: 0.5em 0 0.5em 0">CREATE NEW EVENT</button>
                 </div>
-                <button class="create-event-button">CREATE NEW EVENT</button>
-                <h3 class="event-text">Events I'm invited to</h3>
-                <div class="organising-container-div">
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Saturday May 1</p>
-                        <p class="event-name">Event name</p>
-                        <p class="status">Attending</p>
-                    </div>
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Monday May 28</p>
-                        <p class="event-name">Event name</p>
-                        <p class="status">Response needed!</p>
-                    </div>
+
+                <div style="min-width: 30em; max-width: 40em">
+                    <h1 class="content-header">Events I'm attending</h1>
+
+                    <div class="list" class="organising-container-div">
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Longish event name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Longer name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                <tr>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div><!-- end list -->
                 </div>
-            </div>
 
-
-        </div>
-    </div>
+            </div><!-- end flex-container -->
+        </div><!-- end page content -->
+    </div><!-- end grid-container -->
 
     <div class="bottom right">
       <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
     </div>
 
-
+</body>
+</html>
 
 
 
@@ -161,5 +312,3 @@
 
     </div>
     </div>
-</body>
-</html>
