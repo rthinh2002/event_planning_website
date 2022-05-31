@@ -14,7 +14,7 @@
 
         <!-- HEADER -->
         <div class="header2">
-            <a href="/html/dashboard1.html">
+            <a href="/dashboard1.html">
                 <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
             </a>
         </div>
@@ -22,14 +22,14 @@
         <!-- SIDEBAR -->
         <div class="sidebar2">
             <div>
-                <a href="/html/dashboard1.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
+                <a href="/dashboard1.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>
             <div>
-                <a href="/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
+                <a href="/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
             </div>
-            <div>
+            <div v-if="admin">
                 <!-- add authorisation validation for this -->
-                <span href="/html/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</span>
+                <span href="/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</span>
             </div>
             <div>
                 <a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
@@ -48,13 +48,12 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
-                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="font-size: 26px; word-break: break-all">Short name</td>
                                     <td style="text-align: right">Edit<br>delete</td>
                                 </tr>
                             </table>
@@ -63,13 +62,12 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
-                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="font-size: 26px; word-break: break-all">Short name</td>
                                     <td style="text-align: right">Edit<br>delete</td>
                                 </tr>
                             </table>
@@ -78,8 +76,7 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
@@ -93,8 +90,7 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
@@ -108,8 +104,7 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
@@ -123,8 +118,7 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
@@ -147,14 +141,13 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
                                     <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
-                                    <td style="text-align: right">Edit<br>delete</td>
+                                    <td style="text-align: right">Edit<br>Delete</td>
                                 </tr>
                             </table>
                         </div>
@@ -162,14 +155,13 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
                                     <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
-                                    <td style="text-align: right">Edit<br>delete</td>
+                                    <td style="text-align: right">Edit<br>Delete</td>
                                 </tr>
                             </table>
                         </div>
@@ -177,14 +169,13 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
                                     <td rowspan="0" style="font-size: 26px; word-break: break-all">Longish event name</td>
-                                    <td style="text-align: right">Edit<br>delete</td>
+                                    <td style="text-align: right">Edit<br>Delete</td>
                                 </tr>
                             </table>
                         </div>
@@ -192,14 +183,27 @@
                         <div class="event-container">
                             <table style="width: 100%">
                                 <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
                                     <td rowspan="0" style="font-size: 26px; word-break: break-all">Longer name</td>
-                                    <td style="text-align: right">Edit<br>delete</td>
+                                    <td style="text-align: right">Edit<br>Delete</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="event-container">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                    <td style="font-size: 14px">Saturday May 1</td>
+                                    <td style="text-align: right">Confirmed</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
+                                    <td style="text-align: right">Edit<br>Delete</td>
                                 </tr>
                             </table>
                         </div>
@@ -208,28 +212,14 @@
                             <table style="width: 100%">
                                 <tr >
                                     <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                </tr>
                                 <tr>
                                     <td style="font-size: 14px">Saturday May 1</td>
                                     <td style="text-align: right">Confirmed</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
                                     <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
-                                    <td style="text-align: right">Edit<br>delete</td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <div class="event-container">
-                            <table style="width: 100%">
-                                <tr >
-                                    <td style="width: 2em" rowspan="0"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                <tr>
-                                    <td style="font-size: 14px">Saturday May 1</td>
-                                    <td style="text-align: right">Confirmed</td>
-                                </tr>
-                                <tr style="vertical-align: bottom">
-                                    <td rowspan="0" style="font-size: 26px; word-break: break-all">Short name</td>
-                                    <td style="text-align: right">Edit<br>delete</td>
+                                    <td style="text-align: right">Edit<br>Delete</td>
                                 </tr>
                             </table>
                         </div>
