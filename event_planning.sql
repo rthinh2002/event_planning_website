@@ -39,6 +39,7 @@ CREATE TABLE `attendee` (
 
 LOCK TABLES `attendee` WRITE;
 /*!40000 ALTER TABLE `attendee` DISABLE KEYS */;
+INSERT INTO `attendee` VALUES (1,2,'YES'),(2,2,'MAYBE'),(1,1,'YES');
 /*!40000 ALTER TABLE `attendee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +61,7 @@ CREATE TABLE `event` (
   UNIQUE KEY `event_id` (`event_id`),
   KEY `creator_id` (`creator_id`),
   CONSTRAINT `event_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,6 +70,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
+INSERT INTO `event` VALUES ('The Day of Dancing','Nothing special, just dancing around',1,1,'Adelaide Red Square','2022-01-06'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +84,7 @@ DROP TABLE IF EXISTS `event_date`;
 CREATE TABLE `event_date` (
   `event_date` datetime NOT NULL,
   `event_id` int NOT NULL,
-  `date_status` bit(1) NOT NULL,
+  `date_status` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`event_date`),
   KEY `event_id` (`event_id`),
   CONSTRAINT `event_date_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`)
@@ -95,6 +97,7 @@ CREATE TABLE `event_date` (
 
 LOCK TABLES `event_date` WRITE;
 /*!40000 ALTER TABLE `event_date` DISABLE KEYS */;
+INSERT INTO `event_date` VALUES ('2022-01-27 15:00:00',1,_binary '\0'),('2022-01-28 15:00:00',1,_binary ''),('2022-06-22 00:00:00',2,_binary ''),('2022-06-23 00:00:00',2,_binary '');
 /*!40000 ALTER TABLE `event_date` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,14 +118,14 @@ CREATE TABLE `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
   `api_token` varchar(100) DEFAULT NULL,
   `DOB` date DEFAULT NULL,
-  `email_notification_users_response` bit(1) NOT NULL,
-  `email_notification_event` bit(1) NOT NULL,
-  `email_notification_attendee` bit(1) NOT NULL,
-  `email_notification_cancelation` bit(1) NOT NULL,
+  `email_notification_users_response` bit(1) NOT NULL DEFAULT b'0',
+  `email_notification_event` bit(1) NOT NULL DEFAULT b'0',
+  `email_notification_attendee` bit(1) NOT NULL DEFAULT b'0',
+  `email_notification_cancelation` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_name` (`user_name`),
   UNIQUE KEY `api_token` (`api_token`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,6 +134,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','peterhandsome123','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','Harmon','hjosh@gmail.com','nopassword','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -143,4 +147,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-25 22:30:03
+-- Dump completed on 2022-05-31 23:40:36
