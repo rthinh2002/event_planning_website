@@ -54,3 +54,16 @@ function togglePword() {
         }
     }
 }
+
+function display_user_info() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var user_info = JSON.parse(this.responseText);
+            console.log(user_info);
+            
+        }
+    };
+    xhttp.open("GET", "/display_user_information", true);
+    xhttp.send();
+}
