@@ -26,3 +26,27 @@ function display_user_info() {
     xhttp.open("GET", "/display_user_information", true);
     xhttp.send();
 }
+
+// This function will send a post request to update the element as the user click it - Peter June 1st 2022
+function saveChanges() {
+    var xhttp = new XMLHttpRequest();
+    first_name = document.getElementById("fname").value;
+    last_name = document.getElementById("lname").value;
+    email = document.getElementById("email").value;
+    dob = document.getElementById("dob").value;
+
+    users_response = document.getElementById("checkbox1").checked ? 1 : 0;
+    notification_event = document.getElementById("checkbox2").checked ? 1 : 0;
+    notification_attendee = document.getElementById("checkbox4").checked ? 1 : 0;
+    notification_cancelation = document.getElementById("checkbox3").checked ? 1 : 0;
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            alert("Update information successfully!");
+        }
+    }
+
+    xhttp.open("POST", "/change_user_info", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({first_name: first_name, last_name: last_name, email: email, dob: dob, users_response: users_response, notification_event: notification_event, notification_cancelation: notification_cancelation, notification_attendee: notification_attendee}));
+}
