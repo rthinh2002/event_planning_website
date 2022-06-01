@@ -15,7 +15,7 @@ router.get('/display_user_information', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT first_name, last_name, email_address, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = 1;"
+    var query = "SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = 1;"
     connection.query(query, function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {

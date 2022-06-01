@@ -12,7 +12,14 @@ var dbConnectionPool = mysql.createPool({
     host: 'localhost',
     database: 'event_planning',
     user: 'root',
-    password: 'root'
+    password: 'root',
+    typeCast: function castField( field, useDefaultTypeCasting ) { // This field is for casting BIT into boolean data - Peter
+		if ( ( field.type === "BIT" ) && ( field.length === 1 ) ) {
+			var bytes = field.buffer();
+			return( bytes[ 0 ] === 1 );
+		}
+		return( useDefaultTypeCasting() );
+	}
 });
 
 var app = express();

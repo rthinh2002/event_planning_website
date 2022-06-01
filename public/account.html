@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/templatevue.js" defer></script>
+    <script src="/javascripts/manageUsers.js" defer></script>
 </head>
 
 <body onload=display_user_info()>
@@ -70,19 +70,19 @@
                 <h2 style="margin: 1em 0 0 0" class="content-header">Email preferences</h2>
                 <div class="flex-container form-div-2-columns">
                   <div>
-                    <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1" checked>
+                    <input type="checkbox" id="checkbox1" name="checkbox1" value="checkbox1" v-model="users_response" true-value="true" false-value="false">
                     <label for="checkbox1">Event responses</label>
                   </div>
                   <div>
-                    <input type="checkbox" id="checkbox2" name="checkbox2" value="checkbox2" checked>
+                    <input type="checkbox" id="checkbox2" name="checkbox2" value="checkbox2" v-model="notification_event" true-value="true" false-value="false">
                     <label for="checkbox2">Event confirmation</label>
                   </div>
                   <div>
-                    <input type="checkbox" id="checkbox3" name="checkbox3" value="checkbox3" checked>
+                    <input type="checkbox" id="checkbox3" name="checkbox3" value="checkbox3" v-model="notification_cancelation" true-value="true" false-value="false">
                     <label for="checkbox3">Event cancellation</label>
                   </div>
                   <div>
-                    <input type="checkbox" id="checkbox4" name="checkbox4" value="checkbox4" checked>
+                    <input type="checkbox" id="checkbox4" name="checkbox4" value="checkbox4" v-model="notification_attendee" true-value="true" false-value="false">
                     <label for="checkbox4">Attendee availability</label>
                   </div>
 
