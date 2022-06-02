@@ -23,7 +23,7 @@ function display_user_info() {
             
         }
     };
-    xhttp.open("GET", "/display_user_information", true);
+    xhttp.open("POST", "/display_user_information", true);
     xhttp.send();
 }
 

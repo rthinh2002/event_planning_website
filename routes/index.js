@@ -8,7 +8,7 @@ router.get('/hom.html', function(req, res, next) {
 });
 
 // Display user information - account.html - Peter update June 1st, 2022
-router.get('/display_user_information', function(req, res, next){
+router.post('/display_user_information', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
       console.log(err);
