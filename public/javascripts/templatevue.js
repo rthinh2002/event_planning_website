@@ -27,7 +27,7 @@ const vueinst = new Vue({
                   { firstname:'Emily', lastname:'Weissman', admin:true},
                   { firstname:'Jane', lastname:'Doe', admin:true },
                   { firstname:'Emily', lastname:'Weissman', admin:true},
-                  { firstname:'John', lastname:'Smith', admin:false},
+                  { firstname:'Ben', lastname:'Dover', admin:false},
                   { firstname:'John', lastname:'Smith', admin:false},
                   { firstname:'Jane', lastname:'Doe', admin:true },
                   { firstname:'Emily', lastname:'Weissman', admin:true},
