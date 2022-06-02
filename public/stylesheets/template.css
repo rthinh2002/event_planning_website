@@ -198,6 +198,10 @@ button {
     margin-left: 4em !important;
 }
 
+.addMargin-date {
+    margin-left: 3.4em !important;
+}
+
 .cancel-button {
     background-color: transparent;
     color: black;
@@ -210,6 +214,11 @@ button {
 .save-button:hover {
     color: black;
     background-color: #D6EDF8;
+}
+
+.push-right {
+    margin-left: 7em;
+    margin-bottom: 2em;
 }
 
 .centred_div {

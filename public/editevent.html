@@ -5,12 +5,12 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/templatevue.js" defer></script>
+    <script src="/javascripts/manageEvents.js" defer></script>
 </head>
 
-<body>
+<body onload=start_loading()>
     <div id="app"><!--app body-->
-        <div id="desktop" v-if="desktop">
+        <div id="desktop">
             <div class="header"><!--sticky header-->
                 <a href="/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M" class="logo"></a>
                 <a href="/login.html" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
@@ -40,28 +40,21 @@
                                 </td>
                             </tr>
 
+                            
+                        </table>
+                        <table id="table_when">
                             <tr>
-                                <td>When</td>
-                                <td>
-                                    <input class="textField addMargin" type="datetime-local" placeholder="+  Add date" id="eventDate" name="eventDate" size="14">
-                                    <button class="save-button">Add Date</button>
-                                </td>
+                                
                             </tr>
                         </table>
                     </div>
-
-                        <pre class="eventPre addMargin">                <a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a></pre>
-
-                    <table>
-                        <tr>
-                            <td>Who:</td>
-                            <td>
-                                <input class="textField2 margin-increase" type="text" placeholder="Name" id="eventName" name="eventName" size="14">
-                            </td>
-                            <td>
-                                <input class="textField2 addMargin-intense setInputWidth" type="text" placeholder="Email" id="eventEmail" name="eventEmail" size="31">
-                            </td>
-                        </tr>
+                    <div id="button_date_set">
+                        <button onclick="add_date(); return false;" class="save-button push-right">Add Date</button>
+                    </div>
+                    <pre class="eventPre addMargin">                <a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a></pre>
+                    <table id="table_who">
+                        
+                        
                     </table>
 
                         <pre class="eventPre addMargin">                <a href="addFriend" style="text-decoration: none;"><i class="fa-solid fa-user-plus"></i>   Add another friend</a></pre>
@@ -70,7 +63,7 @@
                         <tr>
                             <td>RSVP:</td>
                             <td>
-                                <input class="textField addMargin" type="text" placeholder="+  Select date" id="eventRSVP" name="eventRSVP" size="14">
+                                <input class="textField addMargin" type="date" placeholder="+  Select date" id="eventRSVP" name="eventRSVP" size="14">
                             </td>
                         </tr>
 
@@ -87,18 +80,6 @@
                         <button class="save-button">Save</button>
                     </div>
                 </form>
-            </div>
-        </div>
-
-        <div id="mobile" v-else>
-            <div class="header"><!--sticky header-->
-                <a href="/wdc_project_2022/html/dashboard1.html"><!--change this to our dashboard when we have one--><img src="/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M" class="logo"></a>
-                <a href="/wdc_project_2022/html/login.html" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
-            </div>
-            <div class="mobilenav">
-                <a href="/wdc_project_2022/html/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg"></i>  My Events</a>
-                <a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a>
-                <a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
             </div>
         </div>
     </div>
