@@ -192,6 +192,7 @@ button {
 
 .addMargin {
     margin-left: 3em !important;
+    margin-right: -2em !important;
 }
 
 .addMargin-intense {
@@ -210,6 +211,11 @@ button {
 .save-button:hover {
     color: black;
     background-color: #D6EDF8;
+}
+
+.push-right {
+    margin-left: 7em;
+    margin-bottom: 2em;
 }
 
 .centred_div {
