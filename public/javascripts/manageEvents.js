@@ -15,15 +15,25 @@ function display_event_info() {
 
             // populate with all date;
             for (var element in event_info) {
+                let create_tr = document.createElement("tr");
+                let create_td_empty = document.createElement("td");
+                if(element == 0) {
+                    create_td_empty.innerHTML = "When:";
+                } 
+                let create_td_date = document.createElement("td");
                 let create_input = document.createElement("input");
+
                 create_input.setAttribute("type", "datetime-local");
                 create_input.setAttribute("size", "14");
                 create_input.classList.add("textField");
-                create_input.classList.add("addMargin");
-
+                create_input.classList.add("addMargin-date");
+                
                 var d = new Date(event_info[element].event_date);
                 create_input.setAttribute("value", d.toDateTimeLocal());
-                document.getElementById("when_field").appendChild(create_input);
+                create_td_date.appendChild(create_input);
+                create_tr.appendChild(create_td_empty);
+                create_tr.appendChild(create_td_date);
+                document.getElementById("table_when").appendChild(create_tr);
             }
         }
     };

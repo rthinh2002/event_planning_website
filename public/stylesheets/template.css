@@ -192,11 +192,14 @@ button {
 
 .addMargin {
     margin-left: 3em !important;
-    margin-right: -2em !important;
 }
 
 .addMargin-intense {
     margin-left: 4em !important;
+}
+
+.addMargin-date {
+    margin-left: 3.4em !important;
 }
 
 .cancel-button {
