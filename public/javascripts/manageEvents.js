@@ -1,3 +1,5 @@
+var count_element_date = 0;
+
 function display_event_info() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -34,6 +36,7 @@ function display_event_info() {
                 create_tr.appendChild(create_td_empty);
                 create_tr.appendChild(create_td_date);
                 document.getElementById("table_when").appendChild(create_tr);
+                count_element_date++;
             }
         }
     };
@@ -45,15 +48,6 @@ function load_attendee() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            /*<tr>
-                <td>Who:</td>
-                <td>
-                    <input class="textField2 margin-increase" type="text" placeholder="Name" id="eventName" name="eventName" size="14">
-                </td>
-                <td>
-                    <input class="textField2 addMargin-intense setInputWidth" type="text" placeholder="Email" id="eventEmail" name="eventEmail" size="31">
-                </td>
-            </tr>*/
             var attendee_info = JSON.parse(this.responseText);
             for(var item in attendee_info) {
                 let create_tr = document.createElement("tr");
@@ -102,6 +96,30 @@ function load_attendee() {
     };
     xhttp.open("POST", "/display_attendee", true);
     xhttp.send();
+}
+
+var count_button = 0;
+function add_date() {
+    let create_input = document.createElement("input");
+    let create_td_date = document.createElement("td");
+    let create_tr = document.createElement("tr");
+    let create_td_empty = document.createElement("td");
+    let create_cancel_button = document.createElement("button");
+    create_cancel_button.classList.add("cancel-button");
+    create_cancel_button.innerHTML = "Cancel";
+
+    create_input.setAttribute("type", "datetime-local");
+    create_input.setAttribute("size", "14");
+    create_input.setAttribute("placeholder", "+  Add date");
+    create_input.classList.add("textField");
+    create_input.classList.add("addMargin-date");
+
+    create_td_date.appendChild(create_input);
+    create_tr.appendChild(create_td_empty);
+    create_tr.appendChild(create_td_date);
+    document.getElementById("table_when").appendChild(create_tr);
+    count_button++;
+    if(count_button === 1) document.getElementById("button_date_set").appendChild(create_cancel_button);
 }
 
 function start_loading()
