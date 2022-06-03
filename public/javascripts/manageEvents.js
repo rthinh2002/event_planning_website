@@ -98,15 +98,11 @@ function load_attendee() {
     xhttp.send();
 }
 
-var count_button = 0;
 function add_date() {
     let create_input = document.createElement("input");
     let create_td_date = document.createElement("td");
     let create_tr = document.createElement("tr");
     let create_td_empty = document.createElement("td");
-    let create_cancel_button = document.createElement("button");
-    create_cancel_button.classList.add("cancel-button");
-    create_cancel_button.innerHTML = "Cancel";
 
     create_input.setAttribute("type", "datetime-local");
     create_input.setAttribute("size", "14");
@@ -117,11 +113,8 @@ function add_date() {
     create_tr.appendChild(create_td_empty);
     create_tr.appendChild(create_td_date);
     document.getElementById("table_when").appendChild(create_tr);
-    count_button++;
-    if(count_button === 1) document.getElementById("button_date_set").appendChild(create_cancel_button);
 }
 
-var count_button_friend = 0;
 function addFriend() {
     let create_tr = document.createElement("tr");
     let create_td_empty = document.createElement("td");
@@ -129,9 +122,6 @@ function addFriend() {
     let create_td_email = document.createElement("td");
     let create_input_name =document.createElement("input");
     let create_input_email =document.createElement("input");
-    let create_cancel_button = document.createElement("button");
-    create_cancel_button.classList.add("cancel-button");
-    create_cancel_button.innerHTML = "Cancel";
 
     // add class
     create_input_name.classList.add("textField2");
@@ -160,10 +150,7 @@ function addFriend() {
     create_tr.appendChild(create_td_empty);
     create_tr.appendChild(create_td_name);
     create_tr.append(create_td_email);
-
-    count_button_friend++;
     document.getElementById("table_who").appendChild(create_tr);
-    if(count_button_friend === 1) document.getElementById("button_friend_set").appendChild(create_cancel_button);
 }
 
 function start_loading() {
