@@ -6,6 +6,7 @@
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="/javascripts/templatevue.js" defer></script>
+    <script src="/public/javascripts/invited.js" defer></script>
 </head>
 
 <body >
@@ -81,12 +82,6 @@
                                 <th><input type="checkbox"></th>
                                 <th><input type="checkbox"></th>
                             </tr>
-                            <tr>
-                                <th class="align-left">{{ event[0].date }}</th>
-                                <th><input type="checkbox"></th>
-                                <th><input type="checkbox"></th>
-                                <th><input type="checkbox"></th>
-                            </tr>
                         </table>
                     </div>
                     <button class="check-calendar-button">CHECK YOUR CALENDAR<i class="fa-solid fa-calendar-day calendar-icon"></i></button>
@@ -155,15 +150,15 @@
                         <!-- checkbox -->
                         <tr>
                             <th class="align-left">{{ event[0].date }}</th>
-                            <th><input type="checkbox"></th>
-                            <th><input type="checkbox"></th>
-                            <th><input type="checkbox"></th>
+                            <th><input type="radio"></th>
+                            <th><input type="radio"></th>
+                            <th><input type="radio"></th>
                         </tr>
                         <tr>
                             <th class="align-left">{{ event[0].date }}</th>
-                            <th><input type="checkbox"></th>
-                            <th><input type="checkbox"></th>
-                            <th><input type="checkbox"></th>
+                            <th><input type="radio"></th>
+                            <th><input type="radio"></th>
+                            <th><input type="radio"></th>
                         </tr>
                     </table>
                 </div>
