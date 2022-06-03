@@ -121,8 +121,52 @@ function add_date() {
     if(count_button === 1) document.getElementById("button_date_set").appendChild(create_cancel_button);
 }
 
-function start_loading()
-{
+var count_button_friend = 0;
+function addFriend() {
+    let create_tr = document.createElement("tr");
+    let create_td_empty = document.createElement("td");
+    let create_td_name = document.createElement("td");
+    let create_td_email = document.createElement("td");
+    let create_input_name =document.createElement("input");
+    let create_input_email =document.createElement("input");
+    let create_cancel_button = document.createElement("button");
+    create_cancel_button.classList.add("cancel-button");
+    create_cancel_button.innerHTML = "Cancel";
+
+    // add class
+    create_input_name.classList.add("textField2");
+    create_input_name.classList.add("margin-increase");
+
+    create_input_email.classList.add("textField2");
+    create_input_email.classList.add("addMargin-intense");
+    create_input_email.classList.add("setInputWidth");
+
+    // set type
+    create_input_email.setAttribute("type", "text");
+    create_input_name.setAttribute("type", "text");
+
+    // set size
+    create_input_email.setAttribute("size", "31");
+    create_input_name.setAttribute("size", "14");
+
+    // set value
+    create_input_email.setAttribute("placeholder", "Enter Email");
+    create_input_name.setAttribute("placeholder", "Enter name");
+
+    // append
+    create_td_name.appendChild(create_input_name);
+    create_td_email.appendChild(create_input_email);
+
+    create_tr.appendChild(create_td_empty);
+    create_tr.appendChild(create_td_name);
+    create_tr.append(create_td_email);
+
+    count_button_friend++;
+    document.getElementById("table_who").appendChild(create_tr);
+    if(count_button_friend === 1) document.getElementById("button_friend_set").appendChild(create_cancel_button);
+}
+
+function start_loading() {
     display_event_info();
     load_attendee();
 }
