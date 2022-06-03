@@ -54,3 +54,92 @@ function togglePword() {
         }
     }
 }
+
+function login() {
+
+    let user = {
+        username: document.getElementsByName('username')[0].value,
+        password: document.getElementsByName('password')[0].value
+    };
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            window.location='/app/dashboard1.html';
+            //alert("Login Successful");
+        } else if (this.readyState == 4 && this.status >= 400) {
+            alert("Login unsuccessful");
+        }
+    };
+
+    xhttp.open("POST", "/login");
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(user));
+
+}
+
+function logout() {
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log('logged out');
+            window.location='/login.html';
+        }
+    };
+
+    xhttp.open("POST", "/logout");
+    xhttp.send();
+}
+
+function createaccount() {
+
+    let user = {
+        firstname: document.getElementsByName('firstname')[0].value,
+        lastname: document.getElementsByName('lastname')[0].value,
+        email: document.getElementsByName('email')[0].value,
+        username: document.getElementsByName('username')[0].value,
+        password: document.getElementsByName('password')[0].value,
+        passwordConfirm: document.getElementsByName('passwordConfirm')[0].value
+    };
+
+    let errors = false;
+    if (user.password !== user.passwordConfirm) {
+      console.log('passwords don\'t match');
+      errors = true;
+    }
+    /*
+    if (!email.match(email regex)) {
+      console.log('email is not valid');
+      errors = true;
+    }*/
+    if (user.firstname.length === 0 || user.lastname.length === 0) {
+      console.log('Must provide first and last name');
+      errors = true;
+    }
+    if (user.username.length === 0 || user.username.length === 0) {
+        console.log('Must provide username');
+        errors = true;
+      }
+    if (errors) {
+      return;
+    }
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            window.location='/users/dashboard1.html';
+            //alert("Signup Successful");
+        } else if (this.readyState == 4 && this.status >= 400) {
+            alert("Signup Failed");
+        }
+    };
+
+    xhttp.open("POST", "/createaccount");
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(user));
+
+}

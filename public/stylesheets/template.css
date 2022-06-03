@@ -49,6 +49,7 @@ html, body {
     background-color: #289BD2;
     color: white;
     text-align: left;
+    cursor: pointer;
 }
 
 .page-content {
