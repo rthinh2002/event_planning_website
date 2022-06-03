@@ -1,6 +1,9 @@
 var express = require('express');
 const req = require('express/lib/request');
 var router = express.Router();
+const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(CLIENT_ID);
 
 let users = {
   admin: { username: "admin", name: "Some Admin", password: "admin" },
