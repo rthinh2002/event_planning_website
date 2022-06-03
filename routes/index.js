@@ -59,6 +59,45 @@ router.post('/change_user_info', function(req, res, next){
   });
 });
 
+// Display event info editevent.html - Peter June 2nd 2022
+router.post('/display_event_info', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "SELECT event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;"
+    connection.query(query, function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+router.post('/display_attendee', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "SELECT users.first_name, users.email_address FROM users INNER JOIN attendee ON users.user_id = attendee.user_id && event_id = 1;"
+    connection.query(query, function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
 router.post('/get_hosting_event', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
