@@ -46,7 +46,7 @@ app.use(session({
 
 app.use('/app', (req, res, next) => {
     console.log('Attempted access to app');
-    if (!('user' in req.session)) {
+    if (!('user_id' in req.session)) {
         console.log('Attempt unsuccessful');
         res.sendStatus(403);
     } else {

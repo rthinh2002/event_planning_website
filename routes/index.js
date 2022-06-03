@@ -18,14 +18,14 @@ router.get('/home.html', function(req, res, next) {
 // Log in to app - Karl, 2/6/22
 router.post('/login', function(req, res, next) {
 
-  req.pool.getConnection(function(err, connection){
+  req.pool.getConnection(function(err, connection) {
     if(err) {
       console.log(err);
       res.sendStatus(500);
       return;
     }
 
-    var query = "SELECT users.first_name, users.last_name, users.user_id FROM users WHERE users.user_name = ? && users.password = ?;";
+    var query = "SELECT users.user_id FROM users WHERE users.user_name = ? && users.password = ?;";
     connection.query(query, [req.body.username, req.body.password], function (error, rows, fields) {
       connection.release();
       if (error) {
@@ -34,8 +34,8 @@ router.post('/login', function(req, res, next) {
         return;
       }
       if (rows.length > 0) {
-        console.log('sucessful login');
-        req.session.user = rows[0].user_id;
+        console.log('successful login');
+        req.session.user_id = rows[0].user_id;
         console.log(req.session);
         res.sendStatus(200);
       } else {
@@ -48,32 +48,76 @@ router.post('/login', function(req, res, next) {
 
 });
 
-// Create new account - Karl, 2/6/22
-router.post('/createaccount', function(req, res, next) {
-  //console.log(req.body);
-
-  if ('username' in req.body && 'firstname' in req.body && 'password' in req.body) {
-    if(req.body.username in users){
-      console.log('user exists');
-      res.sendStatus(403);
-    } else {
-      users[req.body.username] = { username: req.body.username, name: req.body.firstname, password: req.body.password };
-      console.log("User "+req.body.username+" created");
-      req.session.user = users[req.body.username].username;
-      console.log(req.session);
-      res.sendStatus(200);
+// Create new account - Karl, updated 3/6/22 with DB integration
+router.post('/createaccount', function(req, res, next)
+{
+  req.pool.getConnection(function(err, connection)
+  {
+    if(err)
+    {
+      console.log(err);
+      res.sendStatus(500);
+      return;
     }
-  } else {
-    console.log('bad request');
-    res.sendStatus(400);
-  }
 
+    // check if email address or username already in use
+    var query1 = "SELECT users.user_id FROM users WHERE users.user_name = ? || users.email_address = ?;";
+    connection.query(query1, [req.body.username, req.body.email], function (error, rows, fields) {
+      if (error)
+      {
+        connection.release();
+        console.log(error);
+        res.sendStatus(500);
+        return;
+      }
+
+      if (rows.length > 0) {
+        connection.release();
+        console.log('account with username and/or email already exists');
+        res.sendStatus(409);
+        return;
+      }
+      else
+      {
+          // add new account to database
+          var query2 = "INSERT INTO users (first_name, last_name, email_address, password, user_name, user_ole) VALUES (?, ?, ? ,? , ?);";
+          connection.query(query2, [req.body.firstname, req.body.lastname, req.body.email, req.body.password, req.body.username, 'user'], function (error, rows, fields)
+          {
+            if (error)
+            {
+              connection.release();
+              console.log(error);
+              res.sendStatus(500);
+              return;
+            }
+
+            //log new user in
+            var query3 = "SELECT users.user_id FROM users WHERE users.user_name = ?;"
+            connection.query(query3, [req.body.username], function (error, rows, fields)
+            {
+              connection.release();
+              if (error)
+              {
+                console.log(error);
+                res.sendStatus(500);
+                return;
+              }
+
+              console.log('account created');
+              req.session.user_id = rows[0].user_id;
+              console.log(req.session);
+              res.sendStatus(200);
+            });
+          });
+      }
+    });
+  });
 });
 
 // Log in to app - Karl, 2/6/22
 router.post('/logout', function(req, res, next) {
-  if ('user' in req.session) {
-    delete req.session.user;
+  if ('user_id' in req.session) {
+    delete req.session.user_id;
     res.sendStatus(200);
   }
 });

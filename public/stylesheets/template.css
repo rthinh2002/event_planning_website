@@ -19,6 +19,10 @@ html, body {
     font-size: 12px;
 }
 
+[v-cloak] {
+    display: none;
+}
+
 #desktop {
     font-size: 11px;
 }

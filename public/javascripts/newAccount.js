@@ -58,7 +58,7 @@ function createaccount() {
     };
 
     let errors = false;
-    
+
     if (user.password !== user.passwordConfirm) {
       console.log('passwords don\'t match');
       errors = true;
@@ -85,6 +85,8 @@ function createaccount() {
         if (this.readyState == 4 && this.status == 200) {
             console.log("Signup Successful");
             window.location='/app/dashboard1.html';
+        } else if (this.readyState == 4 && this.status == 409) {
+            alert("email/username already in use");
         } else if (this.readyState == 4 && this.status >= 400) {
             alert("Signup Failed");
         }
@@ -93,5 +95,4 @@ function createaccount() {
     xhttp.open("POST", "/createaccount");
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(user));
-
 }
