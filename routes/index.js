@@ -1,6 +1,9 @@
 var express = require('express');
 const req = require('express/lib/request');
 var router = express.Router();
+const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(CLIENT_ID);
 
 let users = {
   admin: { username: "admin", name: "Some Admin", password: "admin" },
@@ -204,5 +207,46 @@ router.post('/get_attending_event', function(req, res, next){
     });
   });
 });
+
+router.get('/invite', function(req, res, next)
+{
+  var evid = req.query.event;
+  //get the event name
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "SELECT event_description, location, RSVP FROM event WHERE event_id = ?;";
+    connection.query(query, [evid], function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+//login function by using google api
+router.get('/login/google', function(req, res, next)
+{
+  var google = require('googleapis');
+  var OAuth2 = google.auth.OAuth2;
+  var oauth2Client = new OAuth2(
+    '818-818-818-818', // ClientID
+    '818-818-818-818', // Client Secret
+    'http://localhost:3000/login' // Redirect URL
+  );
+  var scopes = ['https://www.googleapis.com/auth/plus.login'];
+  var url = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: scopes
+  });
+  res.redirect(url);
+}
+);
 
 module.exports = router;
