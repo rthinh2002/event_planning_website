@@ -7,6 +7,11 @@ html, body {
     margin: 0;
 }
 
+.g-signin2 {
+    display: block;
+    margin: auto;
+}
+
 * {
     margin: 0;
     box-sizing: border-box;
