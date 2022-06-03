@@ -79,5 +79,24 @@ router.post('/get_hosting_event', function(req, res, next){
   });
 });
 
+router.post('/get_attending_event', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var session_id = req.session.id;
+    var query = "SELECT * FROM attendee AND user_id = ? GROUP BY attendee_response;";
+    connection.query(query, [session_id], function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
 
 module.exports = router;
