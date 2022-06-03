@@ -43,7 +43,7 @@ router.post('/login', function(req, res, next) {
           res.sendStatus(401);
       }
     });
-    
+
   });
 
 });
@@ -54,16 +54,17 @@ router.post('/createaccount', function(req, res, next) {
 
   if ('username' in req.body && 'firstname' in req.body && 'password' in req.body) {
     if(req.body.username in users){
-      //console.log('user exists');
+      console.log('user exists');
       res.sendStatus(403);
     } else {
       users[req.body.username] = { username: req.body.username, name: req.body.firstname, password: req.body.password };
-      //console.log("User "+req.body.username+" created");
-      req.session.user = users[req.body.username];
+      console.log("User "+req.body.username+" created");
+      req.session.user = users[req.body.username].username;
+      console.log(req.session);
       res.sendStatus(200);
     }
   } else {
-    //console.log('bad request');
+    console.log('bad request');
     res.sendStatus(400);
   }
 

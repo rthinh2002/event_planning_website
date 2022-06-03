@@ -6,9 +6,10 @@
       <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
       <script src="/javascripts/templatevue.js" defer></script>
+      <script src="/javascripts/newAccount.js" defer></script>
   </head>
   <body>
-      <div id="app"><!--app body-->
+      <div><!--app body-->
           <div class="centred_div">
             <div style="text-align: center">
               <a  href="/home.html"><img src="/images/logo_main.png" class="logoHome" alt="W2M"></a>
@@ -17,31 +18,37 @@
               <br>
             </div>
               <div>
-              <form>
+              <form id="newAccountForm">
                   <div class="flex-container form-div-2-columns">
                     <div>
                       <label for="fname">First name</label><br>
-                      <input class="textField" type="text" id="fname" name="firstname">
+                      <input class="textField" type="text" id="fname" name="firstname" v-model="firstName"></input>
+                      <span v-show="!validFirstName">Not a valid first name</span>
                     </div>
                     <div>
                       <label for="lname">Last name</label><br>
-                      <input class="textField" type="text" id="lname" name="lastname">
+                      <input class="textField" type="text" id="lname" name="lastname" v-model="lastName">
+                      <span v-show="!validLastName">Must enter a last name.</span>
                     </div>
                     <div>
                       <label for="email">Email</label><br>
-                      <input class="textField" type="text" id="email" name="email">
+                      <input class="textField" type="text" id="email" name="email" v-model="email">
+                      <span v-show="!validEmail">Not a valid email.</span>
                     </div>
                     <div>
                       <label for="html">Username</label><br>
-                      <input class="textField" type="text" id="uname" name="username">
+                      <input class="textField" type="text" id="uname" name="username" v-model="userName">
+                      <span v-show="!validUsername">Must enter a username.</span>
                     </div>
                     <div>
                       <label for="pword">Password</label><br>
-                      <input class="textField pw" type="password" id="pword" name="password">
+                      <input class="textField pw" type="password" id="pword" name="password" v-model="password1">
+                      <span v-show="!validPassword">Password cannot have spaces.</span>
                     </div>
                     <div>
                       <label for="cpword">Confirm password</label><br>
-                      <input class="textField pw" type="password" id="cpword" name="passwordConfirm">
+                      <input class="textField pw" type="password" id="cpword" name="passwordConfirm" v-model="password2">
+                      <span v-show="!passwordsMatch">Passwords do not match.</span>
                     </div>
                     <div>
                       <label for="showpword">
