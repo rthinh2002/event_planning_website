@@ -15,19 +15,33 @@ router.get('/home.html', function(req, res, next) {
 // Log in to app - Karl, 2/6/22
 router.post('/login', function(req, res, next) {
 
-  if ('username' in req.body && 'password' in req.body) {
-    if(req.body.username in users && users[req.body.username].password === req.body.password) {
-      //console.log('success');
-      req.session.user = users[req.body.username];
-      res.sendStatus(200);
-    } else {
-      //console.log('bad login');
-      res.sendStatus(401);
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
     }
-  } else {
-    //console.log('bad request');
-    res.sendStatus(400);
-  }
+
+    var query = "SELECT users.first_name, users.last_name, users.user_id FROM users WHERE users.user_name = ? && users.password = ?;";
+    connection.query(query, [req.body.username, req.body.password], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        console.log(error);
+        res.sendStatus(500);
+        return;
+      }
+      if (rows.length > 0) {
+        console.log('sucessful login');
+        req.session.user = rows[0].user_id;
+        console.log(req.session);
+        res.sendStatus(200);
+      } else {
+          console.log('bad login request');
+          res.sendStatus(401);
+      }
+    });
+    
+  });
 
 });
 
@@ -120,7 +134,7 @@ router.post('/display_event_info', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;"
+    var query = "SELECT event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;";
     connection.query(query, function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
@@ -139,7 +153,7 @@ router.post('/display_attendee', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT users.first_name, users.email_address FROM users INNER JOIN attendee ON users.user_id = attendee.user_id && event_id = 1;"
+    var query = "SELECT users.first_name, users.email_address FROM users INNER JOIN attendee ON users.user_id = attendee.user_id && event_id = 1;";
     connection.query(query, function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
