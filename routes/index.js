@@ -2,9 +2,62 @@ var express = require('express');
 const req = require('express/lib/request');
 var router = express.Router();
 
+let users = {
+  admin: { username: "admin", name: "Some Admin", password: "admin" },
+  alice: { username: "alice", name: "Alice User", password: "horse" }
+};
+
 /* GET home page. */
-router.get('/hom.html', function(req, res, next) {
+router.get('/home.html', function(req, res, next) {
   res.render('index', { title: 'Express' });
+});
+
+// Log in to app - Karl, 2/6/22
+router.post('/login', function(req, res, next) {
+
+  if ('username' in req.body && 'password' in req.body) {
+    if(req.body.username in users && users[req.body.username].password === req.body.password) {
+      //console.log('success');
+      req.session.user = users[req.body.username];
+      res.sendStatus(200);
+    } else {
+      //console.log('bad login');
+      res.sendStatus(401);
+    }
+  } else {
+    //console.log('bad request');
+    res.sendStatus(400);
+  }
+
+});
+
+// Create new account - Karl, 2/6/22
+router.post('/createaccount', function(req, res, next) {
+  //console.log(req.body);
+
+  if ('username' in req.body && 'firstname' in req.body && 'password' in req.body) {
+    if(req.body.username in users){
+      //console.log('user exists');
+      res.sendStatus(403);
+    } else {
+      users[req.body.username] = { username: req.body.username, name: req.body.firstname, password: req.body.password };
+      //console.log("User "+req.body.username+" created");
+      req.session.user = users[req.body.username];
+      res.sendStatus(200);
+    }
+  } else {
+    //console.log('bad request');
+    res.sendStatus(400);
+  }
+
+});
+
+// Log in to app - Karl, 2/6/22
+router.post('/logout', function(req, res, next) {
+  if ('user' in req.session) {
+    delete req.session.user;
+    res.sendStatus(200);
+  }
 });
 
 // Display user information - account.html - Peter update June 1st, 2022
@@ -15,7 +68,7 @@ router.post('/display_user_information', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = 1;"
+    var query = "SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = 1;";
     connection.query(query, function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {

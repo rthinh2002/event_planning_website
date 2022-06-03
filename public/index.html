@@ -10,7 +10,7 @@
 
 <body>
     <div id="app"><!--app body-->
-        <div id="desktop" v-if="desktop">
+        <div id="desktop">
             <div class="centred_div" style="margin: auto; max-width: 500;">
                 <div class="centered_text">
                     <a href="/index.html"><img src="/images/logo_main.png" class="logoHome" alt="W2M"></a>
@@ -31,15 +31,6 @@
             </div>
         </div>
 
-        <div id="mobile" v-else>
-            <div class="header"><!--sticky header-->
-                <a href="/wdc_project_2022/html/template.html"><!--change this to our dashboard when we have one--><img src="/wdc_project_2022/images/W2M_icon.png" style="padding-left: 3%;" alt="W2M"></a>
-                <a href="/wdc_project_2022/html/login.html" alt="login" class="right"><!--change this to our login page when we have one--><i v-bind:class="{'fa-solid fa-arrow-right-to-bracket fa-3x' : !loggedin, 'fa-regular fa-user fa-3x' : loggedin }"></i></a>
-            </div>
-            <div class="mobilenav">
-                <a href="/wdc_project_2022/html/events.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>  My Events</a><a href="/wdc_project_2022/html/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg"></i>  My account</a><a href="/wdc_project_2022/html/logout.html" class="fade"><i class="fa-solid fa-sign-out-alt fa-lg"></i>  Log out</a>
-            </div>
-        </div>
     </div>
 </body>
 </html>
