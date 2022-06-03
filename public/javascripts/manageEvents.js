@@ -110,7 +110,6 @@ function add_date() {
 
     create_input.setAttribute("type", "datetime-local");
     create_input.setAttribute("size", "14");
-    create_input.setAttribute("placeholder", "+  Add date");
     create_input.classList.add("textField");
     create_input.classList.add("addMargin-date");
 
