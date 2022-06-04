@@ -1,4 +1,5 @@
 var count_element_date = 0;
+var count_element_friend = 0;
 
 function display_event_info() {
     var xhttp = new XMLHttpRequest();
@@ -27,6 +28,7 @@ function display_event_info() {
 
                 create_input.setAttribute("type", "datetime-local");
                 create_input.setAttribute("size", "14");
+                create_input.setAttribute("disabled", "");
                 create_input.classList.add("textField");
                 create_input.classList.add("addMargin-date");
                 
@@ -73,6 +75,8 @@ function load_attendee() {
                 // set type
                 create_input_email.setAttribute("type", "text");
                 create_input_name.setAttribute("type", "text");
+                create_input_email.setAttribute("disabled", "");
+                create_input_name.setAttribute("disabled", "");
 
                 // set size
                 create_input_email.setAttribute("size", "31");
@@ -113,6 +117,7 @@ function add_date() {
     create_tr.appendChild(create_td_empty);
     create_tr.appendChild(create_td_date);
     document.getElementById("table_when").appendChild(create_tr);
+    count_element_date++;
 }
 
 function addFriend() {
@@ -151,6 +156,34 @@ function addFriend() {
     create_tr.appendChild(create_td_name);
     create_tr.append(create_td_email);
     document.getElementById("table_who").appendChild(create_tr);
+    count_element_friend++;
+}
+
+function saveEventInfo() {
+    var xhttp = new XMLHttpRequest();
+    
+
+    xhttp.onreadystatechange = function () {
+        
+    }
+
+    xhttp.open("POST", "/save_event_info", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify());
+}
+
+function saveEventDate() {
+
+}
+
+function saveEventAttendee()  {
+
+}
+
+function saveData() {
+    saveEventInfo();
+    saveEventDate();
+    saveEventAttendee();
 }
 
 function start_loading() {
