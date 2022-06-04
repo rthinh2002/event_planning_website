@@ -4,7 +4,10 @@ const req = require('express/lib/request');
 var router = express.Router();
 
 var passport = require('passport');
-
+const app = require('../app.js');
+app.use(session( {secret: 'peksqwerasdf'}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 const login = require('../public/javascripts/login.js');
@@ -281,5 +284,44 @@ router.get('/invited', function(req, res, next)
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
+router.get('/google/callback',' google', passport.authenticate('google', { successRedirect:'/auth/success' , failureRedirect: '/auth/fail' }));
+
+router.get('/auth/success', function(req, res, next){
+  req.pool.getConnection(function(err, connection) {
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+//accessing the user id in user profile
+    var google_id = req.user.id;
+
+    var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
+    connection.query(query, [req.body.username, req.body.password], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        console.log(error);
+        res.sendStatus(500);
+        return;
+      }
+      if (rows.length > 0) {
+        console.log('successful login');
+        req.session.user_id = rows[0].user_id;
+        console.log(req.session);
+        res.sendStatus(200);
+      } else {
+          console.log('bad login request');
+          res.sendStatus(401);
+      }
+    });
+  });
+}
+);
+
+router.get('/auth/fail', function(req, res, next){
+  alert('Failed to authenticate');
+  window.location.href = "/public/login.html";
+}
+);
 
 module.exports = router;
