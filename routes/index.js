@@ -5,11 +5,6 @@ const req = require('express/lib/request');
 var router = express.Router();
 
 var passport = require('passport');
-const app = require('../app.js');
-app.use(session( {secret: 'peksqwerasdf'}));
-app.use(passport.initialize());
-app.use(passport.session());
-
 
 const login = require('../public/javascripts/login.js');
 
@@ -288,17 +283,35 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
 router.get('/google/callback',' google', passport.authenticate('google', { successRedirect:'/auth/success' , failureRedirect: '/auth/fail' }));
 
 router.get('/auth/success', function(req, res, next){
-  req.pool.getConnection(function(err, connection) {
+  req.session.user_id ? function() {
+    //update the google id into the users table's api token column
+    req.pool.getConnection(function(err, connection){
+      if(err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      var query = "UPDATE users SET api_token = ? WHERE user_id = ?;";
+      connection.query(query, [req.user.id, req.session.user_id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          res.sendStatus(500);
+          return;
+        }
+        res.redirect('/');
+      });
+    });
+  } 
+  : 
+  function() {
+    req.pool.getConnection(function(err, connection) {
     if(err) {
       console.log(err);
       res.sendStatus(500);
       return;
     }
-//accessing the user id in user profile
-    var google_id = req.user.id;
-
     var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
-    connection.query(query, [req.user.authenticate], function (error, rows, fields) {
+    connection.query(query, [req.user.id], function (error, rows, fields) {
       connection.release();
       if (error) {
         console.log(error);
@@ -316,8 +329,8 @@ router.get('/auth/success', function(req, res, next){
       }
     });
   });
-}
-);
+  };
+});
 
 router.get('/auth/fail', function(req, res, next){
   alert('Failed to authenticate');
