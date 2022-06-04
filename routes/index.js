@@ -6,6 +6,7 @@ var router = express.Router();
 
 var passport = require('passport');
 
+const argon2 = require('argon2');
 const login = require('../public/javascripts/login.js');
 
 let users = {
@@ -18,7 +19,7 @@ router.get('/home.html', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-// Log in to app - Karl, 2/6/22
+// Log in to app - Karl, updated security to inlude argon2 4/6/22
 router.post('/login', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
@@ -28,8 +29,8 @@ router.post('/login', function(req, res, next) {
       return;
     }
 
-    var query = "SELECT users.user_id FROM users WHERE users.user_name = ? && users.password = ?;";
-    connection.query(query, [req.body.username, req.body.password], function (error, rows, fields) {
+    var query = "SELECT user_id, password FROM users WHERE user_name = ?;";
+    connection.query(query, [req.body.username], async function (error, rows, fields) {
       connection.release();
       if (error) {
         console.log(error);
@@ -37,13 +38,29 @@ router.post('/login', function(req, res, next) {
         return;
       }
       if (rows.length > 0) {
-        console.log('successful login');
-        req.session.user_id = rows[0].user_id;
-        console.log(req.session);
-        res.sendStatus(200);
-      } else {
-          console.log('bad login request');
+
+        try {
+          if (await argon2.verify(rows[0].password, req.body.password)) {
+            // password match
+            console.log('successful login');
+            delete rows[0].password; // remove password from retrived data
+            req.session.user_id = rows[0].user_id;
+            console.log(req.session);
+            res.sendStatus(200);
+          } else {
+            // password did not match
+            console.log('bad password');
+            res.sendStatus(401);
+          }
+        } catch (err) {
+          // internal failure
+          console.log('bad verify');
           res.sendStatus(401);
+        }
+
+      } else {
+        console.log('bad user');
+        res.sendStatus(401);
       }
     });
 
@@ -54,20 +71,28 @@ router.post('/login', function(req, res, next) {
 // Create new account - Karl, updated 3/6/22 with DB integration
 router.post('/createaccount', function(req, res, next)
 {
-  req.pool.getConnection(function(err, connection)
+  req.pool.getConnection(async function(err, connection)
   {
-    if(err)
-    {
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    let hash = null;
+
+    try {
+      hash = await argon2.hash(req.body.password);
+    } catch (err) {
       console.log(err);
       res.sendStatus(500);
       return;
     }
 
     // check if email address or username already in use
-    var query1 = "SELECT users.user_id FROM users WHERE users.user_name = ? || users.email_address = ?;";
+    var query1 = "SELECT user_id FROM users WHERE user_name = ? || email_address = ?;";
     connection.query(query1, [req.body.username, req.body.email], function (error, rows, fields) {
-      if (error)
-      {
+      if (error) {
         connection.release();
         console.log(error);
         res.sendStatus(500);
@@ -79,15 +104,12 @@ router.post('/createaccount', function(req, res, next)
         console.log('account with username and/or email already exists');
         res.sendStatus(409);
         return;
-      }
-      else
-      {
+      } else {
           // add new account to database
-          var query2 = "INSERT INTO users (first_name, last_name, email_address, password, user_name, user_ole) VALUES (?, ?, ? ,? , ?);";
-          connection.query(query2, [req.body.firstname, req.body.lastname, req.body.email, req.body.password, req.body.username, 'user'], function (error, rows, fields)
+          var query2 = "INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role) VALUES (?, ?, ?, ?, ?, ?);";
+          connection.query(query2, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields)
           {
-            if (error)
-            {
+            if (error) {
               connection.release();
               console.log(error);
               res.sendStatus(500);
@@ -95,12 +117,11 @@ router.post('/createaccount', function(req, res, next)
             }
 
             //log new user in
-            var query3 = "SELECT users.user_id FROM users WHERE users.user_name = ?;"
-            connection.query(query3, [req.body.username], function (error, rows, fields)
+            var query3 = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
+            connection.query(query3, function (error, rows, fields)
             {
               connection.release();
-              if (error)
-              {
+              if (error) {
                 console.log(error);
                 res.sendStatus(500);
                 return;
@@ -278,12 +299,12 @@ router.get('/invited', function(req, res, next)
   });
 });
 
-router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+//router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
-router.get('/google/callback',' google', passport.authenticate('google', { successRedirect:'/auth/success' , failureRedirect: '/auth/fail' }));
+//router.get('/google/callback',' google', passport.authenticate('google', { successRedirect:'/auth/success' , failureRedirect: '/auth/fail' }));
 
 router.get('/auth/success', function(req, res, next){
-  req.session.user_id ? function() { //if user is logged in 
+  req.session.user_id ? function() { //if user is logged in
     //update the google id into the users table's api token column
     req.pool.getConnection(function(err, connection){
       if(err) {
@@ -301,9 +322,9 @@ router.get('/auth/success', function(req, res, next){
         res.redirect('/');
       });
     });
-  } 
-  : 
-  function() { //if user is not logged in 
+  }
+  :
+  function() { //if user is not logged in
     req.pool.getConnection(function(err, connection) {
     if(err) {
       console.log(err);

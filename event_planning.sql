@@ -112,8 +112,8 @@ CREATE TABLE `users` (
   `first_name` varchar(20) DEFAULT NULL,
   `last_name` varchar(20) DEFAULT NULL,
   `email_address` varchar(30) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
-  `user_name` varchar(20) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `user_name` varchar(20) NOT NULL,
   `user_role` varchar(6) DEFAULT NULL,
   `user_id` int NOT NULL AUTO_INCREMENT,
   `api_token` varchar(100) DEFAULT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','peterhandsome123','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','Harmon','hjosh@gmail.com','nopassword','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
+INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','peterhandsome123','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','Harmon','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
