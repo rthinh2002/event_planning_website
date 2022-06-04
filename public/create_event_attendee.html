@@ -47,20 +47,20 @@
 
                 <div class="textField">
                     <!-- a 3 by 3 table -->
-                    <table class="table" style="height: 6em; width: 20em;">
+                    <table class="table" style="height: 6em; width: 20em;" id="evdetails" v-on:load="readevent()">
                         <tr>
                             <th class="align-left">Where</th>
-                            <td>{{ event[0].place }}</td>
+                            <td>{{ place }}</td>
                             <td></td>
                         </tr>
                         <tr>
                             <th class="align-left">RSVP</th>
-                            <td>{{ event[0].date }}</td>
+                            <td>{{ date }}</td>
                             <td></td>
                         </tr>
                         <tr>
                             <th class="align-left">Details</th>
-                            <td>{{ event[0].details }}</td>
+                            <td>{{ details }}</td>
                             <td></td>
                         </tr>
                     </table>

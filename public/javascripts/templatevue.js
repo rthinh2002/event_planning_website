@@ -36,6 +36,32 @@ const vueinst = new Vue({
     },
 });
 
+const vueeventdisplay = new Vue({
+    el: '#evdetails',
+    data : {
+        date : '',
+        place : '',
+        details : '',
+    },
+    methods : {
+        readevent: function() {
+            let xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let event = JSON.parse(this.responseText);
+                    vueeventdisplay.date = event.RSVP;
+                    vueeventdisplay.place = event.location;
+                    vueivueeventdisplaynst.details = event.event_description;
+                }
+            };
+
+            xhttp.open("GET", "/invited");
+            xhttp.send();
+        }
+    }
+});
+
 function toTop() {
     window.scrollTo({
         top: 0,

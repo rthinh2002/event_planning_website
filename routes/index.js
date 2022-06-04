@@ -253,7 +253,7 @@ router.post('/get_attending_event', function(req, res, next){
   });
 });
 
-router.get('/invite', function(req, res, next)
+router.get('/invited', function(req, res, next)
 {
   var evid = req.query.event;
   //get the event name
@@ -275,6 +275,8 @@ router.get('/invite', function(req, res, next)
   });
 });
 
-application.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+// application.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+
+
 
 module.exports = router;
