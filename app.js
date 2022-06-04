@@ -14,8 +14,8 @@ var app = express();
 var dbConnectionPool = mysql.createPool({
     host: 'localhost',
     database: 'event_planning',
-    //user: 'root',
-    //password: 'root',
+    user: 'root',
+    password: 'root',
     typeCast: function castField( field, useDefaultTypeCasting ) { // This field is for casting BIT into boolean data - Peter
 		if ( ( field.type === "BIT" ) && ( field.length === 1 ) ) {
 			var bytes = field.buffer();
