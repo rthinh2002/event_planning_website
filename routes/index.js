@@ -283,7 +283,7 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'p
 router.get('/google/callback',' google', passport.authenticate('google', { successRedirect:'/auth/success' , failureRedirect: '/auth/fail' }));
 
 router.get('/auth/success', function(req, res, next){
-  req.session.user_id ? function() {
+  req.session.user_id ? function() { //if user is logged in 
     //update the google id into the users table's api token column
     req.pool.getConnection(function(err, connection){
       if(err) {
@@ -303,7 +303,7 @@ router.get('/auth/success', function(req, res, next){
     });
   } 
   : 
-  function() {
+  function() { //if user is not logged in 
     req.pool.getConnection(function(err, connection) {
     if(err) {
       console.log(err);
