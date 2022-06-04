@@ -279,8 +279,7 @@ router.get('/invited', function(req, res, next)
   });
 });
 
-// application.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
-
+router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 
 module.exports = router;
