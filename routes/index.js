@@ -297,7 +297,7 @@ router.get('/auth/success', function(req, res, next){
     var google_id = req.user.id;
 
     var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
-    connection.query(query, [req.body.username, req.body.password], function (error, rows, fields) {
+    connection.query(query, [req.user.authenticate], function (error, rows, fields) {
       connection.release();
       if (error) {
         console.log(error);
