@@ -3,6 +3,10 @@ var express = require('express');
 const req = require('express/lib/request');
 var router = express.Router();
 
+var passport = require('passport');
+
+
+
 const login = require('../public/javascripts/login.js');
 
 let users = {
