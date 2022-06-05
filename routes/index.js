@@ -202,6 +202,25 @@ router.post('/display_event_info', function(req, res, next){
   });
 });
 
+router.post('/display_event_info_eventvieworg', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "SELECT event.event_name, event.event_description, event.location, event.RSVP FROM event WHERE event.event_id = 1;";
+    connection.query(query, function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
 // Display attendee for editevent.html - Peter 4/6/2022
 router.post('/display_attendee', function(req, res, next){
   req.pool.getConnection(function(err, connection){

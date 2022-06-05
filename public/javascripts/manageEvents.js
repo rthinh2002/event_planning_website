@@ -46,6 +46,23 @@ function display_event_info() {
     xhttp.send();
 }
 
+function display_event_info_eventvieworg() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var event_detail = JSON.parse(this.responseText);
+            document.getElementById("event_name").innerHTML = event_detail[0].event_name;
+            document.getElementById("td_where").innerHTML = event_detail[0].location;
+            var date = new Date(event_detail[0].RSVP);
+            date.setDate(date.getDate()+1);
+            document.getElementById("td_rsvp").innerHTML = (JSON.stringify(date)).slice(1,11);
+            document.getElementById("td_details").innerHTML = event_detail[0].event_description;
+        }
+    };
+    xhttp.open("POST", "/display_event_info_eventvieworg", true);
+    xhttp.send();
+}
+
 function load_attendee() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

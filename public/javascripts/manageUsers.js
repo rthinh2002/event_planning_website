@@ -4,7 +4,6 @@ function display_user_info() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var user_info = JSON.parse(this.responseText);
-            console.log(user_info);
             const vueinst = new Vue ({
                 el: '#app',
                 data:
