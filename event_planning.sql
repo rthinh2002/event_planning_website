@@ -86,10 +86,12 @@ CREATE TABLE `event_date` (
   `event_date` datetime NOT NULL,
   `event_id` int NOT NULL,
   `date_status` bit(1) NOT NULL DEFAULT b'0',
+  `event_date_id` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`event_date`),
+  UNIQUE KEY `event_date_id` (`event_date_id`),
   KEY `event_id` (`event_id`),
   CONSTRAINT `event_date_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +100,7 @@ CREATE TABLE `event_date` (
 
 LOCK TABLES `event_date` WRITE;
 /*!40000 ALTER TABLE `event_date` DISABLE KEYS */;
-INSERT INTO `event_date` VALUES ('2022-01-27 15:00:00',1,_binary '\0'),('2022-01-28 15:00:00',1,_binary ''),('2022-06-01 00:45:00',1,_binary '\0'),('2022-06-01 11:03:00',1,_binary '\0'),('2022-06-11 11:03:00',1,_binary '\0'),('2022-06-18 11:03:00',1,_binary '\0'),('2022-06-22 00:00:00',2,_binary ''),('2022-06-23 00:00:00',2,_binary ''),('2022-06-28 23:45:00',1,_binary '\0');
+INSERT INTO `event_date` VALUES ('2022-01-27 15:00:00',1,_binary '\0',1),('2022-01-28 15:00:00',1,_binary '',2),('2022-06-01 00:45:00',1,_binary '\0',3),('2022-06-01 11:03:00',1,_binary '\0',4),('2022-06-11 11:03:00',1,_binary '\0',5),('2022-06-18 11:03:00',1,_binary '\0',6),('2022-06-22 00:00:00',2,_binary '',7),('2022-06-23 00:00:00',2,_binary '',8),('2022-06-28 23:45:00',1,_binary '\0',9);
 /*!40000 ALTER TABLE `event_date` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,4 +150,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-05 11:13:43
+-- Dump completed on 2022-06-05 15:29:40
