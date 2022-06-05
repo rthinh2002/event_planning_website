@@ -38,7 +38,7 @@ html, body {
 }
 
 .header2 {
-    text-align: center;
+    text-align: right;
     height: 100%;
     vertical-align: middle;
     position: sticky;
@@ -47,6 +47,7 @@ html, body {
     grid-row: 1;
     background-color: #289BD2;
 }
+
 
 .sidebar2 {
     grid-row: 2;

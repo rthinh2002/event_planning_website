@@ -6,17 +6,18 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/templatevue.js" defer></script>
-    <script src="/javascripts/dashdis.js" defer></script>
+    <!--<script src="/javascripts/templatevue.js" defer></script>-->
+    <script src="/javascripts/dashboard.js" defer></script>
 </head>
 
-<body>
+
+<body onload="get_hosting_event(), get_attending_event()">
     <div class="grid-container" id="app">
 
         <!-- HEADER -->
         <div class="header2">
             <a href="/dashboard1.html">
-                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
+                <img src="/images/W2M_icon.png" class="logo" alt="W2M" />
             </a>
         </div>
 
@@ -28,12 +29,11 @@
             <div>
                 <a href="/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
             </div>
-            <div v-if="admin">
-                <!-- add authorisation validation for this -->
+            <div v-if="admin" v-cloak>
                 <span href="/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</span>
             </div>
             <div>
-                <a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
+                <a class="fade" onclick="logout()"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
             </div>
         </div>
 
@@ -42,21 +42,53 @@
             <div class="flex-container" style="gap: 3em;">
 
                 <div style="min-width: 30em; max-width: 40em">
-                    <h1 class="content-header">Events {{Username}} organising</h1>
-                    <div class="list" class="organising-container-div" onload="get_hosting_event()">
-                        <div class="event-container" v-for="event in hosting">
-                            <div class="event-info">
-                                <h2 class="event-name">{{event.event_name}}</h2>
-                                <p class="event-date">{{event.event_date}}</p>
-                                <p class="event-location">{{event.location}}</p>
-                            </div>
-                            <div class="event-buttons">
-                                <button class="event-button" v-on:click="edit_event(event.id)">Edit</button>
-                                <button class="event-button" v-on:click="delete_event(event.id)">Delete</button>
-                            </div>
+                    <h1 class="content-header">Events I'm organising</h1>
+
+                    <div class="list" class="organising-container-div"><!--onload="get_hosting_event()">-->
+
+                        <div class="event-container" v-for="event in organising">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                    <td style="font-size: 14px">Event date</td>
+                                    <td style="text-align: right">Status</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td style="font-size: 26px; word-break: break-all">{{event.event_name}}</td>
+                                    <td style="text-align: right">
+                                        <a :href="'/edit_event.html?eventID=' + event.event_id">Edit</a>
+                                        <br>Delete</td>
+                                </tr>
+                            </table>
                         </div>
+
+                    </div><!-- end list -->
+                    <button style="margin: 0.5em 0 0.5em 0" onclick="location.href='/app/create_event.html'">CREATE NEW EVENT</button>
+                </div>
+
+                <div style="min-width: 30em; max-width: 40em">
+                    <h1 class="content-header">Events I'm attending</h1>
+
+                    <div class="list" class="organising-container-div">
+
+                        <div class="event-container" v-for="event in invitations">
+                            <table style="width: 100%">
+                                <tr >
+                                    <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
+                                    <td style="font-size: 14px">Event date</td>
+                                    <td style="text-align: right">Status</td>
+                                </tr>
+                                <tr style="vertical-align: bottom">
+                                    <td style="font-size: 26px; word-break: break-all">{{event.event_name}}</td>
+                                    <td style="text-align: right">
+                                        <a :href="'/view_event.html?eventID=' + event.event_id">View</a>
+                                </tr>
+                            </table>
+                        </div>
+
                     </div><!-- end list -->
                 </div>
+
             </div><!-- end flex-container -->
         </div><!-- end page content -->
     </div><!-- end grid-container -->
