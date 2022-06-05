@@ -5,11 +5,11 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/templatevue.js" defer></script>
+    <script src="/javascripts/create_event.js" defer></script>
 </head>
 
 <body>
-    <div class="grid-container" id="app">
+    <div class="grid-container" id="createEvent">
 
         <!-- HEADER -->
         <div class="header2">
@@ -37,52 +37,68 @@
         <!-- CONTENT -->
         <div class="page-content">
             <h1 class="content-header">Create a new event</h1>
-            <form>
+
+            <form onsubmit="return false">
                 <div class="flex-container form-div-1-column" style="max-width: 400px">
                   <div>
                     <label for="eventWhat">What</label><br>
-                    <input class="textField" type="text" id="eventWhat" name="eventWhat" placeholder="What's the occasion?">
+                    <input class="textField" type="text" id="eventWhat" name="eventWhat" v-model="eventWhat" placeholder="What's the occasion?" required>
                   </div>
+
                   <div>
                     <label for="eventWhere">Where</label><br>
-                    <input class="textField" type="text" id="eventWhere" name="eventWhere" placeholder="Where will you meet?">
+                    <input class="textField" type="text" id="eventWhere" name="eventWhere" v-model="eventWhere" placeholder="Where will you meet?" required>
                   </div>
-                  <div>
-                    <label for="email">When</label>
-                    <a href="addDate" style="text-decoration: none; float: right"><i class="fa-solid fa-calendar-plus blue-color" style="padding-right: 0.5em"></i>Add another date</a>
+                  <div style="border: 1px 0 1px 0">
+                    <label for="email">When</label><br>
+                    <!-- v-for to add/remove dates -->
+                    <div v-for="item in dates">
+                        <input class="textField" type="datetime-local" id="date" :name="item.dateID" style="min-width: 25%; max-width: 50%" v-model="item.date" required>
+                        <a @click="removeDate(item.dateID)" style="text-decoration: none; cursor: pointer;">
+                            <i class="fa-solid fa-lg fa-calendar-minus blue-color" style="padding-left: 0.5em; padding-right: 0.5em"></i>Remove date
+                        </a>
+                    </div>
                     <br>
-                    <input class="textField" type="date" id="date" name="date" style="min-width: 25%; max-width: 50%"/>
+                    <a href="calendar" style="text-decoration: none; float: right"><i class="fa-regular fa-lg fa-calendar blue-color" style="padding-right: 0.5em"></i>Check my calendar</a>
+                    <a @click="addDate()" style="text-decoration: none; cursor: pointer"><i class="fa-solid fa-calendar-plus blue-color" style="padding-right: 0.5em"></i>Add another date</a>
                   </div>
-                  <div>
-                    <a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color" style="padding-right: 0.5em"></i>Check my calendar</a>
-                  </div>
+                  <!-- end v-for -->
+
                   <div>
                     <label for="who">Who</label>
-                    <a href="addFriend" style="text-decoration: none; float: right"><i class="fa-solid fa-user-plus blue-color" style="padding-right: 0.5em"></i>Add another friend</a>
+                    <span style="float: right; color: red" v-show="!validEmail" v-cloak>All guests must have a valid email</span>
                     <br>
-                    <input class="textField" type="text" id="name" name="name" style="max-width: 30%" placeholder="Guest name">
-                    <input class="textField" type="text" id="email" name="email" style="float: right; max-width:68%" placeholder="Guest email">
+                    <div v-for="item in guests">
+                      <input class="textField" type="text" id="name" name="name" style="max-width: 30%" v-model="item.name" placeholder="Guest name" required>
+                      <input class="textField" type="text" id="email" name="email" style="max-width:68%" v-model="item.email" placeholder="Guest email" required>
+                      <a @click="removeGuest(item.guestID)" style="text-decoration: none; cursor: pointer">
+                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove guest
+                      </a>
+                    </div>
+                    <br>
+                    <a @click="addGuest()" style="text-decoration: none; cursor: pointer">
+                      <i class="fa-solid fa-lg fa-user-plus blue-color" style="padding-right: 0.5em">
+                      </i>Add another guest</a>
                   </div>
                   <div>
                     <label for="email">R.S.V.P.</label>
                     <br>
-                    <input class="textField" type="date" id="rsvp" name="rsvp" style="min-width: 25%; max-width: 50%"/>
+                    <input class="textField" type="date" id="rsvp" name="rsvp" v-model="rsvp" style="min-width: 25%; max-width: 50%"/>
                   </div>
                   <div>
                     <label for="eventDetails">Details</label><br>
-                    <input class="textField" type="text" id="eventWhat" name="eventWhat" placeholder="Provide extra detail for your guests.">
+                    <textarea id="eventWhat" name="eventWhat" rows="5" maxlength="300" v-model="details" placeholder="Provide extra detail for your guests. Max 300 characters."></textarea>
                   </div>
                 </div>
-
                 <div>
-                <button type="submit" value="submit" onclick=saveChanges()>CREATE EVENT!</button>
+                <button type="submit" value="submit" onclick="createNewEvent()">CREATE EVENT</button>
                 <p style="margin-top: 0.5em">Your guests will receive an email with all the details!</p>
                 </div>
 
             </form>
 
-        </div>
-    </div>
+        </div><!-- end page content -->
+    </div><!-- end grid-container -->
 
     <div class="bottom right">
       <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
@@ -90,76 +106,3 @@
 
 </body>
 </html>
-
-
-
-
-
-            <div class="standard-width" style="display: none">
-
-                <form>
-                    <div>
-                        <table>
-                            <tr>
-                                <td>What:</td>
-                                <td>
-                                    <input class="textField addMargin" type="text" placeholder="e.g. Concert/Movie/Party" id="eventWhat" name="eventWhat" size="50">
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Where:</td>
-                                <td>
-                                    <input class="textField addMargin" type="text" id="eventLocation" name="eventLocation" size="50">
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>When</td>
-                                <td>
-                                    <input class="textField addMargin" type="text" placeholder="+  Add date" id="eventDate" name="eventDate" size="14">
-                                    <input class="textField2 addMargin" type="text" placeholder="+  Start" id="eventStart" name="eventStart" size="13">
-                                    <input class="textField2 addMargin" type="text" placeholder="+  End" id="eventEnd" name="eventEnd" size="14">
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                        <pre class="eventPre addMargin">                <a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a></pre>
-
-                    <table>
-                        <tr>
-                            <td>Who:</td>
-                            <td>
-                                <input class="textField2 margin-increase" type="text" placeholder="Name" id="eventName" name="eventName" size="14">
-                            </td>
-                            <td>
-                                <input class="textField2 addMargin-intense setInputWidth" type="text" placeholder="Email" id="eventEmail" name="eventEmail" size="31">
-                            </td>
-                        </tr>
-                    </table>
-
-                        <pre class="eventPre addMargin">                <a href="addFriend" style="text-decoration: none;"><i class="fa-solid fa-user-plus"></i>   Add another friend</a></pre>
-
-                    <table>
-                        <tr>
-                            <td>RSVP:</td>
-                            <td>
-                                <input class="textField addMargin" type="text" placeholder="+  Select date" id="eventRSVP" name="eventRSVP" size="14">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Details</td>
-                            <td>
-                                <input class="textField addMargin" type="text" placeholder="Tell your guests anything they might need to know!" id="eventDetails" name="eventDetails" size="50" style="height: 8em;">
-                            </td>
-                        </tr>
-                    </table>
-
-                    <div style="float: right;">
-                        <button class="cancel-button">Cancel</button>
-                        <button class="save-button">Save</button>
-                    </div>
-                </form>
-            </div>

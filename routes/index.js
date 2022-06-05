@@ -25,7 +25,7 @@ router.post('/login', function(req, res, next) {
     }
 
     var query = "SELECT user_id, user_role, password FROM users WHERE user_name = ?;";
-    connection.query(query, [req.body.username], async function (error, rows, fields) {
+    connection.query(query, [req.body.username], async function(error, rows, fields) {
       connection.release();
       if (error) {
         console.log(error);
@@ -117,8 +117,7 @@ router.post('/createaccount', function(req, res, next)
         res.sendStatus(200);
       });
     });
-      //}
-    //});
+
   });
 });
 
@@ -427,7 +426,36 @@ router.get('/auth/success', function(req, res, next){
 router.get('/auth/fail', function(req, res, next){
   alert('Failed to authenticate');
   window.location.href = "/public/login.html";
-}
-);
+});
+
+
+router.post('/create_new_event', function(req, res, next)
+{
+
+  req.pool.getConnection(async function(err, connection)
+  {
+    if(err) {
+      //console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+     // add new account to database
+    var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
+    connection.query(query, [req.body.eventName, req.body.details, req.session.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields)
+    {
+      if (error) {
+        connection.release();
+        console.log(error);
+        return res.sendStatus(500);
+      }
+
+      return res.sendStatus(200);
+
+    });
+
+  });
+
+});
 
 module.exports = router;

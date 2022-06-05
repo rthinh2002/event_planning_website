@@ -75,7 +75,7 @@ function createaccount() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             console.log("Signup Successful");
-            window.location='/app/dashboard1.html';
+            window.location='/app/dashboard.html';
         } else if (this.readyState == 4 && this.status == 409) {
             alert("email/username already in use");
         } else if (this.readyState == 4 && this.status >= 400) {
