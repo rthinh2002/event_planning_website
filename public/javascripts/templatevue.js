@@ -92,7 +92,7 @@ function login() {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            window.location='/app/dashboard1.html';
+            window.location='/app/dashboard.html';
             //alert("Login Successful");
         } else if (this.readyState == 4 && this.status >= 400) {
             alert("Login unsuccessful");

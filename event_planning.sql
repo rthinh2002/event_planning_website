@@ -70,7 +70,9 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES ('The Day of Dancing','Nothing special, just dancing around',1,1,'Adelaide Red Square','2022-01-06'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15');
+INSERT INTO `event` VALUES
+('The Day of Dancing','Nothing special, just dancing around',1,1,'Adelaide Red Square','2022-01-06'),
+('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +99,11 @@ CREATE TABLE `event_date` (
 
 LOCK TABLES `event_date` WRITE;
 /*!40000 ALTER TABLE `event_date` DISABLE KEYS */;
-INSERT INTO `event_date` VALUES ('2022-01-27 15:00:00',1,_binary '\0'),('2022-01-28 15:00:00',1,_binary ''),('2022-06-22 00:00:00',2,_binary ''),('2022-06-23 00:00:00',2,_binary '');
+INSERT INTO `event_date` VALUES
+('2022-01-27 15:00:00',1,_binary '\0'),
+('2022-01-28 15:00:00',1,_binary ''),
+('2022-06-22 00:00:00',2,_binary ''),
+('2022-06-23 00:00:00',2,_binary '');
 /*!40000 ALTER TABLE `event_date` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +140,11 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','peterhandsome123','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','Harmon','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
+INSERT INTO `users` VALUES
+('admin', 'admin', NULL, '$argon2i$v=19$m=4096,t=3,p=1$kt+vixE37tDD5TDiUePuFg$iVnJwmPydpew6Fs2LW4CJeo52eZ/QSnBs1VLVjjn868', 'admin', 'admin', 0, NULL, NULL,_binary '',_binary '',_binary '',_binary ''),
+('Peter','Le','rthinh2002@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$DtKTOQgUASMiTmkmM0znMg$CoWwbWq5yyEgEvf0v0ER2BLLIZNx6+zVP1lfAwWkCtY','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),
+('Josh','Harmon','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),
+('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
