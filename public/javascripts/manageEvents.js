@@ -1,6 +1,20 @@
 var count_element_date = 0;
 var count_element_friend = 0;
 
+var vueints = new Vue ({
+    el: '#app',
+    data: 
+    {
+        date_id: []
+    },
+    methods: 
+    {
+        populate_date_id(date_id) {
+            this.date_id = date_id;
+        }
+    }
+});
+
 function display_event_info() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -16,6 +30,7 @@ function display_event_info() {
             document.getElementById("eventRSVP").value = date.slice(1,11);
             document.getElementById("eventDetails").value = event_info[0].event_description;
 
+            var date_id_array = [];
             // populate with all date;
             for (var element in event_info) {
                 let create_tr = document.createElement("tr");
@@ -39,14 +54,41 @@ function display_event_info() {
                 create_tr.appendChild(create_td_date);
                 document.getElementById("table_when").appendChild(create_tr);
                 count_element_date++;
+                date_id_array.push(event_info[element].event_date_id);
             }
+            vueints.populate_date_id(date_id_array);
         }
     };
     xhttp.open("POST", "/display_event_info", true);
     xhttp.send();
 }
 
+// This function is for eventvieworg.html
 function display_event_info_eventvieworg() {
+    display_event_details();
+    display_event_date();
+}
+
+// function for display event details eventvieworg
+function display_event_details() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var event_detail = JSON.parse(this.responseText);
+            document.getElementById("event_name").innerHTML = event_detail[0].event_name;
+            document.getElementById("td_where").innerHTML = event_detail[0].location;
+            var date = new Date(event_detail[0].RSVP);
+            date.setDate(date.getDate()+1);
+            document.getElementById("td_rsvp").innerHTML = (JSON.stringify(date)).slice(1,11);
+            document.getElementById("td_details").innerHTML = event_detail[0].event_description;
+        }
+    };
+    xhttp.open("POST", "/display_event_info_eventvieworg", true);
+    xhttp.send();
+}
+
+// Function to display event date eventvieworg
+function display_event_date() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
