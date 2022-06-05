@@ -154,8 +154,8 @@ router.post('/display_user_information', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = 1;";
-    connection.query(query, function (err, rows, fields) {
+    var query = "SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = ?;";
+    connection.query(query, [req.session.user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -186,8 +186,8 @@ router.post('/change_user_info', function(req, res, next){
     var notification_event = req.body.notification_event;
     var notification_attendee = req.body.notification_attendee;
     var notification_cancelation = req.body.notification_cancelation;
-    var query = "UPDATE users SET first_name = ?, last_name = ?, email_address = ?, DOB = ?, email_notification_users_response = ?, email_notification_event = ?, email_notification_attendee = ?, email_notification_cancelation = ? WHERE user_id = 1;";
-    connection.query(query, [first_name, last_name, email, correct_dob, users_response, notification_event, notification_cancelation, notification_attendee], function (err, rows, fields) {
+    var query = "UPDATE users SET first_name = ?, last_name = ?, email_address = ?, DOB = ?, email_notification_users_response = ?, email_notification_event = ?, email_notification_attendee = ?, email_notification_cancelation = ? WHERE user_id = ?;";
+    connection.query(query, [first_name, last_name, email, correct_dob, users_response, notification_event, notification_cancelation, notification_attendee, req.session.user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -218,6 +218,7 @@ router.post('/display_event_info', function(req, res, next){
   });
 });
 
+// Display attendee for editevent.html - Peter 4/6/2022
 router.post('/display_attendee', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
@@ -257,6 +258,7 @@ router.post('/get_hosting_event', function(req, res, next){
   });
 });
 
+// Route for display attendee - Peter 1/6/2022
 router.post('/get_attending_event', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
@@ -270,6 +272,70 @@ router.post('/get_attending_event', function(req, res, next){
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+// Route to save only event info, not add date and attendee - Peter 3/6/2022
+router.post('/save_event_info', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "UPDATE event SET event_name = ?, event_description = ?, location = ?, RSVP = ? WHERE event_id = 1 ";
+    connection.query(query, [req.body.event_name, req.body.event_description, req.body.location, req.body.rsvp] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+// Route to save only date - Peter 4/6/2022
+router.post('/save_event_date', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    console.log(req.body.event_date);
+    var query = "INSERT INTO event_date(event_date, event_id) VALUES ( ?, 1 );";
+    connection.query(query, [req.body.event_date] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+// Route that will only add attendee to the table - Peter 4/6/2022
+router.post('/save_event_attendee', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "INSERT INTO attendee(event_id, user_id) VALUES(1, (SELECT user_id FROM users WHERE first_name = ? AND email_address = ?));";
+    connection.query(query, [req.body.first_name, req.body.email_address] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if(err) {
+        console.log(err);
+        res.send("Error");
         return;
       }
       res.json(rows); //send response
