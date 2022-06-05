@@ -136,7 +136,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','peterhandsome123','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','NoGay','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
+INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$m7w2o9qH7StTS2uim3Efsw$jX4ce7OOgPIKY3wwtpWnzHLxgkRwixADNJJPEOc8bwI','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','NoGay','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

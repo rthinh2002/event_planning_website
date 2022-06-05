@@ -19,7 +19,7 @@ router.post('/login', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     if(err) {
-      //console.log(err);
+      console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -28,7 +28,7 @@ router.post('/login', function(req, res, next) {
     connection.query(query, [req.body.username], async function (error, rows, fields) {
       connection.release();
       if (error) {
-        //console.log(error);
+        console.log(error);
         res.sendStatus(500);
         return;
       }
