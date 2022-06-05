@@ -23,14 +23,13 @@ DROP TABLE IF EXISTS `attendee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `attendee` (
-  `event_id` int NOT NULL,
+  `attendee_response` varchar(3) DEFAULT 'YES',
   `user_id` int NOT NULL,
-  `attendee_response` varchar(6) DEFAULT 'MAYBE',
-  UNIQUE KEY `event_id_2` (`event_id`,`user_id`),
-  KEY `event_id` (`event_id`),
+  `event_date_id` int NOT NULL,
   KEY `user_id` (`user_id`),
-  CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`),
-  CONSTRAINT `attendee_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  KEY `event_date_id` (`event_date_id`),
+  CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `attendee_ibfk_2` FOREIGN KEY (`event_date_id`) REFERENCES `event_date` (`event_date_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -40,7 +39,7 @@ CREATE TABLE `attendee` (
 
 LOCK TABLES `attendee` WRITE;
 /*!40000 ALTER TABLE `attendee` DISABLE KEYS */;
-INSERT INTO `attendee` VALUES (1,1,'YES'),(1,2,'YES'),(1,3,'MAYBE'),(2,2,'MAYBE');
+INSERT INTO `attendee` VALUES ('YES',1,2),('NO',1,1),('NO',2,1),('NO',2,3);
 /*!40000 ALTER TABLE `attendee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-05 15:29:40
+-- Dump completed on 2022-06-05 16:33:13
