@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <title>Login</title>
-    <!-- <meta name="google-signin-client_id" content="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com"> -->
+    <meta name="google-signin-client_id" content="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com">
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="/public/javascripts/login.js"></script>
     <script src="/javascripts/templatevue.js" defer></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
@@ -19,6 +20,7 @@
                 <br>
                 <p style="text-align: center;">Log in with</p>
                 <!-- <div style="text-align:center;"><a href="/auth/google"><i class="socialMedia fa-brands fa-google fa-fw"></i></a></div> -->
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
                 <br>
                 <p style="text-align: center;">or</p>
                 <!-- <div style="text-align: center;"><i class="socialMedia fa-brands fa-facebook fa-fw"></i> <i class="socialMedia fa-brands fa-google fa-fw"></i></div> -->
