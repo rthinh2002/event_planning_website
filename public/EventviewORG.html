@@ -6,10 +6,10 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/templatevue.js" defer></script>
+    <script src="/javascripts/manageEvents.js" defer></script>
 </head>
 
-<body>
+<body onload=display_event_info_eventvieworg()>
     <div class="grid-container" id="app">
 
         <!-- HEADER -->
@@ -38,24 +38,26 @@
         <!-- CONTENT -->
         <div class="page-content">
             <div class="standard-width">
-            <h1 class="event-text">Event name</h1>
+            <h1 class="event-text" id="event_name"></h1>
             <div class="textField">
                 <!-- a 3 by 3 table -->
                 <table class="table">
                     <tr>
-                        <th>Where</th>
-                        <td>{{ event[0].place }}</td>
+                        <th>Where:</th>
+                        <td></td>
+                        <td id="td_where"></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <th>RSVP</th>
-                        <td>{{ event[0].date }}</td>
+                        <th>RSVP:</th>
+                        <td></td>
+                        <td id="td_rsvp"></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <th>Details</th>
-                        <td>{{ event[0].details }}</td>
-                        <td><a href="/html/" style="text-decoration: none;">Edit</a></td>
+                        <th>Details:</th>
+                        <td></td>
+                        <td id="td_details"></td>
                     </tr>
                 </table>
             </div>
@@ -77,7 +79,12 @@
                             <th><input type="checkbox"></th>
                             <th><input type="checkbox"></th>
                             <th><input type="checkbox"></th>
-                            <td>Delete</td>
+                            <td>
+                                <button class="button-eventvieworg">Save</button>
+                            </td>
+                            <td>
+                                <button class="button-eventvieworg">Delete</button>
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ event[0].date }}</th>
@@ -85,31 +92,29 @@
                             <th><input type="checkbox"></th>
                             <th><input type="checkbox"></th>
                             <th><input type="checkbox"></th>
-                            <td>Delete</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>Add date</td>
+                            <td>
+                                <button class="button-eventvieworg">Save</button>
+                            </td>
+                            <td>
+                                <button class="button-eventvieworg">Delete</button>
+                            </td>
                         </tr>
                     </table>
                 </div>
                 <br>
                 <!-- make a text message element here something similar to whatsapp-->
+                <!--
                 <h1 class="event-text">Message</h1>
                 <div class="textField" style="height: 10em; margin: 0;">
                     <div class="textmessage textbox">message that i feel like it will be more than 1 line or maybe if not than i will add more here</div>
                 </div>
                 <div class="textField" style="height: fit-content; margin: 0;">
-                    <!-- message sending element-->
+                     message sending element
                     <div class="textbox">
                         <input type="text" class="textmessage" placeholder="Type your message here...">
                         <button class="sendmessage" style="vertical-align: middle;"><i class="fa-solid fa-paper-plane-top fa-lg blue-color"></i>+</button>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
 

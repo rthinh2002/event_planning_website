@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `attendee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `attendee` (
-  `event_id` int NOT NULL,
+  `attendee_response` varchar(3) DEFAULT 'YES',
   `user_id` int NOT NULL,
-  `attendee_response` varchar(6) DEFAULT NULL,
-  KEY `event_id` (`event_id`),
+  `event_date_id` int NOT NULL,
   KEY `user_id` (`user_id`),
-  CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`),
-  CONSTRAINT `attendee_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  KEY `event_date_id` (`event_date_id`),
+  CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `attendee_ibfk_2` FOREIGN KEY (`event_date_id`) REFERENCES `event_date` (`event_date_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,7 +39,7 @@ CREATE TABLE `attendee` (
 
 LOCK TABLES `attendee` WRITE;
 /*!40000 ALTER TABLE `attendee` DISABLE KEYS */;
-INSERT INTO `attendee` VALUES (1,2,'YES'),(2,2,'MAYBE'),(1,1,'YES');
+INSERT INTO `attendee` VALUES ('YES',1,2),('NO',1,1),('NO',2,1),('NO',2,3);
 /*!40000 ALTER TABLE `attendee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS `event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event` (
-  `event_name` varchar(20) DEFAULT NULL,
+  `event_name` varchar(100) DEFAULT NULL,
   `event_description` text,
   `creator_id` int NOT NULL,
   `event_id` int NOT NULL AUTO_INCREMENT,
@@ -70,7 +70,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES ('The Day of Dancing','Nothing special, just dancing around',1,1,'Adelaide Red Square','2022-01-06'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15');
+INSERT INTO `event` VALUES ('The Day of Dancing Around','Nothing special, just dancing around',1,1,'Adelaide Glenelgh','2022-01-05'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,10 +85,12 @@ CREATE TABLE `event_date` (
   `event_date` datetime NOT NULL,
   `event_id` int NOT NULL,
   `date_status` bit(1) NOT NULL DEFAULT b'0',
+  `event_date_id` int NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`event_date`),
+  UNIQUE KEY `event_date_id` (`event_date_id`),
   KEY `event_id` (`event_id`),
   CONSTRAINT `event_date_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +99,7 @@ CREATE TABLE `event_date` (
 
 LOCK TABLES `event_date` WRITE;
 /*!40000 ALTER TABLE `event_date` DISABLE KEYS */;
-INSERT INTO `event_date` VALUES ('2022-01-27 15:00:00',1,_binary '\0'),('2022-01-28 15:00:00',1,_binary ''),('2022-06-22 00:00:00',2,_binary ''),('2022-06-23 00:00:00',2,_binary '');
+INSERT INTO `event_date` VALUES ('2022-01-27 15:00:00',1,_binary '\0',1),('2022-01-28 15:00:00',1,_binary '',2),('2022-06-01 00:45:00',1,_binary '\0',3),('2022-06-01 11:03:00',1,_binary '\0',4),('2022-06-11 11:03:00',1,_binary '\0',5),('2022-06-18 11:03:00',1,_binary '\0',6),('2022-06-22 00:00:00',2,_binary '',7),('2022-06-23 00:00:00',2,_binary '',8),('2022-06-28 23:45:00',1,_binary '\0',9);
 /*!40000 ALTER TABLE `event_date` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,8 +114,8 @@ CREATE TABLE `users` (
   `first_name` varchar(20) DEFAULT NULL,
   `last_name` varchar(20) DEFAULT NULL,
   `email_address` varchar(30) DEFAULT NULL,
-  `password` varchar(20) DEFAULT NULL,
-  `user_name` varchar(20) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `user_name` varchar(20) NOT NULL,
   `user_role` varchar(6) DEFAULT NULL,
   `user_id` int NOT NULL AUTO_INCREMENT,
   `api_token` varchar(100) DEFAULT NULL,
@@ -134,7 +136,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','peterhandsome123','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','Harmon','hjosh@gmail.com','nopassword','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
+INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$m7w2o9qH7StTS2uim3Efsw$jX4ce7OOgPIKY3wwtpWnzHLxgkRwixADNJJPEOc8bwI','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','NoGay','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -147,4 +149,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-31 23:40:36
+-- Dump completed on 2022-06-05 16:33:13

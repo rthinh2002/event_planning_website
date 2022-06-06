@@ -6,19 +6,15 @@ var router = express.Router();
 
 var passport = require('passport');
 
+const argon2 = require('argon2');
 const login = require('../public/javascripts/login.js');
-
-let users = {
-  admin: { username: "admin", name: "Some Admin", password: "admin" },
-  alice: { username: "alice", name: "Alice User", password: "horse" }
-};
 
 /* GET home page. */
 router.get('/home.html', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-// Log in to app - Karl, 2/6/22
+// Log in to app - Karl, updated security to inlude argon2 4/6/22
 router.post('/login', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
@@ -28,8 +24,8 @@ router.post('/login', function(req, res, next) {
       return;
     }
 
-    var query = "SELECT users.user_id FROM users WHERE users.user_name = ? && users.password = ?;";
-    connection.query(query, [req.body.username, req.body.password], function (error, rows, fields) {
+    var query = "SELECT user_id, user_role, password FROM users WHERE user_name = ?;";
+    connection.query(query, [req.body.username], async function(error, rows, fields) {
       connection.release();
       if (error) {
         console.log(error);
@@ -37,13 +33,30 @@ router.post('/login', function(req, res, next) {
         return;
       }
       if (rows.length > 0) {
-        console.log('successful login');
-        req.session.user_id = rows[0].user_id;
-        console.log(req.session);
-        res.sendStatus(200);
-      } else {
-          console.log('bad login request');
+
+        try {
+          if (await argon2.verify(rows[0].password, req.body.password)) {
+            // password match
+            //console.log('successful login');
+            delete rows[0].password; // remove password from retrived data
+            req.session.user_id = rows[0].user_id;
+            req.session.user_role = rows[0].user_role;
+            console.log(req.session);
+            res.sendStatus(200);
+          } else {
+            // password did not match
+            //console.log('bad password');
+            res.sendStatus(401);
+          }
+        } catch (err) {
+          // internal failure
+          //console.log('bad verify');
           res.sendStatus(401);
+        }
+
+      } else {
+        //console.log('bad user');
+        res.sendStatus(401);
       }
     });
 
@@ -54,66 +67,57 @@ router.post('/login', function(req, res, next) {
 // Create new account - Karl, updated 3/6/22 with DB integration
 router.post('/createaccount', function(req, res, next)
 {
-  req.pool.getConnection(function(err, connection)
+  req.pool.getConnection(async function(err, connection)
   {
-    if(err)
-    {
-      console.log(err);
+    if(err) {
+      //console.log(err);
       res.sendStatus(500);
       return;
     }
 
-    // check if email address or username already in use
-    var query1 = "SELECT users.user_id FROM users WHERE users.user_name = ? || users.email_address = ?;";
-    connection.query(query1, [req.body.username, req.body.email], function (error, rows, fields) {
-      if (error)
-      {
+    let hash = null;
+
+    try {
+      hash = await argon2.hash(req.body.password);
+    } catch (err) {
+      //console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    // add new account to database
+    var query = "INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role) VALUES (?, ?, ?, ?, ?, ?);";
+    connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields)
+    {
+      if (error) {
         connection.release();
         console.log(error);
-        res.sendStatus(500);
-        return;
+        if (error.code === "ER_DUP_ENTRY") {
+          console.log('account with username and/or email already exists');
+          return res.sendStatus(409);
+        } else {
+          return res.sendStatus(500);
+        }
       }
 
-      if (rows.length > 0) {
-        connection.release();
-        console.log('account with username and/or email already exists');
-        res.sendStatus(409);
-        return;
-      }
-      else
+      //log new user in
+      query = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
+      connection.query(query, function (error, rows, fields)
       {
-          // add new account to database
-          var query2 = "INSERT INTO users (first_name, last_name, email_address, password, user_name, user_ole) VALUES (?, ?, ? ,? , ?);";
-          connection.query(query2, [req.body.firstname, req.body.lastname, req.body.email, req.body.password, req.body.username, 'user'], function (error, rows, fields)
-          {
-            if (error)
-            {
-              connection.release();
-              console.log(error);
-              res.sendStatus(500);
-              return;
-            }
+        connection.release();
+        if (error) {
+          //console.log(error);
+          res.sendStatus(500);
+          return;
+        }
 
-            //log new user in
-            var query3 = "SELECT users.user_id FROM users WHERE users.user_name = ?;"
-            connection.query(query3, [req.body.username], function (error, rows, fields)
-            {
-              connection.release();
-              if (error)
-              {
-                console.log(error);
-                res.sendStatus(500);
-                return;
-              }
-
-              console.log('account created');
-              req.session.user_id = rows[0].user_id;
-              console.log(req.session);
-              res.sendStatus(200);
-            });
-          });
-      }
+        //console.log('account created');
+        req.session.user_id = rows[0].user_id;
+        //console.log(req.session);
+        res.sendStatus(200);
+      });
     });
+
   });
 });
 
@@ -133,8 +137,8 @@ router.post('/display_user_information', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = 1;";
-    connection.query(query, function (err, rows, fields) {
+    var query = "SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = ?;";
+    connection.query(query, [req.session.user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -165,8 +169,8 @@ router.post('/change_user_info', function(req, res, next){
     var notification_event = req.body.notification_event;
     var notification_attendee = req.body.notification_attendee;
     var notification_cancelation = req.body.notification_cancelation;
-    var query = "UPDATE users SET first_name = ?, last_name = ?, email_address = ?, DOB = ?, email_notification_users_response = ?, email_notification_event = ?, email_notification_attendee = ?, email_notification_cancelation = ? WHERE user_id = 1;";
-    connection.query(query, [first_name, last_name, email, correct_dob, users_response, notification_event, notification_cancelation, notification_attendee], function (err, rows, fields) {
+    var query = "UPDATE users SET first_name = ?, last_name = ?, email_address = ?, DOB = ?, email_notification_users_response = ?, email_notification_event = ?, email_notification_attendee = ?, email_notification_cancelation = ? WHERE user_id = ?;";
+    connection.query(query, [first_name, last_name, email, correct_dob, users_response, notification_event, notification_cancelation, notification_attendee, req.session.user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -197,6 +201,26 @@ router.post('/display_event_info', function(req, res, next){
   });
 });
 
+router.post('/display_event_info_eventvieworg', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "SELECT event.event_name, event.event_description, event.location, event.RSVP FROM event WHERE event.event_id = 1;";
+    connection.query(query, function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+// Display attendee for editevent.html - Peter 4/6/2022
 router.post('/display_attendee', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
@@ -223,9 +247,11 @@ router.post('/get_hosting_event', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var session_id = req.session.id;
-    var query = "SELECT * FROM event WHERE creator_id = ? GROUP BY RSVP;";
-    connection.query(query, [session_id], function (err, rows, fields) {
+
+    var user_id = req.session.user_id;
+    //var query = "SELECT * FROM event WHERE creator_id = ? GROUP BY RSVP;";
+    var query = "SELECT * FROM event WHERE creator_id = ? ORDER BY RSVP DESC;";
+    connection.query(query, [user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -236,6 +262,7 @@ router.post('/get_hosting_event', function(req, res, next){
   });
 });
 
+// Route for display attendee - Peter 1/6/2022
 router.post('/get_attending_event', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
@@ -243,12 +270,76 @@ router.post('/get_attending_event', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var session_id = req.session.id;
+    var user_id = req.session.user_id;
     var query = "SELECT * FROM attendee AND user_id = ? GROUP BY attendee_response;";
-    connection.query(query, [session_id], function (err, rows, fields) {
+    connection.query(query, [user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+// Route to save only event info, not add date and attendee - Peter 3/6/2022
+router.post('/save_event_info', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "UPDATE event SET event_name = ?, event_description = ?, location = ?, RSVP = ? WHERE event_id = 1 ";
+    connection.query(query, [req.body.event_name, req.body.event_description, req.body.location, req.body.rsvp] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+// Route to save only date - Peter 4/6/2022
+router.post('/save_event_date', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    console.log(req.body.event_date);
+    var query = "INSERT INTO event_date(event_date, event_id) VALUES ( ?, 1 );";
+    connection.query(query, [req.body.event_date] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+// Route that will only add attendee to the table - Peter 4/6/2022
+router.post('/save_event_attendee', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "INSERT INTO attendee(event_id, user_id) VALUES(1, (SELECT user_id FROM users WHERE first_name = ? AND email_address = ?));";
+    connection.query(query, [req.body.first_name, req.body.email_address] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if(err) {
+        console.log(err);
+        res.send("Error");
         return;
       }
       res.json(rows); //send response
@@ -278,12 +369,12 @@ router.get('/invited', function(req, res, next)
   });
 });
 
-router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+//router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
-router.get('/google/callback',' google', passport.authenticate('google', { successRedirect:'/auth/success' , failureRedirect: '/auth/fail' }));
+//router.get('/google/callback',' google', passport.authenticate('google', { successRedirect:'/auth/success' , failureRedirect: '/auth/fail' }));
 
 router.get('/auth/success', function(req, res, next){
-  req.session.user_id ? function() { //if user is logged in 
+  req.session.user_id ? function() { //if user is logged in
     //update the google id into the users table's api token column
     req.pool.getConnection(function(err, connection){
       if(err) {
@@ -301,9 +392,9 @@ router.get('/auth/success', function(req, res, next){
         res.redirect('/');
       });
     });
-  } 
-  : 
-  function() { //if user is not logged in 
+  }
+  :
+  function() { //if user is not logged in
     req.pool.getConnection(function(err, connection) {
     if(err) {
       console.log(err);
@@ -335,7 +426,36 @@ router.get('/auth/success', function(req, res, next){
 router.get('/auth/fail', function(req, res, next){
   alert('Failed to authenticate');
   window.location.href = "/public/login.html";
-}
-);
+});
+
+
+router.post('/create_new_event', function(req, res, next)
+{
+
+  req.pool.getConnection(async function(err, connection)
+  {
+    if(err) {
+      //console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+     // add new account to database
+    var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
+    connection.query(query, [req.body.eventName, req.body.details, req.session.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields)
+    {
+      if (error) {
+        connection.release();
+        console.log(error);
+        return res.sendStatus(500);
+      }
+
+      return res.sendStatus(200);
+
+    });
+
+  });
+
+});
 
 module.exports = router;

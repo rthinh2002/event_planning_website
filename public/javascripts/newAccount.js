@@ -39,15 +39,6 @@ var newAccountForm = new Vue({
 
 function createaccount() {
 
-    /*let user = {
-        firstname: document.getElementsByName('firstname')[0].value,
-        lastname: document.getElementsByName('lastname')[0].value,
-        email: document.getElementsByName('email')[0].value,
-        username: document.getElementsByName('username')[0].value,
-        password: document.getElementsByName('password')[0].value,
-        passwordConfirm: document.getElementsByName('passwordConfirm')[0].value
-    };*/
-
     let user = {
         firstname: newAccountForm.firstName,
         lastname: newAccountForm.lastName,
@@ -84,7 +75,7 @@ function createaccount() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             console.log("Signup Successful");
-            window.location='/app/dashboard1.html';
+            window.location='/app/dashboard.html';
         } else if (this.readyState == 4 && this.status == 409) {
             alert("email/username already in use");
         } else if (this.readyState == 4 && this.status >= 400) {

@@ -46,6 +46,23 @@ function display_event_info() {
     xhttp.send();
 }
 
+function display_event_info_eventvieworg() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var event_detail = JSON.parse(this.responseText);
+            document.getElementById("event_name").innerHTML = event_detail[0].event_name;
+            document.getElementById("td_where").innerHTML = event_detail[0].location;
+            var date = new Date(event_detail[0].RSVP);
+            date.setDate(date.getDate()+1);
+            document.getElementById("td_rsvp").innerHTML = (JSON.stringify(date)).slice(1,11);
+            document.getElementById("td_details").innerHTML = event_detail[0].event_description;
+        }
+    };
+    xhttp.open("POST", "/display_event_info_eventvieworg", true);
+    xhttp.send();
+}
+
 function load_attendee() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -102,7 +119,10 @@ function load_attendee() {
     xhttp.send();
 }
 
+var count_add_date = 0;
 function add_date() {
+    count_add_date++;
+    if(count_add_date > 1) return;
     let create_input = document.createElement("input");
     let create_td_date = document.createElement("td");
     let create_tr = document.createElement("tr");
@@ -110,6 +130,7 @@ function add_date() {
 
     create_input.setAttribute("type", "datetime-local");
     create_input.setAttribute("size", "14");
+    create_input.setAttribute("id", "datetime-input");
     create_input.classList.add("textField");
     create_input.classList.add("addMargin-date");
 
@@ -120,7 +141,10 @@ function add_date() {
     count_element_date++;
 }
 
+var count_add_friend = 0;
 function addFriend() {
+    count_add_friend++;
+    if(count_add_friend > 1) return;
     let create_tr = document.createElement("tr");
     let create_td_empty = document.createElement("td");
     let create_td_name = document.createElement("td");
@@ -146,7 +170,9 @@ function addFriend() {
 
     // set value
     create_input_email.setAttribute("placeholder", "Enter Email");
+    create_input_email.setAttribute("id", "email-input");
     create_input_name.setAttribute("placeholder", "Enter name");
+    create_input_name.setAttribute("id", "name-input");
 
     // append
     create_td_name.appendChild(create_input_name);
@@ -161,29 +187,51 @@ function addFriend() {
 
 function saveEventInfo() {
     var xhttp = new XMLHttpRequest();
-    
-
-    xhttp.onreadystatechange = function () {
-        
-    }
+    var event_name = document.getElementById("eventWhat").value;
+    var location = document.getElementById("eventLocation").value;
+    var rsvp = document.getElementById("eventRSVP").value;
+    var event_description = document.getElementById("eventDetails").value;
 
     xhttp.open("POST", "/save_event_info", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify());
+    xhttp.send(JSON.stringify({event_name: event_name, rsvp: rsvp, location: location, event_description: event_description}));
 }
 
 function saveEventDate() {
-
+    var xhttp = new XMLHttpRequest();
+    var event_date = document.getElementById("datetime-input").value;
+    xhttp.open("POST", "/save_event_date", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({event_date: event_date}));
 }
 
 function saveEventAttendee()  {
+    var xhttp = new XMLHttpRequest();
+    var email_address = document.getElementById("email-input").value;
+    var first_name = document.getElementById("name-input").value;
 
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            if(this.responseText === "Error") alert("Error in adding new attendee, please try again.");
+        }
+    }
+    xhttp.open("POST", "/save_event_attendee", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({email_address: email_address, first_name: first_name}));
 }
 
+// General function to update information about event-info, add new date, and add new attendee
 function saveData() {
     saveEventInfo();
-    saveEventDate();
-    saveEventAttendee();
+    if(count_add_friend > 0) 
+    {
+        saveEventAttendee();
+        count_add_friend = 0;
+    }
+    if(count_add_date > 0) {
+        saveEventDate();
+        count_add_date = 0;
+    }
 }
 
 function start_loading() {
