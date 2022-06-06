@@ -9,10 +9,12 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
 var window = require('window');
+var gapi = require('gapi');
 window.gapi.load('client:auth2', () => {
     window.gapi.client.init({
-        clientId: '******.apps.googleusercontent.com',
+        clientId: '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com',
         plugin_name: "chat"
     })});
 
