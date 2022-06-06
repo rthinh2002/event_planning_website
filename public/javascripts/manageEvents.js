@@ -15,6 +15,7 @@ var vueints = new Vue ({
     }
 });
 
+// editevent.html
 function display_event_info() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -63,48 +64,7 @@ function display_event_info() {
     xhttp.send();
 }
 
-// This function is for eventvieworg.html
-function display_event_info_eventvieworg() {
-    display_event_details();
-    display_event_date();
-}
-
-// function for display event details eventvieworg
-function display_event_details() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var event_detail = JSON.parse(this.responseText);
-            document.getElementById("event_name").innerHTML = event_detail[0].event_name;
-            document.getElementById("td_where").innerHTML = event_detail[0].location;
-            var date = new Date(event_detail[0].RSVP);
-            date.setDate(date.getDate()+1);
-            document.getElementById("td_rsvp").innerHTML = (JSON.stringify(date)).slice(1,11);
-            document.getElementById("td_details").innerHTML = event_detail[0].event_description;
-        }
-    };
-    xhttp.open("POST", "/display_event_info_eventvieworg", true);
-    xhttp.send();
-}
-
-// Function to display event date eventvieworg
-function display_event_date() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            var event_detail = JSON.parse(this.responseText);
-            document.getElementById("event_name").innerHTML = event_detail[0].event_name;
-            document.getElementById("td_where").innerHTML = event_detail[0].location;
-            var date = new Date(event_detail[0].RSVP);
-            date.setDate(date.getDate()+1);
-            document.getElementById("td_rsvp").innerHTML = (JSON.stringify(date)).slice(1,11);
-            document.getElementById("td_details").innerHTML = event_detail[0].event_description;
-        }
-    };
-    xhttp.open("POST", "/display_event_info_eventvieworg", true);
-    xhttp.send();
-}
-
+// editevent.html
 function load_attendee() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -276,6 +236,7 @@ function saveData() {
     }
 }
 
+// Function for editevent.html
 function start_loading() {
     display_event_info();
     load_attendee();
