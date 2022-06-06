@@ -262,7 +262,6 @@ router.post('/get_hosting_event', function(req, res, next){
   });
 });
 
-// Route for display attendee - Peter 1/6/2022
 router.post('/get_attending_event', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
@@ -334,16 +333,18 @@ router.post('/save_event_attendee', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "INSERT INTO attendee(event_id, user_id) VALUES(1, (SELECT user_id FROM users WHERE first_name = ? AND email_address = ?));";
-    connection.query(query, [req.body.first_name, req.body.email_address] ,function (err, rows, fields) {
-      connection.release(); // release connection
-      if(err) {
-        console.log(err);
-        res.send("Error");
-        return;
-      }
-      res.json(rows); //send response
-    });
+    for(var i in req.body.event_date_id) {
+      var query = "INSERT INTO attendee(user_id, event_date_id) VALUES((SELECT user_id FROM users WHERE first_name = ? AND email_address = ?), ?);";
+      connection.query(query, [req.body.first_name, req.body.email_address, req.body.event_date_id[i]] ,function (err, fields) {
+        connection.release(); // release connection
+        if(err) {
+          console.log(err);
+          res.send("Error");
+          return;
+        }
+      });
+    }
+    res.send("Success!");
   });
 });
 

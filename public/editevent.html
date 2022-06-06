@@ -8,7 +8,7 @@
     <script src="/javascripts/manageEvents.js" defer></script>
 </head>
 
-<body onload=start_loading()>
+<body onload="start_loading()">
     <div id="app"><!--app body-->
         <div id="desktop">
             <div class="header"><!--sticky header-->
@@ -80,7 +80,7 @@
 
                     <div style="float: right;">
                         <button class="cancel-button">Cancel</button>
-                        <button onclick="saveData()" class="save-button">Save</button>
+                        <button onclick="saveData(); return false" class="save-button">Save</button>
                     </div>
                 </form>
             </div>
