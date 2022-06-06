@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `attendee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `attendee` (
-  `attendee_response` varchar(3) DEFAULT 'YES',
+  `attendee_response` varchar(3) DEFAULT 'NO',
   `user_id` int NOT NULL,
   `event_date_id` int NOT NULL,
   KEY `user_id` (`user_id`),
@@ -39,7 +39,7 @@ CREATE TABLE `attendee` (
 
 LOCK TABLES `attendee` WRITE;
 /*!40000 ALTER TABLE `attendee` DISABLE KEYS */;
-INSERT INTO `attendee` VALUES ('YES',1,2),('NO',1,1),('NO',2,1),('NO',2,3);
+INSERT INTO `attendee` VALUES ('YES',1,2),('NO',1,1),('NO',2,1),('NO',2,3),('NO',3,1),('NO',3,2),('NO',3,3),('NO',3,4),('NO',3,5),('NO',3,6),('NO',3,9);
 /*!40000 ALTER TABLE `attendee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +61,7 @@ CREATE TABLE `event` (
   UNIQUE KEY `event_id` (`event_id`),
   KEY `creator_id` (`creator_id`),
   CONSTRAINT `event_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES ('The Day of Dancing Around','Nothing special, just dancing around',1,1,'Adelaide Glenelgh','2022-01-05'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15');
+INSERT INTO `event` VALUES ('The Day of Dancing Around','Nothing special, just dancing around',1,1,'Adelaide Glenelgh','2022-01-05'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15'),('Going to the Moon','I don\'t know cuz we will just fly to the moon and back',1,3,'NASA','2022-06-09');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +86,6 @@ CREATE TABLE `event_date` (
   `event_id` int NOT NULL,
   `date_status` bit(1) NOT NULL DEFAULT b'0',
   `event_date_id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`event_date`),
   UNIQUE KEY `event_date_id` (`event_date_id`),
   KEY `event_id` (`event_id`),
   CONSTRAINT `event_date_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`)
@@ -149,4 +148,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-05 16:33:13
+-- Dump completed on 2022-06-06 22:58:44
