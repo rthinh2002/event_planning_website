@@ -10,6 +10,12 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+window.gapi.load('client:auth2', () => {
+    window.gapi.client.init({
+        clientId: '******.apps.googleusercontent.com',
+        plugin_name: "chat"
+    })});
+
 // Create pool connection for database
 var dbConnectionPool = mysql.createPool({
     host: 'localhost',
