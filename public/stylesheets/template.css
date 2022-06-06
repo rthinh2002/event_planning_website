@@ -7,8 +7,8 @@ html, body {
 }
 
 .g-signin2 {
-    display: block;
-    margin: auto;
+    display: inline-block;
+    align-items: center;
 }
 
 * {

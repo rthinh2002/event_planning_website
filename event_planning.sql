@@ -98,7 +98,15 @@ CREATE TABLE `event_date` (
 
 LOCK TABLES `event_date` WRITE;
 /*!40000 ALTER TABLE `event_date` DISABLE KEYS */;
-INSERT INTO `event_date` VALUES ('2022-01-27 15:00:00',1,_binary '\0',1),('2022-01-28 15:00:00',1,_binary '',2),('2022-06-01 00:45:00',1,_binary '\0',3),('2022-06-01 11:03:00',1,_binary '\0',4),('2022-06-11 11:03:00',1,_binary '\0',5),('2022-06-18 11:03:00',1,_binary '\0',6),('2022-06-22 00:00:00',2,_binary '',7),('2022-06-23 00:00:00',2,_binary '',8),('2022-06-28 23:45:00',1,_binary '\0',9);
+INSERT INTO `event_date` VALUES ('2022-01-27 15:00:00',1,_binary '\0',1),
+('2022-01-28 15:00:00',1,_binary '',2),
+('2022-06-01 00:45:00',1,_binary '\0',3),
+('2022-06-01 11:03:00',1,_binary '\0',4),
+('2022-06-11 11:03:00',1,_binary '\0',5),
+('2022-06-18 11:03:00',1,_binary '\0',6),
+('2022-06-22 00:00:00',2,_binary '',7),
+('2022-06-23 00:00:00',2,_binary '',8),
+('2022-06-28 23:45:00',1,_binary '\0',9);
 /*!40000 ALTER TABLE `event_date` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -135,7 +143,9 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$m7w2o9qH7StTS2uim3Efsw$jX4ce7OOgPIKY3wwtpWnzHLxgkRwixADNJJPEOc8bwI','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','NoGay','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
+INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$m7w2o9qH7StTS2uim3Efsw$jX4ce7OOgPIKY3wwtpWnzHLxgkRwixADNJJPEOc8bwI','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),
+('Josh','NoGay','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary ''),
+('Maria','Mione','mariathegreat@gmail.com','babigurl','mariaisfabulous','user',3,'sds-ssss','2008-02-28',_binary '',_binary '',_binary '',_binary '');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

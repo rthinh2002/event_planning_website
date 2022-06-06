@@ -10,6 +10,14 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+// var window = require('window');
+// var gapi = require('gapi');
+// window.gapi.load('client:auth2', () => {
+//     window.gapi.client.init({
+//         clientId: '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com',
+//         plugin_name: "chat"
+//     })});
+
 // Create pool connection for database
 var dbConnectionPool = mysql.createPool({
     host: 'localhost',
@@ -45,7 +53,7 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-
+/*
 app.use('/app', (req, res, next) => {
     //console.log('Attempted access to app');
     if (!('user_id' in req.session)) {
@@ -69,7 +77,7 @@ app.use('/admin.html', (req, res, next) => {
     next();
     }
 })
-
+*/
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
