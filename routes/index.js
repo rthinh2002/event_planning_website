@@ -38,7 +38,7 @@ router.post('/login', function(req, res, next) {
           if (await argon2.verify(rows[0].password, req.body.password)) {
             // password match
             //console.log('successful login');
-            delete rows[0].password; // remove password from retrived data
+            delete rows[0].password; // remove password from retrieved data
             req.session.user_id = rows[0].user_id;
             req.session.user_role = rows[0].user_role;
             console.log(req.session);
@@ -430,29 +430,70 @@ router.get('/invited', function(req, res, next)
 // });
 
 
-router.post('/create_new_event', function(req, res, next)
-{
+var newEventID;
+var dates;
 
-  req.pool.getConnection(async function(err, connection)
-  {
-    if(err) {
-      //console.log(err);
+router.post('/create_new_event', function(req, res, next) {
+  // check a user is logged in
+  /*
+  if (!req.session.user_id) {
+      console.log("No user logged in to session");
+      res.sendStatus(500);
+      return;
+  }
+*/
+  // get connection
+  req.pool.getConnection(async function(error, connection) {
+    if (error) {
+      //console.log(error);
       res.sendStatus(500);
       return;
     }
 
-     // add new account to database
+     // add new event to database
     var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.eventName, req.body.details, req.session.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields)
-    {
+    connection.query(query, [req.body.eventName, req.body.details, 1, req.body.eventLocation, req.body.rsvp], function (error, rows, fields) {
       if (error) {
         connection.release();
-        console.log(error);
+        //console.log(error);
         return res.sendStatus(500);
+      } // else { console.log("New event added"); }
+
+      // add first event date to database
+      // LAST_INSERT_ID() called to retrieve ID of new event
+      query = "INSERT INTO event_date (event_date, event_id) VALUES (?, LAST_INSERT_ID());"
+      connection.query(query, [req.body.eventDates[0]], function (error, rows, fields) {
+          if (error) {
+            connection.release();
+            //console.log(error);
+            //console.log("Unsuccessful date add");
+            res.sendStatus(500);
+            return;
+          } //else { console.log('First date add success'); }
+        });
+
+      // if more than one date, and remaning dates
+      if (req.body.eventDates.length > 1) {
+        query = "INSERT INTO event_date (event_date, event_id) VALUES (?, \
+                  (SELECT event_id FROM (SELECT * FROM event_date) AS temp \
+                  WHERE temp.event_date_id = LAST_INSERT_ID()) );"
+
+        for (let i = 1; i < req.body.eventDates.length; i++) {
+          var currDate = req.body.eventDates[i];
+          connection.query(query, [currDate], function (error, rows, fields) {
+            if (error) {
+              connection.release();
+              //console.log(error);
+              //console.log("Unsuccessful date add");
+              res.sendStatus(500);
+              return;
+            } // else { console.log('Date add success'); }
+          });
+        }
       }
 
-      return res.sendStatus(200);
-
+connection.release();
+res.sendStatus(200);
     });
 
   });

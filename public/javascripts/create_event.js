@@ -8,8 +8,8 @@ var createEvent = new Vue({
         guestCount: '0',
         dates: [ { date: '', dateID: (this.dateCount) } ],
         guests: [ { name: '', email: '', guestID: this.guestCount } ],
-        rsvp: '',
-        details: ''
+        rsvp: null,
+        details: null
     },
     computed: {
         validEmail: function() {
