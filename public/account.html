@@ -7,6 +7,8 @@
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="/javascripts/manageUsers.js" defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta name="google-signin-client_id" content="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com">
 </head>
 
 <body onload=display_user_info()>
@@ -61,7 +63,11 @@
                     <input class="textField" type="date" id="dob" name="dob">
                   </div>
                   <div>
-                    <a href="calendar" style="text-decoration: none;"><i class="fa-regular fa-calendar fa-2x blue-color"></i>   Connect my calendar</a>
+                    <div id="g_id_onload"
+                         data-client_id="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com"
+                         data-callback="onSignIn">
+                    </div>
+                    <div class="g_id_signin" data-type="standard"></div>   Connect my calendar
                   </div>
                   <div>
                     <a href="password" style="text-decoration: none;"><i class="fa-solid fa-lock fa-2x blue-color"></i>   Change password</a>
@@ -100,4 +106,38 @@
     </div>
 
 </body>
+<script>
+  function onSignIn(googleUser) {
+      var id_token = googleUser.credential;
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/linkgoogle');
+
+      xhr.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              alert("Successfully connected to Google Calendar");
+          } else  if (this.readyState == 4 && this.status == 401) {
+              alert("Failed to connect to Google Calendar");
+          }
+      };
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({'idtoken': id_token}));
+
+  }
+
+  function signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+          console.log('User signed out.');
+      });
+
+      // Do our logout on server here
+
+  }
+
+  function init() {
+      gapi.load('auth2', function() {
+          gapi.auth2.init();
+      });
+  }
+</script>
 </html>
