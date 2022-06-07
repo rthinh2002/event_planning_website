@@ -28,7 +28,7 @@ CREATE TABLE `attendee` (
   `event_date_id` int NOT NULL,
   KEY `user_id` (`user_id`),
   KEY `event_date_id` (`event_date_id`),
-  CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  CONSTRAINT `attendee_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `attendee_ibfk_2` FOREIGN KEY (`event_date_id`) REFERENCES `event_date` (`event_date_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -60,7 +60,7 @@ CREATE TABLE `event` (
   PRIMARY KEY (`event_id`),
   UNIQUE KEY `event_id` (`event_id`),
   KEY `creator_id` (`creator_id`),
-  CONSTRAINT `event_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `users` (`user_id`)
+  CONSTRAINT `event_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -88,7 +88,7 @@ CREATE TABLE `event_date` (
   `event_date_id` int NOT NULL AUTO_INCREMENT,
   UNIQUE KEY `event_date_id` (`event_date_id`),
   KEY `event_id` (`event_id`),
-  CONSTRAINT `event_date_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`)
+  CONSTRAINT `event_date_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -148,4 +148,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-07 16:34:22
+-- Dump completed on 2022-06-07 16:39:03
