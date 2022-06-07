@@ -6,7 +6,6 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <!-- <script src="javascripts/login.js"></script> -->
     <script src="/javascripts/templatevue.js" defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -19,7 +18,6 @@
                 </div>
                 <br>
                 <p style="text-align: center;">Log in with</p>
-                <!-- <div style="text-align:center;"><a href="/auth/google"><i class="socialMedia fa-brands fa-google fa-fw"></i></a></div> -->
                 <div id="g_id_onload"
                      data-client_id="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com"
                      data-callback="onSignIn">
@@ -27,7 +25,6 @@
                 <div class="g_id_signin" data-type="standard"></div>
                 <br>
                 <p style="text-align: center;">or</p>
-                <!-- <div style="text-align: center;"><i class="socialMedia fa-brands fa-facebook fa-fw"></i> <i class="socialMedia fa-brands fa-google fa-fw"></i></div> -->
                 <br>
                 <form style="text-align: center" autocomplete="off">
                     <input class="textField" type="text" id="uname" name="username" size="40" placeholder="Enter username">
@@ -48,12 +45,6 @@
 </body>
 
 <script>
-    function decodeJwtResponse(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace('-', '+').replace('_', '/');
-        return JSON.parse(window.atob(base64));
-    }
-
     function onSignIn(googleUser) {
         var id_token = googleUser.credential;
         var xhr = new XMLHttpRequest();
