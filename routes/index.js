@@ -3,8 +3,9 @@ var express = require('express');
 var session = require('express-session');
 const req = require('express/lib/request');
 var router = express.Router();
-
-var passport = require('passport');
+const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(CLIENT_ID);
 
 const argon2 = require('argon2');
 const login = require('../public/javascripts/login.js');
@@ -499,5 +500,15 @@ res.sendStatus(200);
   });
 
 });
+
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+
+  // Do our logout on server here
+
+}
 
 module.exports = router;
