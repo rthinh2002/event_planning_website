@@ -6,8 +6,9 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <!--<script src="/javascripts/templatevue.js" defer></script>-->
+    <!--<script src="/javascripts/templatevue.js" defer></script<-->
     <script src="/javascripts/dashboard.js" defer></script>
+    <script src="/javascripts/logout.js" defer></script>
 </head>
 
 
@@ -16,7 +17,7 @@
 
         <!-- HEADER -->
         <div class="header2">
-            <a href="/dashboard1.html">
+            <a href="/app/dashboard.html">
                 <img src="/images/W2M_icon.png" class="logo" alt="W2M" />
             </a>
         </div>
@@ -24,10 +25,10 @@
         <!-- SIDEBAR -->
         <div class="sidebar2">
             <div>
-                <a href="/dashboard1.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
+                <a class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>
             <div>
-                <a href="/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
+                <a href="/app/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
             </div>
             <div v-if="admin" v-cloak>
                 <span href="/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</span>
