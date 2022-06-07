@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <title>Login</title>
+    <script src="/javascripts/templatevue.js" defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <meta name="google-signin-client_id" content="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com">
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="javascripts/login.js"></script>
-    <script src="/javascripts/templatevue.js" defer></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div id="app"><!--app body-->
@@ -19,24 +18,13 @@
                 </div>
                 <br>
                 <p style="text-align: center;">Log in with</p>
-                <!-- <div style="text-align:center;"><a href="/auth/google"><i class="socialMedia fa-brands fa-google fa-fw"></i></a></div> -->
                 <div id="g_id_onload"
-                    data-client_id="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com"
-                    data-context="signin"
-                    data-ux_mode="popup"
-                    data-callback="/tokensignin">
+                     data-client_id="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com"
+                     data-callback="onSignIn">
                 </div>
-                <div class="g_id_signin"
-                    data-type="standard"
-                    data-shape="rectangular"
-                    data-theme="outline"
-                    data-text="signin_with"
-                    data-size="large"
-                    data-logo_alignment="left">
-                </div>
+                <div class="g_id_signin" data-type="standard"></div>
                 <br>
                 <p style="text-align: center;">or</p>
-                <!-- <div style="text-align: center;"><i class="socialMedia fa-brands fa-facebook fa-fw"></i> <i class="socialMedia fa-brands fa-google fa-fw"></i></div> -->
                 <br>
                 <form style="text-align: center" autocomplete="off">
                     <input class="textField" type="text" id="uname" name="username" size="40" placeholder="Enter username">
@@ -55,5 +43,40 @@
         </div>
     </div>
 </body>
+
+<script>
+    function onSignIn(googleUser) {
+        var id_token = googleUser.credential;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/tokensignin');
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                window.location='/app/dashboard.html';
+            } else  if (this.readyState == 4 && this.status == 401) {
+                window.location='/public/login.html';
+            }
+        };
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({'idtoken': id_token}));
+
+    }
+
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('User signed out.');
+        });
+
+        // Do our logout on server here
+
+    }
+
+    function init() {
+        gapi.load('auth2', function() {
+            gapi.auth2.init();
+        });
+    }
+</script>
 </html>
 

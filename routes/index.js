@@ -559,22 +559,40 @@ function signOut() {
 }
 
 router.post('/tokensignin', async function(req, res, next) {
-
   try {
     const ticket = await client.verifyIdToken({
         idToken: req.body.idtoken,
-        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-        // Or, if multiple clients access the backend:
-        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+        audience: CLIENT_ID,
     });
     const payload = ticket.getPayload();
     const userid = payload['sub'];
-    const email = payload['email'];
 
-    console.log(userid+" "+email);
-
-    // Do login stuff here
-    // e.g. var query = 'SELECT * FROM user WHERE email = ?';
+    //check if the userid is in the database
+    req.pool.getConnection(function(err, connection){
+      if(err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
+      connection.query(query, [userid], function (error, rows, fields) {
+        connection.release();
+        if (error) {
+          console.log(error);
+          res.sendStatus(500);
+          return;
+        }
+        if (rows.length > 0) {
+          console.log('successful login');
+          req.session.user_id = rows[0].user_id;
+          console.log(req.session);
+          res.sendStatus(200);
+        } else {
+            console.log('bad login request');
+            res.sendStatus(401);
+        }
+      });
+    });
 
     res.send();
   }
@@ -582,6 +600,46 @@ router.post('/tokensignin', async function(req, res, next) {
     console.error('Error while verifying token', err);
   }
 
+});
+
+router.post('linkgoogle', async function(req, res, next) {
+  try {
+    const ticket = await client.verifyIdToken({
+        idToken: req.body.idtoken,
+        audience: CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    //update the database with the userid
+    req.pool.getConnection(function(err, connection){
+      if(err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      var query = "UPDATE users SET api_token = ? WHERE user_id = ?";
+      connection.query(query, [userid, req.session.user_id], function (error, rows, fields) {
+        connection.release();
+        if (error) {
+          console.log(error);
+          res.sendStatus(500);
+          return;
+        }
+        if (rows.length > 0) {
+          console.log('successful login');
+          req.session.user_id = rows[0].user_id;
+          console.log(req.session);
+          res.sendStatus(200);
+        } else {
+            console.log('bad login request');
+            res.sendStatus(401);
+        }
+      });
+    });
+  }
+  catch(err) {
+    console.error('Error while verifying token', err);
+  }
 });
 
 module.exports = router;
