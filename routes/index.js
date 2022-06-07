@@ -511,4 +511,30 @@ function signOut() {
 
 }
 
+router.post('/tokensignin', async function(req, res, next) {
+
+  try {
+    const ticket = await client.verifyIdToken({
+        idToken: req.body.idtoken,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    const email = payload['email'];
+
+    console.log(userid+" "+email);
+
+    // Do login stuff here
+    // e.g. var query = 'SELECT * FROM user WHERE email = ?';
+
+    res.send();
+  }
+  catch(err) {
+    console.error('Error while verifying token', err);
+  }
+
+});
+
 module.exports = router;
