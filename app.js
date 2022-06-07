@@ -22,8 +22,8 @@ var app = express();
 var dbConnectionPool = mysql.createPool({
     host: 'localhost',
     database: 'event_planning',
-    user: 'root',
-    password: 'root',
+    //user: 'root',
+    //password: 'root',
     typeCast: function castField( field, useDefaultTypeCasting ) { // This field is for casting BIT into boolean data - Peter
 		if ( ( field.type === "BIT" ) && ( field.length === 1 ) ) {
 			var bytes = field.buffer();
@@ -53,7 +53,7 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-/*
+
 app.use('/app', (req, res, next) => {
     //console.log('Attempted access to app');
     if (!('user_id' in req.session)) {
@@ -77,7 +77,7 @@ app.use('/admin.html', (req, res, next) => {
     next();
     }
 })
-*/
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
