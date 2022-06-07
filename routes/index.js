@@ -190,26 +190,7 @@ router.post('/display_event_info', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;";
-    connection.query(query, function (err, rows, fields) {
-      connection.release(); // release connection
-      if (err) {
-        res.sendStatus(500);
-        return;
-      }
-      res.json(rows); //send response
-    });
-  });
-});
-
-router.post('/display_event_info_eventvieworg', function(req, res, next){
-  req.pool.getConnection(function(err, connection){
-    if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-    }
-    var query = "SELECT event.event_name, event.event_description, event.location, event.RSVP FROM event WHERE event.event_id = 1;";
+    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;";
     connection.query(query, function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
@@ -229,7 +210,7 @@ router.post('/display_attendee', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT DISTINCT users.first_name, users.email_address FROM users INNER JOIN attendee ON attendee.user_id = users.user_id INNER JOIN event_date on attendee.event_date_id = event_date.event_date_id WHERE event_date.event_id = 1;";
+    var query = "SELECT DISTINCT users.first_name, users.email_address, users.user_id FROM users INNER JOIN attendee ON attendee.user_id = users.user_id INNER JOIN event_date on attendee.event_date_id = event_date.event_date_id WHERE event_date.event_id = 1;";
     connection.query(query, function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
@@ -278,6 +259,27 @@ router.post('/get_attending_event', function(req, res, next){
         res.sendStatus(500);
         return;
       }
+      res.send("Success!"); //send response
+    });
+  });
+});
+
+// Delete event eventvieworg.html delete_date
+router.post('/delete_date', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "DELETE FROM event_date WHERE event_date_id = ?";
+    connection.query(query, [req.body.event_date_id] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
       res.json(rows); //send response
     });
   });
@@ -313,8 +315,8 @@ router.post('/save_event_date', function(req, res, next){
       return;
     }
     console.log(req.body.event_date);
-    var query = "INSERT INTO event_date(event_date, event_id) VALUES ( ?, 1 );";
-    connection.query(query, [req.body.event_date] ,function (err, rows, fields) {
+    var query = "INSERT INTO event_date(event_date, event_id) VALUES ( ?, 1 ); SELECT event_date_id FROM event_date WHERE event_date = ?";
+    connection.query(query, [req.body.event_date, req.body.event_date] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
@@ -323,6 +325,30 @@ router.post('/save_event_date', function(req, res, next){
       }
       res.json(rows); //send response
     });
+  });
+});
+
+// Route that will only populate exist attendee with new date id - Peter 7/6/2022
+router.post('/save_event_attendee_date', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    
+    for(var i in req.body.user_id) {
+      var query = "INSERT INTO attendee(user_id, event_date_id) VALUES(?, ?);";
+      connection.query(query, [req.body.user_id[i], req.body.event_date_id] ,function (err, fields) {
+        connection.release(); // release connection
+        if(err) {
+          console.log(err);
+          res.send("Error");
+          return;
+        }
+      });
+    }
+    res.send("Success!");
   });
 });
 
