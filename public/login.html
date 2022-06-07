@@ -52,9 +52,9 @@
 
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-            // login successful
+                window.location='/app/dashboard.html';
             } else  if (this.readyState == 4 && this.status == 401) {
-            // login failed
+                window.location='/public/login.html';
             }
         };
 
