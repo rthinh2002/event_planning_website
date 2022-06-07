@@ -581,7 +581,7 @@ router.post('/tokensignin', async function(req, res, next) {
 
 });
 
-router.post('linkgoogle', function(req, res, next) {
+router.post('linkgoogle', async function(req, res, next) {
   try {
     const ticket = await client.verifyIdToken({
         idToken: req.body.idtoken,
