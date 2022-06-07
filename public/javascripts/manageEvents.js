@@ -1,17 +1,20 @@
 var count_element_date = 0;
 var count_element_friend = 0;
-
+var tmp_id;
 var vueints = new Vue ({
     el: '#app',
     data: 
     {
-        date_id: []
+        date_id: [],
+        users_id_array: [],
     },
     methods: 
     {
         populate_date_id(date_id) {
             this.date_id = date_id;
-        }
+        },
+
+        
     }
 });
 
@@ -27,7 +30,7 @@ function display_event_info() {
             var correct_RSVP = new Date(event_info[0].RSVP);
             correct_RSVP.setDate(correct_RSVP.getDate()+1);
             var date = JSON.stringify(correct_RSVP);
-            // <input class="textField addMargin" type="datetime-local" placeholder="+  Add date" id="eventDate" name="eventDate" size="14">
+            
             document.getElementById("eventRSVP").value = date.slice(1,11);
             document.getElementById("eventDetails").value = event_info[0].event_description;
 
@@ -112,7 +115,7 @@ function load_attendee() {
                 create_tr.appendChild(create_td_empty);
                 create_tr.appendChild(create_td_name);
                 create_tr.append(create_td_email);
-
+                vueints.users_id_array.push(attendee_info[item].user_id);
                 document.getElementById("table_who").appendChild(create_tr);
             }
         }
@@ -199,12 +202,39 @@ function saveEventInfo() {
     xhttp.send(JSON.stringify({event_name: event_name, rsvp: rsvp, location: location, event_description: event_description}));
 }
 
+// Have to save eventdate in event_date and loop to save attendee
+function saveDate() {
+    saveEventDate();
+}
+
+// Saving eventDate
 function saveEventDate() {
     var xhttp = new XMLHttpRequest();
     var event_date = document.getElementById("datetime-input").value;
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var text = JSON.parse(this.responseText);
+            var num = text[1][0].event_date_id;
+            saveEventAttendeeWithDate(num);
+        }
+    }
     xhttp.open("POST", "/save_event_date", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({event_date: event_date}));
+}
+
+// Only call when saveEventDate is call, to populate exist users with the date field
+function saveEventAttendeeWithDate(num) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            if(this.responseText === "Error") alert("Error in adding new date, please try again.");
+            if(this.responseText === "Success!") alert("Add new date successfully!");
+        }
+    }
+    xhttp.open("POST", "/save_event_attendee_date", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({event_date_id: num, user_id: vueints.users_id_array}));
 }
 
 function saveEventAttendee()  {
@@ -227,7 +257,7 @@ function saveEventAttendee()  {
 function saveData() {
     saveEventInfo();
     if(count_add_date > 0) {
-        saveEventDate();
+        saveDate();
         count_add_date = 0;
     }
     if(count_add_friend > 0) {

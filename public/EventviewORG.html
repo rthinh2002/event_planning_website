@@ -9,7 +9,7 @@
     <script src="/javascripts/eventViewsOrg.js" defer></script>
 </head>
 
-<body>
+<body onload="set_date()">
     <div class="grid-container">
 
         <!-- HEADER -->
@@ -36,7 +36,7 @@
         </div>
 
         <!-- CONTENT -->
-        <div id="inner" class="page-content" v-onload=display_event_info_eventvieworg()>
+        <div id="inner" class="page-content">
             <div class="standard-width">
             <h1 class="event-text" id="event_name">{{ event_name }}</h1>
             <div class="textField">
@@ -64,22 +64,12 @@
                 <br>
                 <h1 class="event-text">Responses</h1>
                 <div class="textField">
-                    <table class="table">
+                    <table id="responses_table" class="table">
                         <tr>
                             <td></td>
                             <th>Confirm</th>
                         </tr>
                         <!-- checkbox -->
-                        <tr>
-                            <th></th>
-                            <th><input type="checkbox"></th>
-                            <td>
-                                <button class="button-eventvieworg">Save</button>
-                            </td>
-                            <td>
-                                <button class="button-eventvieworg">Delete</button>
-                            </td>
-                        </tr>
                     </table>
                 </div>
             </div>
