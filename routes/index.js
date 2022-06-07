@@ -285,6 +285,27 @@ router.post('/delete_date', function(req, res, next){
   });
 });
 
+// Route to confirm date status
+router.post('/update_date_status', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "UPDATE event_date SET date_status = ? WHERE event_date_id = ?;";
+    connection.query(query, [req.body.confirm, req.body.date_id] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
 // Route to save only event info, not add date and attendee - Peter 3/6/2022
 router.post('/save_event_info', function(req, res, next){
   req.pool.getConnection(function(err, connection){
