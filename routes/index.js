@@ -512,7 +512,7 @@ function signOut() {
 }
 
 router.post('/tokensignin', async function(req, res, next) {
-
+  console.log("tokensignin");
   try {
     const ticket = await client.verifyIdToken({
         idToken: req.body.idtoken,
