@@ -6,9 +6,9 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/public/javascripts/login.js"></script>
+    <script src="javascripts/login.js"></script>
     <script src="/javascripts/templatevue.js" defer></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div id="app"><!--app body-->
@@ -20,7 +20,20 @@
                 <br>
                 <p style="text-align: center;">Log in with</p>
                 <!-- <div style="text-align:center;"><a href="/auth/google"><i class="socialMedia fa-brands fa-google fa-fw"></i></a></div> -->
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <div id="g_id_onload"
+                    data-client_id="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com"
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-callback="/tokensignin">
+                </div>
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-shape="rectangular"
+                    data-theme="outline"
+                    data-text="signin_with"
+                    data-size="large"
+                    data-logo_alignment="left">
+                </div>
                 <br>
                 <p style="text-align: center;">or</p>
                 <!-- <div style="text-align: center;"><i class="socialMedia fa-brands fa-facebook fa-fw"></i> <i class="socialMedia fa-brands fa-google fa-fw"></i></div> -->

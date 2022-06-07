@@ -3,8 +3,9 @@ var express = require('express');
 var session = require('express-session');
 const req = require('express/lib/request');
 var router = express.Router();
-
-var passport = require('passport');
+const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
+const {OAuth2Client} = require('google-auth-library');
+const client = new OAuth2Client(CLIENT_ID);
 
 const argon2 = require('argon2');
 const login = require('../public/javascripts/login.js');
@@ -523,6 +524,42 @@ res.sendStatus(200);
     });
 
   });
+
+});
+
+function signOut() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(function () {
+    console.log('User signed out.');
+  });
+
+  // Do our logout on server here
+
+}
+
+router.post('/tokensignin', async function(req, res, next) {
+
+  try {
+    const ticket = await client.verifyIdToken({
+        idToken: req.body.idtoken,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    const email = payload['email'];
+
+    console.log(userid+" "+email);
+
+    // Do login stuff here
+    // e.g. var query = 'SELECT * FROM user WHERE email = ?';
+
+    res.send();
+  }
+  catch(err) {
+    console.error('Error while verifying token', err);
+  }
 
 });
 
