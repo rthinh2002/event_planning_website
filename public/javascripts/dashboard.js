@@ -1,6 +1,5 @@
-
 const displayvue = new Vue ({
-    el: '#app',
+    el: '#content',
     data:
     {
         organising: [],

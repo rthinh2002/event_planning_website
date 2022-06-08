@@ -60,16 +60,28 @@ router.post('/login', function(req, res, next) {
         res.sendStatus(401);
       }
     });
-
   });
+});
 
+// Log in to app - Karl, updated security to include argon2 4/6/22
+router.post('/get_user_role', function(req, res, next) {
+
+  req.pool.getConnection(function(err, connection) {
+    connection.release();
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    res.send(req.session.user_role);
+  });
 });
 
 // Create new account - Karl, updated 3/6/22 with DB integration
 router.post('/createaccount', function(req, res, next)
 {
-  req.pool.getConnection(async function(err, connection)
-  {
+  req.pool.getConnection(async function(err, connection) {
     if(err) {
       //console.log(err);
       res.sendStatus(500);
@@ -88,10 +100,10 @@ router.post('/createaccount', function(req, res, next)
 
     // add new account to database
     var query = "INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role) VALUES (?, ?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields)
-    {
+    connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields) {
+      connection.release();
       if (error) {
-        connection.release();
+
         console.log(error);
         if (error.code === "ER_DUP_ENTRY") {
           console.log('account with username and/or email already exists');
@@ -100,27 +112,34 @@ router.post('/createaccount', function(req, res, next)
           return res.sendStatus(500);
         }
       }
-
-      //log new user in
-      query = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
-      connection.query(query, function (error, rows, fields)
-      {
-        connection.release();
-        if (error) {
-          //console.log(error);
-          res.sendStatus(500);
-          return;
-        }
-
-        //console.log('account created');
-        req.session.user_id = rows[0].user_id;
-        //console.log(req.session);
-        res.sendStatus(200);
-      });
     });
+  });
 
+  req.pool.getConnection(async function(err, connection) {
+    if(err) {
+      //console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    //log new user in
+    query = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
+    connection.query(query, function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        res.sendStatus(500);
+        return;
+      }
+
+      //console.log('account created');
+      req.session.user_id = rows[0].user_id;
+      //console.log(req.session);
+      res.sendStatus(200);
+    });
   });
 });
+
 
 // Log in to app - Karl, 2/6/22
 router.post('/logout', function(req, res, next) {

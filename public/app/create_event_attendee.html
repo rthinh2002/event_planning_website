@@ -8,11 +8,12 @@
     <script src="/javascripts/templatevue.js" defer></script>
     <script src="/public/javascripts/invited.js" defer></script>
     <script src="/javascripts/logout.js" defer></script>
+    <script src="/javascripts/user_actions.js" defer></script>
 </head>
 
-<body >
+<body onload="user_role()">
 
-    <div class="grid-container" id="app">
+    <div class="grid-container">
 
         <!-- HEADER -->
         <div class="header2">
@@ -22,15 +23,14 @@
         </div>
 
         <!-- SIDEBAR -->
-        <div class="sidebar2">
+        <div id="sidebar" class="sidebar2">
             <div>
                 <a href="/app/dashboard.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>
             <div>
                 <a href="/app/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
             </div>
-            <div v-if="admin">
-                <!-- add authorisation validation for this -->
+            <div v-if="admin" v-cloak>
                 <a href="/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</a>
             </div>
             <div>
@@ -39,7 +39,7 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="page-content">
+        <div class="page-content" id="app">
             <div class="flex-container">
 
             <div>

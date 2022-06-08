@@ -8,12 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <!--<script src="/javascripts/templatevue.js" defer></script<-->
     <script src="/javascripts/dashboard.js" defer></script>
-    <script src="/javascripts/logout.js" defer></script>
+    <script src="/javascripts/user_actions.js" defer></script>
 </head>
 
 
-<body onload="get_hosting_event(), get_attending_event()">
-    <div class="grid-container" id="app">
+<body onload="user_role(), get_hosting_event(), get_attending_event()">
+    <div class="grid-container">
 
         <!-- HEADER -->
         <div class="header2">
@@ -23,7 +23,7 @@
         </div>
 
         <!-- SIDEBAR -->
-        <div class="sidebar2">
+        <div id="sidebar" class="sidebar2">
             <div>
                 <a class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>
@@ -31,7 +31,7 @@
                 <a href="/app/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
             </div>
             <div v-if="admin" v-cloak>
-                <span href="/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</span>
+                <a href="/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</a>
             </div>
             <div>
                 <a class="fade" onclick="logout()"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
@@ -39,7 +39,7 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="page-content">
+        <div class="page-content" id="content">
             <div class="flex-container" style="gap: 3em;">
 
                 <div style="min-width: 30em; max-width: 40em">
@@ -47,7 +47,7 @@
 
                     <div class="list" class="organising-container-div"><!--onload="get_hosting_event()">-->
 
-                        <div class="event-container" v-for="event in organising">
+                        <div class="event-container" v-for="event in organising" v-cloak>
                             <table style="width: 100%">
                                 <tr >
                                     <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
@@ -72,7 +72,7 @@
 
                     <div class="list" class="organising-container-div">
 
-                        <div class="event-container" v-for="event in invitations">
+                        <div class="event-container" v-for="event in invitations" v-cloak>
                             <table style="width: 100%">
                                 <tr >
                                     <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
