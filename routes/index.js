@@ -7,31 +7,31 @@ var gapi = require('googleapis');
 const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
-const OAuth2Client_calendar = new OAuth2('376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com', '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');
 const argon2 = require('argon2');
+// const OAuth2Client_calendar = new OAuth2('376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com', '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');
 
-OAuth2Client_calendar.setCredentials({
-  refresh_token: '1//04aSPlR4wYHpBCgYIARAAGAQSNwF-L9IrBWxqPedjPwzGuqp9ebN8uyuZxaXUcxCo4XVNUlnVOb3nDuHuRyyiDBeItf7wpnx_oZw'
-});
+// OAuth2Client_calendar.setCredentials({
+//   refresh_token: '1//04aSPlR4wYHpBCgYIARAAGAQSNwF-L9IrBWxqPedjPwzGuqp9ebN8uyuZxaXUcxCo4XVNUlnVOb3nDuHuRyyiDBeItf7wpnx_oZw'
+// });
 
-const calendar = google.calendar({version: 'v3', auth: OAuth2Client_calendar});
-const eventStartTime = new Date();
-eventStartTime.setDate(eventStartTime.getDay() + 2);
-const eventEndTime = new Date();
-eventEndTime.setDate(eventEndTime.getDay() + 2);
-eventEndTime.setMinutes(eventEndTime.getMinutes() + 45);
-const event = {
-   summary: 'Google I/O 2015',
-   description: 'A chance to hear more about Google\'s developer products.',
-   start: {
-     dateTime: eventStartTime,
-     timeZone: 'Australia/Adelaide'
-  },
-  end: {
-     dateTime: eventEndTime,
-     timeZone: 'Australia/Adelaide'
-  }
-};
+// const calendar = google.calendar({version: 'v3', auth: OAuth2Client_calendar});
+// const eventStartTime = new Date();
+// eventStartTime.setDate(eventStartTime.getDay() + 2);
+// const eventEndTime = new Date();
+// eventEndTime.setDate(eventEndTime.getDay() + 2);
+// eventEndTime.setMinutes(eventEndTime.getMinutes() + 45);
+// const event = {
+//    summary: 'Google I/O 2015',
+//    description: 'A chance to hear more about Google\'s developer products.',
+//    start: {
+//      dateTime: eventStartTime,
+//      timeZone: 'Australia/Adelaide'
+//   },
+//   end: {
+//      dateTime: eventEndTime,
+//      timeZone: 'Australia/Adelaide'
+//   }
+// };
 
 function add_event() {
   calendar.events.insert({
@@ -675,12 +675,12 @@ function signOut() {
 
 }
 
-function getApiKey() {
-  var auth2 = gapi.auth2.getAuthInstance();
-  var apiKey = auth2.currentUser.get().getAuthResponse().id_token;
-  console.log(apiKey);
-  return apiKey;
-}
+// function getApiKey() {
+//   var auth2 = gapi.auth2.getAuthInstance();
+//   var apiKey = auth2.currentUser.get().getAuthResponse().id_token;
+//   console.log(apiKey);
+//   return apiKey;
+// }
 
 router.post('/tokensignin', async function(req, res, next) {
   try {
