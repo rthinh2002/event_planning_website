@@ -1,3 +1,5 @@
+
+
 var count_box = 0;
 var second_app = new Vue ({
     el: '#inner',
@@ -8,10 +10,15 @@ var second_app = new Vue ({
         rsvp: '',
         description: '',
         tmp_date: [],
-        e_date: []
+        e_date: [],
+        date: [],
+        yes: '',
+        no: '',
+        no_response: '',
+        event_date_id: 0
     },
     created() {
-        this.display_event_info_eventvieworg()
+        this.display_event_info_eventvieworg();
     },
     methods: {
         // This function is for eventvieworg.html
@@ -24,7 +31,7 @@ var second_app = new Vue ({
                     second_app.location = event_detail[0].location;
 
                     var date = new Date(event_detail[0].RSVP);
-                    date.setDate(date.getDate()+1);
+                    
                     second_app.rsvp = (JSON.stringify(date)).slice(1,11);
                     
                     second_app.description = event_detail[0].event_description;
@@ -33,9 +40,113 @@ var second_app = new Vue ({
             xhttp.open("POST", "/display_event_info", true);
             xhttp.send();
         },
-
     }
 });
+
+function load_date_response() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var date_response = JSON.parse(this.responseText); 
+            for(var i in date_response) {
+                load_string_response(date_response[i].event_date_id, i, date_response);
+            }
+        }
+    };
+    xhttp.open("POST", "/display_event_info", true);
+    xhttp.send();
+}
+
+function populate_table(date_response, i, y_string, n_string, no_res_string) {
+    // 1 tr
+    tr_1 = document.createElement("tr");
+    th_1 = document.createElement("th");
+    th_1.innerHTML = ISODateString(new Date(date_response[i].event_date));
+    tr_1.appendChild(th_1);
+
+    // 2 tr
+    tr_2 = document.createElement("tr");
+    td_2 = document.createElement("td");
+    td_2.innerHTML = "Yes: ";
+    td_2.innerHTML += y_string;
+    td_empty = document.createElement("td");
+    tr_2.appendChild(td_2);
+    tr_2.appendChild(td_empty);
+
+    // 3 tr
+    tr_3 = document.createElement("tr");
+    td_3 = document.createElement("td");
+    td_3.innerHTML = "No: ";
+    td_3.innerHTML += n_string;
+    td_empty_2 = document.createElement("td");
+    tr_3.appendChild(td_3);
+    tr_3.appendChild(td_empty_2);
+
+    // 4 tr
+    tr_4 = document.createElement("tr");
+    td_4 = document.createElement("td");
+    td_4.innerHTML = "No response: ";
+    td_4.innerHTML += no_res_string;
+    td_empty_3 = document.createElement("td");
+    tr_4.appendChild(td_4);
+    tr_4.appendChild(td_empty_3);
+
+    // 5 tr
+    tr_5 = document.createElement("tr");
+    
+    // append
+    document.getElementById("responses_table_attendee").appendChild(tr_1);
+    document.getElementById("responses_table_attendee").appendChild(tr_2);
+    document.getElementById("responses_table_attendee").appendChild(tr_3);
+    document.getElementById("responses_table_attendee").appendChild(tr_4);
+    document.getElementById("responses_table_attendee").appendChild(tr_5);
+}
+
+function load_string_response(date_id, n, date_response) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var attendee_response = JSON.parse(this.responseText); 
+            console.log(attendee_response);
+            var y_string = '', no_string = '', no_res_string = '';
+            for(var i in attendee_response)
+            {
+                if(attendee_response[i].attendee_response === "YES")
+                {
+                    y_string += attendee_response[i].first_name;
+                    y_string += " - ";
+                }
+                else if (attendee_response[i].attendee_response === "NO") 
+                {
+                    no_string += attendee_response[i].first_name;
+                    no_string += " - ";
+                }
+                else
+                {
+                    no_res_string += attendee_response[i].first_name;
+                    no_res_string += " - ";
+                }
+            }
+            populate_table(date_response, n, y_string, no_string, no_res_string);
+        }
+    };
+    xhttp.open("POST", "/get_attendee", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({event_date_id: date_id}));
+}
+
+/*
+function load_attendee_response(date_id) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var attendee = JSON.parse(this.responseText);
+            var tmp = '';
+        }
+    };
+    xhttp.open("POST", "/get_attendee", true);
+    xhttp.send();
+}*/
 
 function setCountBox(num) {
     this.count_box = num;
@@ -111,7 +222,6 @@ function delete_clicked(date_id) {
                 alert("Date deleted! Please refresh the page");
             }
         }
-        console.log(this.count_box);
         xhttp.open("POST", "/delete_date", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify({event_date_id: date_id}));

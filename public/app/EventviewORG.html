@@ -10,7 +10,7 @@
     <script src="/javascripts/logout.js" defer></script>
 </head>
 
-<body onload="set_date()">
+<body onload="set_date(); load_date_response()">
     <div class="grid-container">
 
         <!-- HEADER -->
@@ -67,6 +67,14 @@
                 <div class="textField">
                     <table id="responses_table" class="table">
                         <!-- checkbox -->
+                    </table>
+                </div>
+
+                <br>
+                <h1 class="event-text">Responses</h1>
+                <div class="textField">
+                    <table id="responses_table_attendee" class="table">
+                        
                     </table>
                 </div>
             </div>

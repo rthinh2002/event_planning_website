@@ -396,6 +396,28 @@ router.post('/save_event_attendee', function(req, res, next){
   });
 });
 
+// Route that return list of attendee to the event
+router.post('/get_attendee', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    console.log(req.body.event_date);
+    var query = "SELECT attendee.attendee_response, users.first_name FROM attendee INNER JOIN users ON users.user_id = attendee.user_id WHERE event_date_id = ?;";
+    connection.query(query, [req.body.event_date_id] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
 router.get('/invited', function(req, res, next)
 {
   var evid = req.query.event;
