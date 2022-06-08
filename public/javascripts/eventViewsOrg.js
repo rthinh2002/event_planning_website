@@ -50,19 +50,11 @@ function set_date() {
             for(var i in event_detail) {
                 tmp++;
                 create_tr = document.createElement("tr");
-
                 create_th_date = document.createElement("th");
-                create_input = document.createElement("input");
-                create_th_checkbox = document.createElement("th");
 
                 create_td_button_delete = document.createElement("td");
                 create_button_delete = document.createElement("button");
 
-                if(event_detail[i].date_status == true) create_input.setAttribute("checked", "");
-                create_input.setAttribute("type", "checkbox");
-                create_input.setAttribute("name", "confirm_box");
-                var id_box = ("box").concat(event_detail[i].event_date_id);
-                create_input.setAttribute("id", id_box);
                 create_th_date.innerHTML = ISODateString(new Date(event_detail[i].event_date));
                 create_button_delete.innerHTML = "Delete";
 
@@ -70,21 +62,26 @@ function set_date() {
                 create_button_delete.setAttribute("onclick", delete_id)
                 create_button_delete.classList.add("button-eventvieworg");
 
-                create_th_checkbox.appendChild(create_input);
                 create_td_button_delete.appendChild(create_button_delete);
-
                 create_tr.appendChild(create_th_date);
-                create_tr.appendChild(create_th_checkbox);
                 create_tr.appendChild(create_button_delete);
+                create_tr.appendChild(document.createElement("td"));
+                if(event_detail[i].date_status == true) {
+                    p_element = document.createElement("em");
+                    p_element.style.textDecoration = "underline";
+                    p_element.innerHTML = "Confirmed";
+                    create_tr.appendChild(p_element);
+                }
+                else {
+                    button_confirm = document.createElement("button");
+                    button_confirm.innerHTML = "Confirm";
+                    button_confirm.classList.add("button-eventvieworg");
+                    var s = (("confirmClicked(").concat(event_detail[i].event_date_id)).concat(")");
+                    button_confirm.setAttribute("onclick", s);
+                    create_tr.appendChild(button_confirm);
+                }
                 document.getElementById("responses_table").appendChild(create_tr);
             }
-            save_button = document.createElement("button");
-            td_save = document.createElement("td");
-            save_button.innerHTML = "Save";
-            save_button.setAttribute("onclick", "saveClicked()");
-            save_button.classList.add("button-eventvieworg");
-            td_save.appendChild(save_button);
-            document.getElementById("responses_table").appendChild(td_save);
             setCountBox(tmp);
         }
     };
@@ -92,18 +89,12 @@ function set_date() {
     xhttp.send();
 }
 
-function saveClicked() {
-    var element = document.getElementsByName("confirm_box");
-    alert("Data is up-to-date!");
-    element.forEach( function (v) {
-        var xhttp = new XMLHttpRequest();
-        var confirm = 0;
-        if(v.checked) confirm = 1;
-        var date_id = (v.id).slice(-2);
-        xhttp.open("POST", "/update_date_status", true);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send(JSON.stringify({confirm: confirm, date_id: date_id}));
-    });
+function confirmClicked(date_id) {
+    var xhttp = new XMLHttpRequest();
+    alert("Confirm!");
+    xhttp.open("POST", "/update_date_status", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({date_id: date_id}));
 }
 
 function delete_clicked(date_id) {

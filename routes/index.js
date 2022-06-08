@@ -209,8 +209,8 @@ router.post('/display_event_info', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;";
-    connection.query(query, function (err, rows, fields) {
+    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = ? && event.event_id = 1 && event.event_id = event_date.event_id;";
+    connection.query(query, [req.session.user_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -312,8 +312,8 @@ router.post('/update_date_status', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "UPDATE event_date SET date_status = ? WHERE event_date_id = ?;";
-    connection.query(query, [req.body.confirm, req.body.date_id] ,function (err, rows, fields) {
+    var query = "UPDATE event_date SET date_status = 1 WHERE event_date_id = ?;";
+    connection.query(query, [req.body.date_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
