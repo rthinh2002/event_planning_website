@@ -1,6 +1,5 @@
-
 const displayvue = new Vue ({
-    el: '#app',
+    el: '#content',
     data:
     {
         organising: [],
@@ -31,7 +30,7 @@ function get_attending_event() {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+            //console.log(this.responseText);
             displayvue.invitations = JSON.parse(this.responseText);
         }
     };

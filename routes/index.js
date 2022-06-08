@@ -15,7 +15,7 @@ router.get('/home.html', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-// Log in to app - Karl, updated security to inlude argon2 4/6/22
+// Log in to app - Karl, updated security to include argon2 4/6/22
 router.post('/login', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
@@ -60,16 +60,28 @@ router.post('/login', function(req, res, next) {
         res.sendStatus(401);
       }
     });
-
   });
+});
 
+// Log in to app - Karl, updated security to include argon2 4/6/22
+router.post('/get_user_role', function(req, res, next) {
+
+  req.pool.getConnection(function(err, connection) {
+    connection.release();
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    res.send(req.session.user_role);
+  });
 });
 
 // Create new account - Karl, updated 3/6/22 with DB integration
 router.post('/createaccount', function(req, res, next)
 {
-  req.pool.getConnection(async function(err, connection)
-  {
+  req.pool.getConnection(async function(err, connection) {
     if(err) {
       //console.log(err);
       res.sendStatus(500);
@@ -88,10 +100,10 @@ router.post('/createaccount', function(req, res, next)
 
     // add new account to database
     var query = "INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role) VALUES (?, ?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields)
-    {
+    connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields) {
+      connection.release();
       if (error) {
-        connection.release();
+
         console.log(error);
         if (error.code === "ER_DUP_ENTRY") {
           console.log('account with username and/or email already exists');
@@ -100,27 +112,34 @@ router.post('/createaccount', function(req, res, next)
           return res.sendStatus(500);
         }
       }
-
-      //log new user in
-      query = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
-      connection.query(query, function (error, rows, fields)
-      {
-        connection.release();
-        if (error) {
-          //console.log(error);
-          res.sendStatus(500);
-          return;
-        }
-
-        //console.log('account created');
-        req.session.user_id = rows[0].user_id;
-        //console.log(req.session);
-        res.sendStatus(200);
-      });
     });
+  });
 
+  req.pool.getConnection(async function(err, connection) {
+    if(err) {
+      //console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    //log new user in
+    query = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
+    connection.query(query, function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        res.sendStatus(500);
+        return;
+      }
+
+      //console.log('account created');
+      req.session.user_id = rows[0].user_id;
+      //console.log(req.session);
+      res.sendStatus(200);
+    });
   });
 });
+
 
 // Log in to app - Karl, 2/6/22
 router.post('/logout', function(req, res, next) {
@@ -190,8 +209,8 @@ router.post('/display_event_info', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;";
-    connection.query(query, function (err, rows, fields) {
+    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = ? && event.event_id = 1 && event.event_id = event_date.event_id;";
+    connection.query(query, [req.session.user_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -293,8 +312,8 @@ router.post('/update_date_status', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "UPDATE event_date SET date_status = ? WHERE event_date_id = ?;";
-    connection.query(query, [req.body.confirm, req.body.date_id] ,function (err, rows, fields) {
+    var query = "UPDATE event_date SET date_status = 1 WHERE event_date_id = ?;";
+    connection.query(query, [req.body.date_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
@@ -357,7 +376,7 @@ router.post('/save_event_attendee_date', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    
+
     for(var i in req.body.user_id) {
       var query = "INSERT INTO attendee(user_id, event_date_id) VALUES(?, ?);";
       connection.query(query, [req.body.user_id[i], req.body.event_date_id] ,function (err, fields) {
@@ -478,74 +497,135 @@ router.get('/invited', function(req, res, next)
 // });
 
 
-var newEventID;
-var dates;
+router.post('/check_guests', function(req, res, next) {
 
+    req.pool.getConnection(function(error, connection) {
+      if (error) {
+        console.log(error); console.log("line 451");
+        return res.sendStatus(500);
+      }
+
+      // check if user email exists - must be unique, so if not then user has no account
+      connection.query("SELECT * FROM users WHERE email_address = ?;", [req.body.email], function (error, userRows, fields) {
+        connection.release();
+        if (error) {
+          console.log(error); console.log("line 459");
+          return res.sendStatus(500);
+        }
+
+        if (userRows.length === 0) { console.log("no user");
+          req.pool.getConnection(function(error, connection) {
+            if (error) {
+              console.log(error); console.log("line 466");
+              return res.sendStatus(500);
+            }
+            var queryNewUser = "INSERT INTO users (first_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?);";
+            connection.query(queryNewUser, [req.body.name, req.body.email, req.body.email.substring(0,19), 'guest'], function (error, rows, fields) {
+              connection.release();
+              if (error) {
+                console.log(error); console.log("line 473");
+                return res.sendStatus(500);
+              }
+            });
+          });
+        } // end if-statement
+      });
+    });
+
+  return res.sendStatus(200);
+});
+// add a new event to the database - KG last edited 7/6/22
 router.post('/create_new_event', function(req, res, next) {
   // check a user is logged in
-  /*
+
   if (!req.session.user_id) {
       console.log("No user logged in to session");
       res.sendStatus(500);
       return;
   }
-*/
+
   // get connection
-  req.pool.getConnection(async function(error, connection) {
+  req.pool.getConnection(function(error, connection) {
     if (error) {
-      //console.log(error);
-      res.sendStatus(500);
-      return;
+      console.log(error); console.log("line 487");
+      return res.sendStatus(500);
     }
-
-     // add new event to database
+    // add new event to database
     var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.eventName, req.body.details, 1, req.body.eventLocation, req.body.rsvp], function (error, rows, fields) {
+    connection.query(query, [req.body.eventName, req.body.details, req.session.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields) {
       if (error) {
-        connection.release();
-        //console.log(error);
+        connection.release(); console.log(error); console.log("line 494");
         return res.sendStatus(500);
-      } // else { console.log("New event added"); }
-
-      // add first event date to database
-      // LAST_INSERT_ID() called to retrieve ID of new event
-      query = "INSERT INTO event_date (event_date, event_id) VALUES (?, LAST_INSERT_ID());"
-      connection.query(query, [req.body.eventDates[0]], function (error, rows, fields) {
-          if (error) {
-            connection.release();
-            //console.log(error);
-            //console.log("Unsuccessful date add");
-            res.sendStatus(500);
-            return;
-          } //else { console.log('First date add success'); }
-        });
-
-      // if more than one date, and remaning dates
-      if (req.body.eventDates.length > 1) {
-        query = "INSERT INTO event_date (event_date, event_id) VALUES (?, \
-                  (SELECT event_id FROM (SELECT * FROM event_date) AS temp \
-                  WHERE temp.event_date_id = LAST_INSERT_ID()) );"
-
-        for (let i = 1; i < req.body.eventDates.length; i++) {
-          var currDate = req.body.eventDates[i];
-          connection.query(query, [currDate], function (error, rows, fields) {
-            if (error) {
-              connection.release();
-              //console.log(error);
-              //console.log("Unsuccessful date add");
-              res.sendStatus(500);
-              return;
-            } // else { console.log('Date add success'); }
-          });
-        }
       }
-
-connection.release();
-res.sendStatus(200);
     });
 
+    connection.query("SELECT LAST_INSERT_ID() AS id;", function (error, rows2, fields) {
+      connection.release();
+      if (error) {
+        console.log(error); console.log("line 494");
+        return res.sendStatus(500);
+      }
+      res.json(rows2[0].id); //send response
+    });
   });
+});
 
+router.post('/add_event_date', function(req, res, next) {
+
+  console.log(req.body);
+  req.pool.getConnection(function(error, connection) {
+    if (error) {
+      console.log(error); console.log("line 487");
+      return res.sendStatus(500);
+    }
+
+    connection.query("INSERT INTO event_date (event_date, event_id) VALUES (?, ?);", [req.body.date, req.body.event_id], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        console.log("Unsuccessful date add"); console.log(error);
+        return res.sendStatus(500);
+      }
+
+      req.pool.getConnection(function(error, connection) {
+        if (error) {
+          console.log(error); console.log("line 487");
+          return res.sendStatus(500);
+        }
+
+        connection.query("SELECT LAST_INSERT_ID() AS id;", function (error, rows, fields) {
+          connection.release();
+          if (error) {
+            console.log(error); console.log("line 494");
+            return res.sendStatus(500);
+          }
+          res.json(rows[0].id); //send response
+        });
+      });
+    });
+  });
+});
+
+router.post('/add_event_attendee', function(req, res, next) {
+
+  console.log(req.body);
+  req.pool.getConnection(function(error, connection) {
+    if (error) {
+      console.log(error); console.log("line 487");
+      return res.sendStatus(500);
+    }
+
+    var query = "INSERT INTO attendee (user_id, event_date_id) \
+                 VALUES ((SELECT user_id FROM users WHERE email_address = ?), \
+                         (SELECT event_date_id FROM event_date WHERE event_date = ? AND event_id = ?));"
+    connection.query(query, [req.body.email, req.body.date, req.body.event_id], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        console.log("Unsuccessful date add"); console.log(error);
+        return res.sendStatus(500);
+      }
+      res.sendStatus(200);
+    });
+  });
 });
 
 function signOut() {
@@ -642,4 +722,11 @@ router.post('/linkgoogle', async function(req, res, next) {
   }
 });
 
+
+
 module.exports = router;
+
+
+
+
+

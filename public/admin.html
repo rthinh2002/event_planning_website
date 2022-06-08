@@ -7,6 +7,7 @@
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="/javascripts/templatevue.js" defer></script>
+    <script src="/javascripts/admin.js" defer></script>
 </head>
 
 <body >
@@ -22,16 +23,16 @@
         <!-- SIDEBAR -->
         <div class="sidebar2">
             <div>
-                <a href="/EventviewORG.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>My Events</a>
+                <a href="/app/dashboard.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>My Events</a>
             </div>
             <div>
-                <a href="/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
+                <a href="/app/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
             </div>
             <div>
                 <span class="selected"><i class="fa-solid fa-user-gear fa-lg sidebar-icon blue-color"></i>Admin</span>
             </div>
             <div>
-                <a class="fade"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
+                <a class="fade" onclick="logout()"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
             </div>
         </div>
 
