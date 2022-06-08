@@ -44,8 +44,9 @@
 
                 <div style="min-width: 30em; max-width: 40em">
                     <h1 class="content-header">Events I'm organising</h1>
+                    <p v-show="noEventsOrganising" v-cloak>There are no event organised by you!<br></p>
 
-                    <div class="list" class="organising-container-div"><!--onload="get_hosting_event()">-->
+                    <div class="list" class="organising-container-div" v-show="!noEventsOrganising" v-cloak>
 
                         <div class="event-container" v-for="event in organising" v-cloak>
                             <table style="width: 100%">
@@ -69,8 +70,9 @@
 
                 <div style="min-width: 30em; max-width: 40em">
                     <h1 class="content-header">Events I'm attending</h1>
+                    <p v-show="noEventsInvited" v-cloak>There are no event organised by you!<br></p>
 
-                    <div class="list" class="organising-container-div">
+                    <div class="list" class="organising-container-div" v-show="!noEventsInvited" v-cloak>
 
                         <div class="event-container" v-for="event in invitations" v-cloak>
                             <table style="width: 100%">
