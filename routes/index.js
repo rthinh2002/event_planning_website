@@ -3,12 +3,49 @@ var express = require('express');
 var session = require('express-session');
 const req = require('express/lib/request');
 var router = express.Router();
+var gapi = require('googleapis');
 const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
-
+const OAuth2Client_calendar = new OAuth2('376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com', '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');
 const argon2 = require('argon2');
-const login = require('../public/javascripts/login.js');
+
+OAuth2Client_calendar.setCredentials({
+  refresh_token: '1//04aSPlR4wYHpBCgYIARAAGAQSNwF-L9IrBWxqPedjPwzGuqp9ebN8uyuZxaXUcxCo4XVNUlnVOb3nDuHuRyyiDBeItf7wpnx_oZw'
+});
+
+const calendar = google.calendar({version: 'v3', auth: OAuth2Client_calendar});
+const eventStartTime = new Date();
+eventStartTime.setDate(eventStartTime.getDay() + 2);
+const eventEndTime = new Date();
+eventEndTime.setDate(eventEndTime.getDay() + 2);
+eventEndTime.setMinutes(eventEndTime.getMinutes() + 45);
+const event = {
+   summary: 'Google I/O 2015',
+   description: 'A chance to hear more about Google\'s developer products.',
+   start: {
+     dateTime: eventStartTime,
+     timeZone: 'Australia/Adelaide'
+  },
+  end: {
+     dateTime: eventEndTime,
+     timeZone: 'Australia/Adelaide'
+  }
+};
+
+function add_event() {
+  calendar.events.insert({
+    auth: OAuth2Client_calendar,
+    calendarId: 'primary',
+    resource: event
+  }, function(err, event) {
+    if (err) {
+      console.log('There was an error contacting the Calendar service: ' + err);
+      return;
+    }
+    console.log('Event created: %s', event.htmlLink);
+  });
+}
 
 /* GET home page. */
 router.get('/home.html', function(req, res, next) {
@@ -635,6 +672,13 @@ function signOut() {
 
 }
 
+function getApiKey() {
+  var auth2 = gapi.auth2.getAuthInstance();
+  var apiKey = auth2.currentUser.get().getAuthResponse().id_token;
+  console.log(apiKey);
+  return apiKey;
+}
+
 router.post('/tokensignin', async function(req, res, next) {
   try {
     const ticket = await client.verifyIdToken({
@@ -643,7 +687,9 @@ router.post('/tokensignin', async function(req, res, next) {
     });
     const payload = ticket.getPayload();
     const userid = payload['sub'];
-
+    //get api key
+    const apiKey = await getApiKey(userid);
+    console.log(apiKey);
     //check if the userid is in the database
     req.pool.getConnection(function(err, connection){
       if(err) {
@@ -665,8 +711,30 @@ router.post('/tokensignin', async function(req, res, next) {
           console.log(req.session);
           res.sendStatus(200);
         } else {
-            console.log('bad login request');
-            res.sendStatus(401);
+            //create new user in database with the data from google and api key
+            req.pool.getConnection(function(err, connection){
+              if(err) {
+                console.log(err);
+                res.sendStatus(500);
+                return;
+              }
+              //generate a random password
+              var password = Math.random().toString(36).slice(-8);
+              var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password) VALUES (?, ?, ?, ?, ?, ?);";
+              connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, password], function (error, rows, fields) {
+                connection.release();
+                if (error) {
+                  console.log(error);
+                  res.sendStatus(500);
+                  return;
+                }
+                console.log('successful login');
+                req.session.user_id = rows[0].user_id;
+                console.log(req.session);
+                res.sendStatus(200);
+              });
+            }
+          );
         }
       });
     });
