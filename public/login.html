@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <title>Login</title>
-    <script src="/javascripts/templatevue.js" defer></script>
+    <script src="/javascripts/login_app.js" defer></script>
+    <script src="/javascripts/toggle_password.js" defer></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <meta name="google-signin-client_id" content="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com">
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
@@ -17,14 +18,21 @@
                     <a href="/index.html"><img src="/images/logo_main.png" class="logoHome" alt="W2M"></a>
                 </div>
                 <br>
-                <p style="text-align: center;">Log in with</p>
                 <div id="g_id_onload"
-                     data-client_id="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com"
-                     data-callback="onSignIn">
+                    data-client_id="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com"
+                    data-context="signin"
+                    data-ux_mode="popup"
+                    data-callback="onSignIn"
+                    data-auto_prompt="false">
                 </div>
-                <div class="g_id_signin" data-type="standard"></div>
-                <br>
-                <p style="text-align: center;">or</p>
+                <div class="g_id_signin"
+                    data-type="standard"
+                    data-shape="pill"
+                    data-theme="outline"
+                    data-text="signin_with"
+                    data-size="large"
+                    data-logo_alignment="center">
+                </div>
                 <br>
                 <form style="text-align: center" autocomplete="off">
                     <input class="textField" type="text" id="uname" name="username" size="40" placeholder="Enter username">

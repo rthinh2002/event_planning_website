@@ -3,12 +3,50 @@ var express = require('express');
 var session = require('express-session');
 const req = require('express/lib/request');
 var router = express.Router();
+var gapi = require('googleapis');
 const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
-
 const argon2 = require('argon2');
-const login = require('../public/javascripts/login.js');
+
+// const OAuth2Client_calendar = new OAuth2('376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com', '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');
+
+// OAuth2Client_calendar.setCredentials({
+//   refresh_token: '1//04aSPlR4wYHpBCgYIARAAGAQSNwF-L9IrBWxqPedjPwzGuqp9ebN8uyuZxaXUcxCo4XVNUlnVOb3nDuHuRyyiDBeItf7wpnx_oZw'
+// });
+
+// const calendar = google.calendar({version: 'v3', auth: OAuth2Client_calendar});
+// const eventStartTime = new Date();
+// eventStartTime.setDate(eventStartTime.getDay() + 2);
+// const eventEndTime = new Date();
+// eventEndTime.setDate(eventEndTime.getDay() + 2);
+// eventEndTime.setMinutes(eventEndTime.getMinutes() + 45);
+// const event = {
+//    summary: 'Google I/O 2015',
+//    description: 'A chance to hear more about Google\'s developer products.',
+//    start: {
+//      dateTime: eventStartTime,
+//      timeZone: 'Australia/Adelaide'
+//   },
+//   end: {
+//      dateTime: eventEndTime,
+//      timeZone: 'Australia/Adelaide'
+//   }
+// };
+
+function add_event() {
+  calendar.events.insert({
+    auth: OAuth2Client_calendar,
+    calendarId: 'primary',
+    resource: event
+  }, function(err, event) {
+    if (err) {
+      console.log('There was an error contacting the Calendar service: ' + err);
+      return;
+    }
+    console.log('Event created: %s', event.htmlLink);
+  });
+}
 
 /* GET home page. */
 router.get('/home.html', function(req, res, next) {
@@ -60,16 +98,28 @@ router.post('/login', function(req, res, next) {
         res.sendStatus(401);
       }
     });
-
   });
+});
 
+// Log in to app - Karl, updated security to include argon2 4/6/22
+router.post('/get_user_role', function(req, res, next) {
+
+  req.pool.getConnection(function(err, connection) {
+    connection.release();
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    res.send(req.session.user_role);
+  });
 });
 
 // Create new account - Karl, updated 3/6/22 with DB integration
 router.post('/createaccount', function(req, res, next)
 {
-  req.pool.getConnection(async function(err, connection)
-  {
+  req.pool.getConnection(async function(err, connection) {
     if(err) {
       //console.log(err);
       res.sendStatus(500);
@@ -88,8 +138,8 @@ router.post('/createaccount', function(req, res, next)
 
     // add new account to database
     var query = "INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role) VALUES (?, ?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields)
-    {
+    connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields) {
+
       if (error) {
         connection.release();
         console.log(error);
@@ -100,27 +150,26 @@ router.post('/createaccount', function(req, res, next)
           return res.sendStatus(500);
         }
       }
-
-      //log new user in
-      query = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
-      connection.query(query, function (error, rows, fields)
-      {
-        connection.release();
-        if (error) {
-          //console.log(error);
-          res.sendStatus(500);
-          return;
-        }
-
-        //console.log('account created');
-        req.session.user_id = rows[0].user_id;
-        //console.log(req.session);
-        res.sendStatus(200);
-      });
     });
 
+    //log new user in
+    query = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
+    connection.query(query, function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        res.sendStatus(500);
+        return;
+      }
+
+      //console.log('account created');
+      req.session.user_id = rows[0].user_id;
+      //console.log(req.session);
+      res.sendStatus(200);
+    });
   });
 });
+
 
 // Log in to app - Karl, 2/6/22
 router.post('/logout', function(req, res, next) {
@@ -252,14 +301,19 @@ router.post('/get_attending_event', function(req, res, next){
       return;
     }
     var user_id = req.session.user_id;
-    var query = "SELECT * FROM attendee AND user_id = ? GROUP BY attendee_response;";
+    var query = "SELECT DISTINCT event.event_id, event.event_status, event.event_name, users.first_name, users.last_name \
+                 FROM users INNER JOIN event ON users.user_id = event.creator_id \
+                 INNER JOIN event_date ON event.event_id = event_date.event_id \
+                 INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id \
+                 WHERE attendee.user_id = ?;";
     connection.query(query, [user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
+        console.log(err);
         res.sendStatus(500);
         return;
       }
-      res.send("Success!"); //send response
+      res.json(rows); //send response
     });
   });
 });
@@ -522,8 +576,8 @@ router.post('/check_guests', function(req, res, next) {
               console.log(error); console.log("line 466");
               return res.sendStatus(500);
             }
-            var queryNewUser = "INSERT INTO users (first_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?);";
-            connection.query(queryNewUser, [req.body.name, req.body.email, req.body.email.substring(0,19), 'guest'], function (error, rows, fields) {
+            var queryNewUser = "INSERT INTO users (first_name, last_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?, ?);";
+            connection.query(queryNewUser, [req.body.name, 'GUEST', req.body.email, req.body.email.substring(0,19), 'guest'], function (error, rows, fields) {
               connection.release();
               if (error) {
                 console.log(error); console.log("line 473");
@@ -641,6 +695,13 @@ function signOut() {
 
 }
 
+// function getApiKey() {
+//   var auth2 = gapi.auth2.getAuthInstance();
+//   var apiKey = auth2.currentUser.get().getAuthResponse().id_token;
+//   console.log(apiKey);
+//   return apiKey;
+// }
+
 router.post('/tokensignin', async function(req, res, next) {
   try {
     const ticket = await client.verifyIdToken({
@@ -649,12 +710,11 @@ router.post('/tokensignin', async function(req, res, next) {
     });
     const payload = ticket.getPayload();
     const userid = payload['sub'];
-
     //check if the userid is in the database
     req.pool.getConnection(function(err, connection){
       if(err) {
         console.log(err);
-        res.sendStatus(500);
+        // res.sendStatus(500);
         return;
       }
       var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
@@ -671,8 +731,30 @@ router.post('/tokensignin', async function(req, res, next) {
           console.log(req.session);
           res.sendStatus(200);
         } else {
-            console.log('bad login request');
-            res.sendStatus(401);
+            //create new user in database with the data from google and api key
+            req.pool.getConnection(function(err, connection){
+              if(err) {
+                console.log(err);
+                res.sendStatus(500);
+                return;
+              }
+              //generate a random password
+              var password = Math.random().toString(36).slice(-8);
+              var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password, user_role) VALUES (?, ?, ?, ?, ?, ?, ?);";
+              connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, password, 'user'], function (error, rows, fields) {
+                connection.release();
+                if (error) {
+                  console.log(error);
+                  res.sendStatus(500);
+                  return;
+                }
+                console.log('successful login');
+                req.session.user_id = rows.insertId;
+                console.log(req.session);
+                res.sendStatus(200);
+              });
+            }
+          );
         }
       });
     });
@@ -727,9 +809,167 @@ router.post('/linkgoogle', async function(req, res, next) {
 
 
 
+router.post('/get_all_users', function(req, res, next) {
+
+  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
+      res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      var query = "SELECT first_name, last_name, user_name, user_role, user_id FROM users WHERE user_id != ? ORDER BY first_name ASC;";
+      connection.query(query, [req.session.user_id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.json(rows); //send response
+      });
+  });
+});
+
+
+router.post('/get_all_events', function(req, res, next) {
+
+  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
+      res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      var query = "SELECT event.event_name, event.event_id, users.first_name, users.last_name FROM event INNER JOIN users ON users.user_id = event.creator_id ORDER BY event_name ASC;";
+      connection.query(query, function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        console.log(rows[0]);
+        res.json(rows); //send response
+      });
+  });
+});
+
+
+
+router.post('/make_admin', function(req, res, next) {
+
+  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
+      res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("UPDATE users SET user_role = 'admin' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
+router.post('/make_user', function(req, res, next) {
+
+  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
+      res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("UPDATE users SET user_role = 'user' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
+router.post('/delete_user', function(req, res, next) {
+
+  // check that session is not missing user_role or user_id
+  if (!('user_role' in req.session) || !('user_id' in req.session)) {
+    res.sendStatus(403);
+  // if present, check if user role admin
+  } else if ( req.session.user_role !== 'admin') {
+      // if user role is not admin, check that user is attempting to delete only their account
+      if (req.session.user_id !== req.body.id) {
+        res.sendStatus(403);
+      }
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("DELETE FROM users WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
+router.post('/delete_event', function(req, res, next) {
+
+  if (!('user_id' in req.session)) {
+    res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("DELETE FROM event WHERE event_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
 module.exports = router;
-
-
-
-
-

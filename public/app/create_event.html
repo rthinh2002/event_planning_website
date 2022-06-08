@@ -6,11 +6,11 @@
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="/javascripts/create_event.js" defer></script>
-    <script src="/javascripts/logout.js" defer></script>
+    <script src="/javascripts/user_actions.js" defer></script>
 </head>
 
-<body>
-    <div class="grid-container" id="createEvent">
+<body onload="user_role()">
+    <div class="grid-container">
 
         <!-- HEADER -->
         <div class="header2">
@@ -20,15 +20,15 @@
         </div>
 
         <!-- SIDEBAR -->
-        <div class="sidebar2">
+        <div id="sidebar" class="sidebar2">
             <div>
                 <a href="/app/dashboard.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>
             <div>
                 <a href="/app/account.html" class="fade"><i class="fa-solid fa-sliders fa-lg sidebar-icon"></i>My Account</a>
             </div>
-            <div v-if="admin">
-                <a href="/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</a>
+            <div v-if="admin" v-cloak>
+              <a href="/admin.html" class="fade"><i class="fa-solid fa-user-gear fa-lg sidebar-icon"></i>Admin</a>
             </div>
             <div>
                 <a class="fade" onclick="logout()"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
@@ -36,7 +36,7 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="page-content">
+        <div class="page-content" id="createEvent" >
             <h1 class="content-header">Create a new event</h1>
 
             <form onsubmit="return false">
@@ -54,7 +54,7 @@
                     <label for="email">When</label><br>
                     <!-- v-for to add/remove dates -->
                     <div v-for="item in dates">
-                        <input class="textField" type="datetime-local" id="date" :name="item.dateID" style="min-width: 25%; max-width: 50%" v-model="item.date" required>
+                        <input class="textField" type="datetime-local" id="date" :name="item.dateID" style="min-width: 25%; max-width: 50%" v-model="item.date" required />
                         <a @click="removeDate(item.dateID)" style="text-decoration: none; cursor: pointer;">
                             <i class="fa-solid fa-lg fa-calendar-minus blue-color" style="padding-left: 0.5em; padding-right: 0.5em"></i>Remove date
                         </a>
@@ -70,10 +70,10 @@
                     <span style="float: right; color: red" v-show="!validEmail" v-cloak>All guests must have a valid email</span>
                     <br>
                     <div v-for="item in guests">
-                      <input class="textField" type="text" id="name" name="name" style="max-width: 30%" v-model="item.name" placeholder="Guest name" required>
-                      <input class="textField" type="text" id="email" name="email" style="max-width:68%" v-model="item.email" placeholder="Guest email" required>
+                      <input class="textField" type="text" id="name" name="name" style="max-width: 30%" v-model="item.name" placeholder="Guest name" required />
+                      <input class="textField" type="text" id="email" name="email" style="max-width:68%" v-model="item.email" placeholder="Guest email" required />
                       <a @click="removeGuest(item.guestID)" style="text-decoration: none; cursor: pointer">
-                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove guest
+                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove guest {{item.guestID}}
                       </a>
                     </div>
                     <br>

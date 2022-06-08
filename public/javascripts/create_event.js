@@ -1,13 +1,12 @@
 var createEvent = new Vue({
     el: '#createEvent',
     data: {
-        admin: false,
         eventWhat: '',
         eventWhere: '',
         dateCount: '0',
         guestCount: '0',
-        dates: [ { date: '', dateID: (this.dateCount) } ],
-        guests: [ { name: '', email: '', guestID: this.guestCount } ],
+        dates: [ { date: '', dateID: 0 } ],
+        guests: [ { name: '', email: '', guestID: 0 } ],
         rsvp: null,
         details: null,
         event_id: null
@@ -38,7 +37,7 @@ var createEvent = new Vue({
         addDate: function() {
             this.dateCount++;
             var date = '';
-            var newID = toString(this.dateCount);
+            var newID = this.dateCount;
             this.dates.push( { date, newID } );
         },
         removeGuest: function(guestIDtoRemove) {
@@ -53,7 +52,7 @@ var createEvent = new Vue({
         },
         addGuest: function() {
             this.guestCount++;
-            var newID = toString(this.guestCount);
+            var newID = this.guestCount;
             var name = '';
             var email = '';
             this.guests.push( { name, email, newID } );
@@ -126,7 +125,8 @@ function addEventGuest(newEvent) {
                 addEventGuest(newEvent);
             } else if (currentGuest === createEvent.guests.length-1) {
                 if (currentDateGuest === createEvent.dates.length-1) {
-                    console.log("done!");
+                    window.location="/app/dashboard.html";
+                    //console.log("done!");
                 } else {
                     currentDateGuest++;
                     addEventGuest(newEvent);
@@ -142,7 +142,64 @@ function addEventGuest(newEvent) {
     xhttp.send(JSON.stringify(event_guest));
 
 }
+/*
+function addEventGuest(newEvent) {
 
+    let event_guest = {
+        email: createEvent.guests[currentGuest2].email,
+        date1: newEvent.eventDates[currentDateGuest].date,
+        event_id: createEvent.event_id
+    };
+
+    console.log(event_guest.date1);
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            alert("Guest added");
+            if (currentGuest2 === createEvent.guests.length) {
+                window.location="/app/dashboard.html";
+            } else {
+                if (currentDateGuest !== createEvent.dates.length) {
+                    currentDateGuest++;
+                } else {
+                    currentDateGuest = 0;
+                    currentGuest2++;
+                }
+                addEventGuest(newEvent);
+            }
+
+        } else if (this.readyState == 4 && this.status >= 400) {
+            alert("Guest add failed");
+        }
+    };
+
+    xhttp.open("POST", "/add_event_attendee");
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(event_guest));
+
+}
+*/
+/*
+            if (currentGuest !== createEvent.guests.length-1) {
+                if (currentDateGuest === createEvent.dates.length-1) {
+                    currentDateGuest = 0;
+                    currentGuest++;
+                } else {
+                    currentDateGuest++;
+                }
+                addEventGuest(newEvent);
+            } else if (currentGuest === createEvent.guests.length-1) {
+                if (currentDateGuest === createEvent.dates.length-1) {
+                    window.location="/app/dashboard.html";
+                    //console.log("done!");
+                } else {
+                    currentDateGuest++;
+                    addEventGuest(newEvent);
+                }
+            }
+            */
 var currentDate = 0;
 
 function addEventDate(newEvent) {
@@ -193,14 +250,14 @@ function addEvent(newEvent) {
     xhttp.send(JSON.stringify(newEvent));
 }
 
-var currentGuest = 0;
+var currentGuest1 = 0;
 
 function checkGuests(newEvent) {
 
-    console.log(newEvent.eventGuests[currentGuest].name);
+    console.log(newEvent.eventGuests[currentGuest1].name);
     var thisGuest = {
-        name: newEvent.eventGuests[currentGuest].name,
-        email: newEvent.eventGuests[currentGuest].email
+        name: newEvent.eventGuests[currentGuest1].name,
+        email: newEvent.eventGuests[currentGuest1].email
     };
 
     let xhttp = new XMLHttpRequest();
@@ -208,10 +265,10 @@ function checkGuests(newEvent) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             console.log("Guest added");
-            if (currentGuest === createEvent.guests.length-1) {
+            if (currentGuest1 === createEvent.guests.length-1) {
                 addEvent(newEvent);
             } else {
-                currentGuest++;
+                currentGuest1++;
                 checkGuests(newEvent);
             }
         } else if (this.readyState == 4 && this.status >= 400) {

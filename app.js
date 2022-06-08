@@ -63,7 +63,7 @@ app.use('/app', (req, res, next) => {
     //console.log('Attempt successful');
     next();
     }
-})
+});
 
 
 app.use('/admin.html', (req, res, next) => {
@@ -76,7 +76,7 @@ app.use('/admin.html', (req, res, next) => {
     //console.log('Attempt to access admin successful');
     next();
     }
-})
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 

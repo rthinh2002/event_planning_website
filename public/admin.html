@@ -6,12 +6,12 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/templatevue.js" defer></script>
+    <script src="/javascripts/user_actions.js" defer></script>
     <script src="/javascripts/admin.js" defer></script>
 </head>
 
-<body >
-    <div class="grid-container" id="app">
+<body onload="user_role(), get_all_users(), get_all_events()">
+    <div class="grid-container">
 
         <!-- HEADER -->
         <div class="header2">
@@ -21,7 +21,7 @@
         </div>
 
         <!-- SIDEBAR -->
-        <div class="sidebar2">
+        <div id="sidebar" class="sidebar2">
             <div>
                 <a href="/app/dashboard.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>My Events</a>
             </div>
@@ -37,42 +37,52 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="page-content">
+        <div class="page-content" id="content">
             <div class="flex-container" style="gap: 3em;">
 
                 <div class="standard-width">
                     <h1 class="content-header">Manage users</h1>
-                    <input class="textField" type="text" placeholder="Search for user" v-model="search" @keyup="searchUser">
+                    <input class="textField" type="text" placeholder="Search for user" />
 
-                    <div class="list">
+                    <div class="list" v-cloak>
                         <div class="list-div items" v-for="user in users">
-                                <span v-if="user.admin == 1">
+                                <span v-if="user.user_role === 'admin'">
+                                    <i class="fa-solid fas fa-user-cog fa-3x list-icon blue-color"></i>
+                                </span>
+                                <span v-else-if="user.user_role === 'user'">
                                     <i class="fa-solid fa-user fa-3x list-icon blue-color"></i>
                                 </span>
-                                <span v-else>
+                                <span v-else="user.user_role === 'guest'">
                                     <i class="fa-regular fa-user fa-3x list-icon blue-color"></i>
                                 </span>
-                                <span class="list-item-name"> {{user.lastname}}, {{user.firstname}}</span>
+                                <span v-if="user.user_role === 'guest'" class="list-item-name">
+                                    {{user.first_name}} (Guest)
+                                </span>
+                                <span v-else class="list-item-name">
+                                    {{user.first_name}} {{user.last_name}} ({{user.user_name}})
+                                </span>
                                 <br>
-                                <a href="/html/admin.html">Delete</a>
-                                <a href="/html/admin.html" onclick="" v-if="user.admin == 1">Make user</a>
-                                <a href="/html/admin.html" onclick="" v-else>Make admin</a>
+                                <a href="#null" @click="deleteUser(user.user_id)">Delete</a>
+                                <a href="#null" @click="makeAdmin(user.user_id)" v-if="user.user_role === 'user'">Make admin</a>
+                                <a href="#null" @click="makeUser(user.user_id)" v-else>Make user</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="standard-width">
                     <h1 class="content-header">Manage events</h1>
-                    <input class="textField" type="text" placeholder="Search for event" @keyup="searchEvent">
-                    <div class="list">
-                        <div class="list-div items" v-for="ev in event">
+                    <input class="textField" type="text" placeholder="Search for event">
+
+                    <div class="list"v-cloak>
+                        <div class="list-div items" v-for="event in events">
                             <i class="fa-regular fa-calendar fa-3x list-icon blue-color"></i>
-                            <span class="list-item-name"> {{ ev.title }} - {{ ev.organiser }}</span>
+                            <span class="list-item-name"> {{ event.event_name }} - {{ event.first_name }} {{ event.last_name }}</span>
                             <br>
-                            <a href="/html/admin.html" onclick="">Delete</a>
-                            <a href="/html/admin.html" onclick="">Edit</a>
+                            <a href="#null" @click="deleteEvent(event.event_id)">Delete</a>
+                            <a href="#null" @click="editEvent(event.event_id)">Edit</a>
                         </div>
                     </div>
+
                 </div>
 
             </div><!-- end flex-container -->

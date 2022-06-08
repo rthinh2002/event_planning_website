@@ -1,11 +1,26 @@
-
 const displayvue = new Vue ({
-    el: '#app',
+    el: '#content',
     data:
     {
         organising: [],
         invitations: []
     },
+    computed: {
+        noEventsOrganising: function() {
+            if (this.organising.length === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        noEventsInvited: function() {
+            if (this.invitations.length === 0) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+    }
 });
 
 //function to retrieve the event that the user is hosting
@@ -31,7 +46,7 @@ function get_attending_event() {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            //console.log(this.responseText);
+            console.log(this.responseText);
             displayvue.invitations = JSON.parse(this.responseText);
         }
     };
