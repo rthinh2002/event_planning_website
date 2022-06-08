@@ -39,14 +39,14 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="page-content" id="content">
+        <div class="page-content" id="content" >
             <div class="flex-container" style="gap: 3em;">
 
                 <div style="min-width: 30em; max-width: 40em">
                     <h1 class="content-header">Events I'm organising</h1>
-                    <p v-show="noEventsOrganising" v-cloak>There are no event organised by you!<br></p>
+                    <p v-if="noEventsOrganising" v-cloak>There are no events organised by you!<br></p>
 
-                    <div class="list" class="organising-container-div" v-show="!noEventsOrganising" v-cloak>
+                    <div class="list" class="organising-container-div" v-if="!noEventsOrganising" v-cloak>
 
                         <div class="event-container" v-for="event in organising" v-cloak>
                             <table style="width: 100%">
@@ -58,7 +58,7 @@
                                 <tr style="vertical-align: bottom">
                                     <td style="font-size: 26px; word-break: break-all">{{event.event_name}}</td>
                                     <td style="text-align: right">
-                                        <a :href="'/edit_event.html?eventID=' + event.event_id">Edit</a>
+                                        <a :href="'/app/edit_event.html?eventID=' + event.event_id">Edit</a>
                                         <br>Delete</td>
                                 </tr>
                             </table>
@@ -69,10 +69,10 @@
                 </div>
 
                 <div style="min-width: 30em; max-width: 40em">
-                    <h1 class="content-header">Events I'm attending</h1>
-                    <p v-show="noEventsInvited" v-cloak>There are no event organised by you!<br></p>
+                    <h1 class="content-header">Events I'm invited to</h1>
+                    <p v-if="noEventsInvited" v-cloak>There are no events you're currently invited to!<br></p>
 
-                    <div class="list" class="organising-container-div" v-show="!noEventsInvited" v-cloak>
+                    <div class="list" class="organising-container-div" v-if="!noEventsInvited" v-cloak>
 
                         <div class="event-container" v-for="event in invitations" v-cloak>
                             <table style="width: 100%">
@@ -102,68 +102,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-<div style="display: none">
-    <div id="app"><!--app body-->
-        <div id="desktop" v-if="desktop">
-
-            <div class="content"><!--content-->
-                <h3 class="event-text">Events I'm organising</h3>
-                <div class="organising-container-div">
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Saturday May 1</p>
-                        <p class="event-name">Event name</p>
-                        <div class="button-container">
-                            <button class="organising-button">Edit</button>
-                            <button class="organising-button bottom-right-radius">Delete</button>
-                        </div>
-                    </div>
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Monday May 28</p>
-                        <p class="event-name">Event name</p>
-                        <div class="button-container">
-                            <button class="organising-button">Edit</button>
-                            <button class="organising-button bottom-right-radius">Delete</button>
-                        </div>
-                    </div>
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Thursday June 6</p>
-                        <p class="event-name">Event name</p>
-                        <div class="button-container">
-                            <button class="organising-button">Edit</button>
-                            <button class="organising-button bottom-right-radius">Delete</button>
-                        </div>
-                    </div>
-                </div>
-                <button class="create-event-button">CREATE NEW EVENT</button>
-                <h3 class="event-text">Events I'm invited to</h3>
-                <div class="organising-container-div">
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Saturday May 1</p>
-                        <p class="event-name">Event name</p>
-                        <p class="status">Attending</p>
-                    </div>
-                    <div class="organising-inner-elements">
-                        <i class="fa-solid fa-calendar-day icon-create-event"></i>
-                        <p class="organising-date">Monday May 28</p>
-                        <p class="event-name">Event name</p>
-                        <p class="status">Response needed!</p>
-                    </div>
-                </div>
-            </div>
-            <div><!--footer-->
-                <p class="bottom right" onclick="toTop()"><button class="fade set-padding"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
-            </div>
-        </div>
-
-    </div>
-    </div>
