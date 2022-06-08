@@ -8,6 +8,7 @@ const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleuser
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 const argon2 = require('argon2');
+
 // const OAuth2Client_calendar = new OAuth2('376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com', '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');
 
 // OAuth2Client_calendar.setCredentials({
@@ -687,12 +688,11 @@ router.post('/tokensignin', async function(req, res, next) {
     });
     const payload = ticket.getPayload();
     const userid = payload['sub'];
-    console.log(apiKey);
     //check if the userid is in the database
     req.pool.getConnection(function(err, connection){
       if(err) {
         console.log(err);
-        res.sendStatus(500);
+        // res.sendStatus(500);
         return;
       }
       var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
@@ -718,8 +718,8 @@ router.post('/tokensignin', async function(req, res, next) {
               }
               //generate a random password
               var password = Math.random().toString(36).slice(-8);
-              var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password) VALUES (?, ?, ?, ?, ?, ?);";
-              connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, password], function (error, rows, fields) {
+              var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password, user_role) VALUES (?, ?, ?, ?, ?, ?, ?);";
+              connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, password, 'user'], function (error, rows, fields) {
                 connection.release();
                 if (error) {
                   console.log(error);
@@ -727,7 +727,7 @@ router.post('/tokensignin', async function(req, res, next) {
                   return;
                 }
                 console.log('successful login');
-                req.session.user_id = rows[0].user_id;
+                req.session.user_id = rows.insertId;
                 console.log(req.session);
                 res.sendStatus(200);
               });
