@@ -687,8 +687,6 @@ router.post('/tokensignin', async function(req, res, next) {
     });
     const payload = ticket.getPayload();
     const userid = payload['sub'];
-    //get api key
-    const apiKey = await getApiKey(userid);
     console.log(apiKey);
     //check if the userid is in the database
     req.pool.getConnection(function(err, connection){
