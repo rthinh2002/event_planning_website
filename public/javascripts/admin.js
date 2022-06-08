@@ -1,106 +1,119 @@
 const vueinst = new Vue({
-    el: '#app',
+    el: '#content',
     data :
     {
-        loggedin : false,
-        baselink : "/wdc_project_2022/",
-        desktop : true,
-        Username : "User",
-        changed : false,
-        given : "",
-        family : "",
-        email : "",
-        dob : "",
-        admin : false,
-        event : [ { date:'dd/mm/yyyy', place:'some place', details:'some details', admin:false, organiser:'Emily Weissman', title:'Event name' },
-                  { date:'dd/mm/yyyy', place:'that place', details:'this details', admin:false, organiser:'John Smith', title:'Another event name' },
-                  { date:'dd/mm/yyyy', place:'that place', details:'this details', admin:false, organiser:'John Carter', title:'Another event' },
-                  { date:'dd/mm/yyyy', place:'that place', details:'this details', admin:false, organiser:'John 117', title:'Some name' },
-                  { date:'dd/mm/yyyy', place:'this place', details:'that details', admin:false, organiser:'Jane Doe', title:'Some other name' } ],
-        users : [ { firstname:'Emily', lastname:'Weissman', admin:true},
-                  { firstname:'John', lastname:'Smith', admin:false},
-                  { firstname:'Jane', lastname:'Doe', admin:true },
-                  { firstname:'Emily', lastname:'Weissman', admin:true},
-                  { firstname:'John', lastname:'Smith', admin:false},
-                  { firstname:'John', lastname:'Smith', admin:false},
-                  { firstname:'Jane', lastname:'Doe', admin:true },
-                  { firstname:'Emily', lastname:'Weissman', admin:true},
-                  { firstname:'Jane', lastname:'Doe', admin:true },
-                  { firstname:'Emily', lastname:'Weissman', admin:true},
-                  { firstname:'Ben', lastname:'Dover', admin:false},
-                  { firstname:'John', lastname:'Smith', admin:false},
-                  { firstname:'Jane', lastname:'Doe', admin:true },
-                  { firstname:'Emily', lastname:'Weissman', admin:true},
-                  { firstname:'John', lastname:'Smith', admin:false},
-                  { firstname:'Jane', lastname:'Doe', admin:true } ],
+        events : [ ],
+        users : [ ]
     },
-});
+    methods: {
+        makeAdmin: function(u_id) {
 
-const vueeventdisplay = new Vue({
-    el: '#evdetails',
-    data : {
-        date : '',
-        place : '',
-        details : '',
-    },
-    methods : {
-        readevent: function() {
-            let xhttp = new XMLHttpRequest();
+            if (confirm("Are you sure you grant this account admin privileges?") === true ) {
+                var xhttp = new XMLHttpRequest();
 
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    let event = JSON.parse(this.responseText);
-                    vueeventdisplay.date = event.RSVP;
-                    vueeventdisplay.place = event.location;
-                    vueivueeventdisplaynst.details = event.event_description;
-                }
-            };
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        get_all_users();
+                    }
+                };
 
-            xhttp.open("GET", "/invited");
-            xhttp.send();
+                xhttp.open("POST", "/make_admin", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify({ id: u_id }));
+            }
+        },
+        makeUser: function(u_id) {
+
+            if (confirm("Are you sure you want to change this account to 'user'?") === true ) {
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        get_all_users();
+                    }
+                };
+
+                xhttp.open("POST", "/make_user", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify({ id: u_id }));
+            }
+        },
+        deleteUser: function(u_id) {
+
+            if (confirm("Are you sure you want to delete this account? This action is not reversible.") == true ) {
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        get_all_users();
+                    }
+                };
+
+                xhttp.open("POST", "/delete_user", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify({ id: u_id }));
+            }
+        },
+        deleteEvent: function(e_id) {
+
+            if (confirm("Are you sure you want to delete this event? This action is not reversible.") == true ) {
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        get_all_events();
+                    }
+                };
+
+                xhttp.open("POST", "/delete_event", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify({ id: e_id }));
+            }
+        },
+        editEvent: function(e_id) {
+/*
+            if (confirm("Are you sure you want to delete this event? This action is not reversible.") == true ) {
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        get_all_events();
+                    }
+                };
+
+                xhttp.open("POST", "/delete_event", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify({ event_id: e_id }));
+            }
+*/
         }
     }
 });
 
-function toTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
+function get_all_users() {
 
-function togglePword() {
-    var items = document.querySelectorAll(".pw");
-
-    for (var i = 0; i < items.length; i++) {
-        if (items[i].type === "password") {
-            items[i].type = "text";
-        } else {
-            items[i].type = "password";
-        }
-    }
-}
-
-function login() {
-
-    let user = {
-        username: document.getElementsByName('username')[0].value,
-        password: document.getElementsByName('password')[0].value
-    };
-
-    let xhttp = new XMLHttpRequest();
+    var xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            window.location='/app/dashboard.html';
-            //alert("Login Successful");
-        } else if (this.readyState == 4 && this.status >= 400) {
-            alert("Login unsuccessful");
+            vueinst.users = JSON.parse(this.responseText);
         }
     };
 
-    xhttp.open("POST", "/login");
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(user));
+    xhttp.open("POST", "/get_all_users", true);
+    xhttp.send();
+}
 
+function get_all_events() {
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            vueinst.events = JSON.parse(this.responseText);
+        }
+    };
+
+    xhttp.open("POST", "/get_all_events", true);
+    xhttp.send();
 }

@@ -101,9 +101,9 @@ router.post('/createaccount', function(req, res, next)
     // add new account to database
     var query = "INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role) VALUES (?, ?, ?, ?, ?, ?);";
     connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields) {
-      connection.release();
-      if (error) {
 
+      if (error) {
+        connection.release();
         console.log(error);
         if (error.code === "ER_DUP_ENTRY") {
           console.log('account with username and/or email already exists');
@@ -113,14 +113,6 @@ router.post('/createaccount', function(req, res, next)
         }
       }
     });
-  });
-
-  req.pool.getConnection(async function(err, connection) {
-    if(err) {
-      //console.log(err);
-      res.sendStatus(500);
-      return;
-    }
 
     //log new user in
     query = "SELECT user_id FROM users WHERE user_id = LAST_INSERT_ID();"
@@ -271,14 +263,19 @@ router.post('/get_attending_event', function(req, res, next){
       return;
     }
     var user_id = req.session.user_id;
-    var query = "SELECT * FROM attendee AND user_id = ? GROUP BY attendee_response;";
+    var query = "SELECT DISTINCT event.event_id, event.event_status, event.event_name, users.first_name, users.last_name \
+                 FROM users INNER JOIN event ON users.user_id = event.creator_id \
+                 INNER JOIN event_date ON event.event_id = event_date.event_id \
+                 INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id \
+                 WHERE attendee.user_id = ?;";
     connection.query(query, [user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
+        console.log(err);
         res.sendStatus(500);
         return;
       }
-      res.send("Success!"); //send response
+      res.json(rows); //send response
     });
   });
 });
@@ -519,8 +516,8 @@ router.post('/check_guests', function(req, res, next) {
               console.log(error); console.log("line 466");
               return res.sendStatus(500);
             }
-            var queryNewUser = "INSERT INTO users (first_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?);";
-            connection.query(queryNewUser, [req.body.name, req.body.email, req.body.email.substring(0,19), 'guest'], function (error, rows, fields) {
+            var queryNewUser = "INSERT INTO users (first_name, last_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?, ?);";
+            connection.query(queryNewUser, [req.body.name, 'GUEST', req.body.email, req.body.email.substring(0,19), 'guest'], function (error, rows, fields) {
               connection.release();
               if (error) {
                 console.log(error); console.log("line 473");
@@ -724,9 +721,167 @@ router.post('/linkgoogle', async function(req, res, next) {
 
 
 
+router.post('/get_all_users', function(req, res, next) {
+
+  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
+      res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      var query = "SELECT first_name, last_name, user_name, user_role, user_id FROM users WHERE user_id != ? ORDER BY first_name ASC;";
+      connection.query(query, [req.session.user_id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.json(rows); //send response
+      });
+  });
+});
+
+
+router.post('/get_all_events', function(req, res, next) {
+
+  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
+      res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      var query = "SELECT event.event_name, event.event_id, users.first_name, users.last_name FROM event INNER JOIN users ON users.user_id = event.creator_id ORDER BY event_name ASC;";
+      connection.query(query, function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        console.log(rows[0]);
+        res.json(rows); //send response
+      });
+  });
+});
+
+
+
+router.post('/make_admin', function(req, res, next) {
+
+  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
+      res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("UPDATE users SET user_role = 'admin' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
+router.post('/make_user', function(req, res, next) {
+
+  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
+      res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("UPDATE users SET user_role = 'user' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
+router.post('/delete_user', function(req, res, next) {
+
+  // check that session is not missing user_role or user_id
+  if (!('user_role' in req.session) || !('user_id' in req.session)) {
+    res.sendStatus(403);
+  // if present, check if user role admin
+  } else if ( req.session.user_role !== 'admin') {
+      // if user role is not admin, check that user is attempting to delete only their account
+      if (req.session.user_id !== req.body.id) {
+        res.sendStatus(403);
+      }
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("DELETE FROM users WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
+router.post('/delete_event', function(req, res, next) {
+
+  if (!('user_id' in req.session)) {
+    res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("DELETE FROM event WHERE event_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
 module.exports = router;
-
-
-
-
-
