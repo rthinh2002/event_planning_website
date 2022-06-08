@@ -749,14 +749,30 @@ router.post('/tokensignin', async function(req, res, next) {
                   return;
                 }
                 console.log('successful login');
-                req.session.user_id = rows.insertId;
-                console.log(req.session);
-                res.sendStatus(200);
+                //get the user id of the new user
+                req.pool.getConnection(function(err, connection){
+                  if(err) {
+                    console.log(err);
+                    res.sendStatus(500);
+                    return;
+                  }
+                  var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
+                  connection.query(query, [userid], function (error, rows, fields) {
+                    connection.release();
+                    if (error) {
+                      console.log(error);
+                      res.sendStatus(500);
+                      return;
+                    }
+                    req.session.user_id = rows[0].user_id;
+                    console.log(req.session);
+                    res.sendStatus(200);
+                  });
               });
             }
           );
-        }
-      });
+        });
+      }});
     });
 
     res.send();
