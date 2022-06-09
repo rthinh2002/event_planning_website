@@ -31,20 +31,6 @@ router.get('/email', function(req, res, next) {
   res.send();
 });
 
-function add_event() {
-  calendar.events.insert({
-    auth: OAuth2Client_calendar,
-    calendarId: 'primary',
-    resource: event
-  }, function(err, event) {
-    if (err) {
-      console.log('There was an error contacting the Calendar service: ' + err);
-      return;
-    }
-    console.log('Event created: %s', event.htmlLink);
-  });
-}
-
 /* GET home page. */
 router.get('/home.html', function(req, res, next) {
   res.render('index', { title: 'Express' });
