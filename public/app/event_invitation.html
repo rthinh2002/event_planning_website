@@ -92,7 +92,7 @@
                     </div>
                     <div v-if="connected">
                         <!-- embed google calender with the users gmail -->
-                        <iframe v-bind:src="'https://calendar.google.com/calendar/embed?src=' + email + '&ctz=Australia%2FAdelaide'" style="border: 0" width="800" height="600" frameborder="0" scrolling="no" v-if="!email"></iframe>
+                        <iframe v-bind:src="'https://calendar.google.com/calendar/embed?src=' + email + '&ctz=Australia%2FAdelaide'" style="border: 0" width="30em" frameborder="0" scrolling="no" v-if="!email"></iframe>
                     </div>
                     <div style="float: right;">
                         <button class="save-button" onclick="saveClicked()">Save</button>
