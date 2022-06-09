@@ -7,6 +7,8 @@ var mysql = require('mysql2');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var eventsRouter = require('./routes/events');
+var adminRouter = require('./routes/admin');
 
 var app = express();
 
@@ -65,7 +67,6 @@ app.use('/app', (req, res, next) => {
     }
 });
 
-
 app.use('/admin.html', (req, res, next) => {
     console.log('Attempted access to admin');
     if (!('user_role' in req.session) || (req.session.user_role !== 'admin')) {
@@ -82,5 +83,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/events', eventsRouter);
+app.use('/admin', adminRouter);
 
 module.exports = app;

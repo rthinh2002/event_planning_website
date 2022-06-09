@@ -8,6 +8,28 @@ const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleuser
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 const argon2 = require('argon2');
+var nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.ethereal.email',
+  port: 587,
+  auth: {
+      user: 'sarai.stamm71@ethereal.email',
+      pass: 'GXktnUSngkcad1hkDf'
+  }
+});
+
+
+router.get('/email', function(req, res, next) {
+  let info = transporter.sendMail({
+    from: 'sarai.stamm71@ethereal.email',
+    to: 'test@email.com',//req.body.recipient,
+    subject: 'test subject',//req.body.subject,
+    text: "this is a test email",//req.body.text,
+    html: "<body>" + "this is a test email"/*req.body.text*/ + "</b>"
+  });
+  res.send();
+});
 
 // const OAuth2Client_calendar = new OAuth2('376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com', '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');
 
@@ -879,89 +901,6 @@ router.post('/get_all_events', function(req, res, next) {
   });
 });
 
-
-
-router.post('/make_admin', function(req, res, next) {
-
-  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
-      res.sendStatus(403);
-  }
-
-  req.pool.getConnection(function(err, connection) {
-      if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-      }
-
-      connection.query("UPDATE users SET user_role = 'admin' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
-        connection.release(); // release connection
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-          return;
-        }
-        res.sendStatus(200)
-      });
-  });
-});
-
-router.post('/make_user', function(req, res, next) {
-
-  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
-      res.sendStatus(403);
-  }
-
-  req.pool.getConnection(function(err, connection) {
-      if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-      }
-
-      connection.query("UPDATE users SET user_role = 'user' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
-        connection.release(); // release connection
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-          return;
-        }
-        res.sendStatus(200)
-      });
-  });
-});
-
-router.post('/delete_user', function(req, res, next) {
-
-  // check that session is not missing user_role or user_id
-  if (!('user_role' in req.session) || !('user_id' in req.session)) {
-    res.sendStatus(403);
-  // if present, check if user role admin
-  } else if ( req.session.user_role !== 'admin') {
-      // if user role is not admin, check that user is attempting to delete only their account
-      if (req.session.user_id !== req.body.id) {
-        res.sendStatus(403);
-      }
-  }
-
-  req.pool.getConnection(function(err, connection) {
-      if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-      }
-
-      connection.query("DELETE FROM users WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
-        connection.release(); // release connection
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-          return;
-        }
-        res.sendStatus(200)
-      });
-  });
-});
 
 router.post('/delete_event', function(req, res, next) {
 

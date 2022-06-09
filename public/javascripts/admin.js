@@ -17,7 +17,7 @@ const vueinst = new Vue({
                     }
                 };
 
-                xhttp.open("POST", "/make_admin", true);
+                xhttp.open("POST", "/admin/make_admin", true);
                 xhttp.setRequestHeader("Content-type", "application/json");
                 xhttp.send(JSON.stringify({ id: u_id }));
             }
@@ -33,7 +33,7 @@ const vueinst = new Vue({
                     }
                 };
 
-                xhttp.open("POST", "/make_user", true);
+                xhttp.open("POST", "/admin/make_user", true);
                 xhttp.setRequestHeader("Content-type", "application/json");
                 xhttp.send(JSON.stringify({ id: u_id }));
             }
@@ -49,7 +49,7 @@ const vueinst = new Vue({
                     }
                 };
 
-                xhttp.open("POST", "/delete_user", true);
+                xhttp.open("POST", "/admin/delete_user", true);
                 xhttp.setRequestHeader("Content-type", "application/json");
                 xhttp.send(JSON.stringify({ id: u_id }));
             }
