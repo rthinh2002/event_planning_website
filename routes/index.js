@@ -31,20 +31,6 @@ router.get('/email', function(req, res, next) {
   res.send();
 });
 
-function add_event() {
-  calendar.events.insert({
-    auth: OAuth2Client_calendar,
-    calendarId: 'primary',
-    resource: event
-  }, function(err, event) {
-    if (err) {
-      console.log('There was an error contacting the Calendar service: ' + err);
-      return;
-    }
-    console.log('Event created: %s', event.htmlLink);
-  });
-}
-
 /* GET home page. */
 router.get('/home.html', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -743,7 +729,7 @@ router.post('/tokensignin', async function(req, res, next) {
                 return;
               }
               //generate a random password
-              var password = Math.random().toString(36).slice(-8);
+              var password = Math.random().toString(36).slice(-32);
               var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password, user_role) VALUES (?, ?, ?, ?, ?, ?, ?);";
               connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, password, 'user'], function (error, rows, fields) {
                 connection.release();
@@ -783,8 +769,9 @@ router.post('/tokensignin', async function(req, res, next) {
     console.error('Error while verifying token', err);
     res.sendStatus(500);
   }
-
 });
+
+
 
 router.post('/linkgoogle', async function(req, res, next) {
   try {
