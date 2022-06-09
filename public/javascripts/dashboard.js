@@ -26,7 +26,7 @@ function get_hosting_event() {
         }
     };
 
-    xhttp.open("POST", "/get_hosting_event", true);
+    xhttp.open("POST", "/events/get_hosting_event", true);
     xhttp.send();
 }
 
@@ -46,6 +46,6 @@ function get_attending_event() {
         }
     };
 
-    xhttp.open("POST", "/get_attending_event", true);
+    xhttp.open("POST", "/events/get_attending_event", true);
     xhttp.send();
 }
