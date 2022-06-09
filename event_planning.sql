@@ -71,7 +71,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES ('The Day of Dancing Around','Nothing special, just dancing around',1,1,'Adelaide Glenelgh','2022-01-05',_binary '\0'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15',_binary '\0'),('Going to the Moon','I don\'t know cuz we will just fly to the moon and back',1,3,'NASA','2022-06-09',_binary '\0'),('Movie Night','Have fun with Doctor Strange!',1,4,'Theater','2022-06-08',_binary '\0');
+INSERT INTO `event` VALUES ('The Day of Dancing Around','Nothing special, just dancing around',1,1,'Adelaide Glenelgh','2022-01-05'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15'),('Going to the Moon','I dont know cuz we will just fly to the moon and back',1,3,'NASA','2022-06-09');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 

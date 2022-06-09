@@ -39,6 +39,10 @@ router.get('/home.html', function(req, res, next) {
 // Log in to app - Karl, updated security to include argon2 4/6/22
 router.post('/login', function(req, res, next) {
 
+  if (!(req.body.password) || req.body.password === '' || req.body.password === null) {
+    return res.sendStatus(500);
+  }
+
   req.pool.getConnection(function(err, connection) {
     if(err) {
       console.log(err);
@@ -109,6 +113,11 @@ router.post('/get_user_details', function(req, res, next) {
 // Create new account - Karl, updated 3/6/22 with DB integration
 router.post('/createaccount', function(req, res, next)
 {
+  // request must have a password, and cannot be empty
+  if (!(req.body.password) || req.body.password === '' || req.body.password === null) {
+    return res.sendStatus(500);
+  }
+
   req.pool.getConnection(async function(err, connection) {
     if(err) {
       //console.log(err);
@@ -600,7 +609,7 @@ router.post('/create_new_event', function(req, res, next) {
     }
     // add new event to database
     var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.eventName, req.body.details, req.session.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields) {
+    connection.query(query, [req.body.eventName, req.body.details, req.body.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields) {
       if (error) {
         connection.release(); console.log(error); console.log("line 494");
         return res.sendStatus(500);
@@ -619,41 +628,6 @@ router.post('/create_new_event', function(req, res, next) {
 });
 
 router.post('/add_event_date', function(req, res, next) {
-
-  console.log(req.body);
-  req.pool.getConnection(function(error, connection) {
-    if (error) {
-      console.log(error); console.log("line 487");
-      return res.sendStatus(500);
-    }
-
-    connection.query("INSERT INTO event_date (event_date, event_id) VALUES (?, ?);", [req.body.date, req.body.event_id], function (error, rows, fields) {
-      connection.release();
-      if (error) {
-        console.log("Unsuccessful date add"); console.log(error);
-        return res.sendStatus(500);
-      }
-
-      req.pool.getConnection(function(error, connection) {
-        if (error) {
-          console.log(error); console.log("line 487");
-          return res.sendStatus(500);
-        }
-
-        connection.query("SELECT LAST_INSERT_ID() AS id;", function (error, rows, fields) {
-          connection.release();
-          if (error) {
-            console.log(error); console.log("line 494");
-            return res.sendStatus(500);
-          }
-          res.json(rows[0].id); //send response
-        });
-      });
-    });
-  });
-});
-
-router.post('/add_event_attendee', function(req, res, next) {
 
   console.log(req.body);
   req.pool.getConnection(function(error, connection) {
@@ -920,4 +894,12 @@ router.post('/edit_event.html', function(req, res, next) {
   });
 });
 
+
+
+
 module.exports = router;
+
+
+
+
+

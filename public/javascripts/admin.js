@@ -69,23 +69,6 @@ const vueinst = new Vue({
                 xhttp.setRequestHeader("Content-type", "application/json");
                 xhttp.send(JSON.stringify({ id: e_id }));
             }
-        },
-        editEvent: function(e_id) {
-/*
-            if (confirm("Are you sure you want to delete this event? This action is not reversible.") == true ) {
-                var xhttp = new XMLHttpRequest();
-
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        get_all_events();
-                    }
-                };
-
-                xhttp.open("POST", "/delete_event", true);
-                xhttp.setRequestHeader("Content-type", "application/json");
-                xhttp.send(JSON.stringify({ event_id: e_id }));
-            }
-*/
         }
     }
 });

@@ -76,7 +76,7 @@
                       <input class="textField" type="text" id="name" name="name" style="max-width: 30%" v-model="item.name" placeholder="Guest name" required />
                       <input class="textField" type="text" id="email" name="email" style="max-width:68%" v-model="item.email" placeholder="Guest email" required />
                       <a @click="removeGuest(item.guestID)" style="text-decoration: none; cursor: pointer">
-                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove guest {{item.guestID}}
+                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove guest
                       </a>
                     </div>
                     <br>
@@ -105,7 +105,7 @@
     </div><!-- end grid-container -->
 
     <div class="bottom right">
-      <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
+      <button onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
     </div>
 
 </body>

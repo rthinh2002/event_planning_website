@@ -5,6 +5,12 @@ function login() {
         password: document.getElementsByName('password')[0].value
     };
 
+    // guard to check for empty input
+    if (username.length === 0 || password.length === 0) {
+      console.log('Fields cannot be empty');
+      return;
+    }
+
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {

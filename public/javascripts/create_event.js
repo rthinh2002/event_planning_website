@@ -90,6 +90,7 @@ function createNewEvent() {
         errors = true;
     }
 
+
     if (errors) {
         alert("Form incomplete");
         return;
@@ -97,6 +98,14 @@ function createNewEvent() {
 
     checkGuests(newEvent);
 }
+
+/*
+function emailInvitations() {
+    var password = Math.random().toString(36).slice(-32);
+    console.log(password);
+
+}
+*/
 
 var currentDateGuest = 0;
 var currentGuest = 0;
@@ -124,6 +133,7 @@ function addEventGuest(newEvent) {
                 addEventGuest(newEvent);
             } else if (currentGuest === createEvent.guests.length-1) {
                 if (currentDateGuest === createEvent.dates.length-1) {
+
                     window.location="/app/dashboard.html";
                     //console.log("done!");
                 } else {
@@ -218,7 +228,7 @@ function checkGuests(newEvent) {
         }
     };
 
-    xhttp.open("POST", "/events/check_guests");
+    xhttp.open("POST", "/events/check_guest");
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(thisGuest));
 }

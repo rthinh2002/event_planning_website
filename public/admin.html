@@ -82,7 +82,7 @@
                             <span class="list-item-name"> {{ event.event_name }} - {{ event.first_name }} {{ event.last_name }}</span>
                             <br>
                             <a href="#null" @click="deleteEvent(event.event_id)">Delete</a>
-                            <a href="#null" @click="editEvent(event.event_id)">Edit</a>
+                            <a :href="'/app/edit_event.html?id=' + event.event_id">Edit</a>
                         </div>
                     </div>
 
@@ -93,7 +93,7 @@
     </div><!-- end grid-container -->
 
     <div class="bottom right">
-        <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
+        <button onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
     </div>
 
 </body>
