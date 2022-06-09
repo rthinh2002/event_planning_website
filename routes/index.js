@@ -986,4 +986,29 @@ router.post('/delete_event', function(req, res, next) {
   });
 });
 
+router.post('/edit_event.html', function(req, res, next) {
+
+  if (!('user_id' in req.session)) {
+    res.sendStatus(403);
+  }
+
+  req.pool.getConnection(function(err, connection) {
+      if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+      }
+
+      connection.query("DELETE FROM event WHERE event_id = ?;", [req.body.id], function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(200)
+      });
+  });
+});
+
 module.exports = router;

@@ -2,24 +2,10 @@ const displayvue = new Vue ({
     el: '#content',
     data:
     {
+        noEventsOrganising: false,
+        noEventsInvited: false,
         organising: [],
         invitations: []
-    },
-    computed: {
-        noEventsOrganising: function() {
-            if (this.organising.length === 0) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        noEventsInvited: function() {
-            if (this.invitations.length === 0) {
-                return true;
-            } else {
-                return false;
-            }
-        },
     }
 });
 
@@ -32,6 +18,11 @@ function get_hosting_event() {
         if (this.readyState == 4 && this.status == 200) {
             //console.log(this.responseText);
             displayvue.organising = JSON.parse(this.responseText);
+            if (Object.keys(displayvue.organising).length === 0) {
+                displayvue.noEventsOrganising = true;
+            } else {
+                displayvue.noEventsOrganising = false;
+            }
         }
     };
 
@@ -46,8 +37,12 @@ function get_attending_event() {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
             displayvue.invitations = JSON.parse(this.responseText);
+            if (Object.keys(displayvue.invitations).length === 0) {
+                displayvue.noEventsInvited = true;
+            } else {
+                displayvue.noEventsInvited = false;
+            }
         }
     };
 
