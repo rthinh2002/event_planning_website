@@ -972,15 +972,13 @@ router.post('/get_email', function(req, res, next) {
     if (!('user_id' in req.session)) {
       res.sendStatus(403);
     }
-  
     req.pool.getConnection(function(err, connection) {
         if(err) {
         console.log(err);
         res.sendStatus(500);
         return;
         }
-  
-        connection.query("SELECT email FROM users WHERE user_id = ?;", [req.session.user_id], function (err, rows, fields) {
+        connection.query("SELECT email_address FROM users WHERE user_id = ?;", [req.session.user_id], function (err, rows, fields) {
           connection.release(); // release connection
           if (err) {
             console.log(err);
@@ -988,6 +986,7 @@ router.post('/get_email', function(req, res, next) {
             return;
           }
           res.json(rows); //send response
+          res.sendStatus(200);
         });
     });
 });

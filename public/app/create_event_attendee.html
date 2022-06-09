@@ -12,7 +12,7 @@
     <script src="/javascripts/invitation.js" defer></script>
 </head>
 
-<body onload="getEventID(); user_details(); get_event_detail();" @onload="getemail" id="invited">
+<body onload="getEventID(); user_details(); get_event_detail();">
     <div class="grid-container">
 
         <!-- HEADER -->
@@ -90,9 +90,9 @@
                             </tr>
                         </table>
                     </div>
-                    <button class="check-calendar-button">CHECK YOUR CALENDAR<i class="fa-solid fa-calendar-day calendar-icon"></i></button>
+                    <div><p class="content-header">Check Your Calendar</p></div>
                     <!-- embed google calender with the users gmail -->
-                    <iframe v-bind:src="'https://calendar.google.com/calendar/embed?src=' + email + '&ctz=Australia%2FAdelaide'" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+                    <iframe v-bind:src="'https://calendar.google.com/calendar/embed?src=' + email + '&ctz=Australia%2FAdelaide'" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"  @onload="getemail()" id="invited"></iframe>
                     <div style="float: right;">
                         <button class="save-button" onclick="saveClicked()">Save</button>
                     </div>
