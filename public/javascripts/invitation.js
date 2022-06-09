@@ -5,7 +5,8 @@ var vueints = new Vue ({
     data: {
         event_id: null,
         event_details: [],
-        available: 'available'
+        available: 'available',
+        email: ''
     },
     methods: {
         returnRSVP(date) {
@@ -28,14 +29,6 @@ var vueints = new Vue ({
         }
     }
 });
-
-var vueinst = new Vue ({
-    el: '#invited',
-    data: {
-        email: '',
-    }
-});
-
 
 function getemail() {
     //send an ajax get request to route /get_email to get the email of the user

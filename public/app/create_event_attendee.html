@@ -11,7 +11,7 @@
     <script src="/javascripts/user_actions.js" defer></script>
     <script src="/javascripts/invitation.js" defer></script>
 </head>
-<body onload="getEventID(); user_details(); get_event_detail();">
+<body onload="getEventID(); user_details(); get_event_detail(); getemail();">
     <div class="grid-container">
         <!-- HEADER -->
         <div class="header2" id="header">
@@ -85,7 +85,7 @@
                     </div>
                     <div><p class="content-header">Check Your Calendar</p></div>
                     <!-- embed google calender with the users gmail -->
-                    <iframe v-bind:src="'https://calendar.google.com/calendar/embed?src=' + email + '&ctz=Australia%2FAdelaide'" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"  @onload="getemail()" id="invited"></iframe>
+                    <iframe v-bind:src="'https://calendar.google.com/calendar/embed?src=' + email + '&ctz=Australia%2FAdelaide'" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
                     <div style="float: right;">
                         <button class="save-button" onclick="saveClicked()">Save</button>
                     </div>

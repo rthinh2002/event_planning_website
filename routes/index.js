@@ -971,6 +971,7 @@ router.post('/get_email', function(req, res, next) {
   
     if (!('user_id' in req.session)) {
       res.sendStatus(403);
+      return;
     }
     req.pool.getConnection(function(err, connection) {
         if(err) {
@@ -986,7 +987,6 @@ router.post('/get_email', function(req, res, next) {
             return;
           }
           res.json(rows); //send response
-          res.sendStatus(200);
         });
     });
 });
