@@ -7,19 +7,28 @@ var sidebarVue = new Vue ({
     },
 });
 
-function user_role() {
+var headerVue = new Vue ({
+    el: '#header',
+    data:
+    {
+        first_name: ''
+    }
+});
+
+function user_details() {
 
     let xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            if (this.responseText === 'admin') sidebarVue.admin = true;
-            else if (this.responseText === 'guest') sidebarVue.guest = true;
+            var response = JSON.parse(this.responseText);
+            headerVue.first_name = response[0].first_name;
+            if (response[0].user_role === 'admin') sidebarVue.admin = true;
+            else if (response[0].user_role === 'guest') sidebarVue.guest = true;
         }
     };
 
-    xhttp.open("POST", "/get_user_role");
+    xhttp.open("POST", "/get_user_details");
     xhttp.send();
 }
 
@@ -29,7 +38,6 @@ function toTop() {
         behavior: 'smooth'
     });
 }
-
 
 function logout() {
 

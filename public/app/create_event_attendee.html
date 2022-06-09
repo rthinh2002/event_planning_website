@@ -11,19 +11,22 @@
     <script src="/javascripts/user_actions.js" defer></script>
 </head>
 
-<body onload="user_role()">
+<body onload="user_details()">
 
     <div class="grid-container">
 
         <!-- HEADER -->
-        <div class="header2">
-            <a href="/dashboard1.html">
-                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
+        <div class="header2" id="header">
+            <a href="/app/dashboard.html">
+                <img src="/images/W2M_icon.png" class="logo" alt="W2M" />
             </a>
+            <span class="loggedInText">Logged in as
+                <span id="name" v-cloak> {{first_name}}</span>
+            </span>
         </div>
 
         <!-- SIDEBAR -->
-        <div id="sidebar" class="sidebar2">
+        <div class="sidebar2" id="sidebar">
             <div>
                 <a href="/app/dashboard.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>

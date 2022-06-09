@@ -6,6 +6,24 @@ const displayvue = new Vue ({
         noEventsInvited: false,
         organising: [],
         invitations: []
+    },
+    methods: {
+        deleteEvent: function(e_id) {
+
+            if (confirm("Are you sure you want to delete this event? This action is not reversible.") == true ) {
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        get_hosting_event();
+                    }
+                };
+
+                xhttp.open("POST", "/events/delete_event", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send(JSON.stringify({ id: e_id }));
+            }
+        }
     }
 });
 

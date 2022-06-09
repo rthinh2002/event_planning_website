@@ -12,18 +12,21 @@
     <meta name="google-signin-client_id" content="376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com">
 </head>
 
-<body onload="user_role(), display_user_info()">
+<body onload="user_details(), display_user_info()">
     <div class="grid-container">
 
         <!-- HEADER -->
-        <div class="header2">
-            <a href="/dashboard1.html">
-                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
-            </a>
+        <div class="header2" id="header">
+          <a href="/app/dashboard.html">
+              <img src="/images/W2M_icon.png" class="logo" alt="W2M" />
+          </a>
+          <span class="loggedInText">Logged in as
+              <span id="name" v-cloak> {{first_name}}</span>
+          </span>
         </div>
 
         <!-- SIDEBAR -->
-        <div id="sidebar" class="sidebar2">
+        <div class="sidebar2" id="sidebar">
             <div>
                 <a href="/app/dashboard.html" class="fade"><i class="fa-regular fa-calendar fa-lg sidebar-icon"></i>My Events</a>
             </div>

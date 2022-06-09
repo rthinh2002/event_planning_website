@@ -202,25 +202,46 @@ router.post('/add_event_attendee', function(req, res, next) {
 router.post('/delete_event', function(req, res, next) {
 
   if (!('user_id' in req.session)) {
-    res.sendStatus(403);
+    return res.sendStatus(403);
   }
 
   req.pool.getConnection(function(err, connection) {
-      if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
+    if(err) {
+      //console.log(err);
+      return res.sendStatus(500);
+    }
+
+    // check that the user is authorised to delete even, i.e. the user owns the event, or is an admin
+    connection.query("SELECT event_id FROM event WHERE event_id = ? && creator_id = ?;", [req.body.id, req.session.user_id], function (err, rows, fields) {
+      connection.release();
+      if (err) {
+        console.log(err);
+        return res.sendStatus(500);
       }
 
-      connection.query("DELETE FROM event WHERE event_id = ?;", [req.body.id], function (err, rows, fields) {
-        connection.release(); // release connection
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-          return;
-        }
-        res.sendStatus(200)
-      });
+      // if not authorised, send Forbidden response
+      if (rows.length === 0 && !req.session.role !== 'admin') {
+        return res.sendStatus(403);
+      } else {
+        // if authorised, delete event
+        req.pool.getConnection(function(err, connection) {
+          if(err) {
+            //console.log(err);
+            return res.sendStatus(500);
+          }
+
+          connection.query("DELETE FROM event WHERE event_id = ?;", [req.body.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              //console.log(err);
+              return res.sendStatus(500);
+            }
+            return res.sendStatus(200);
+          });
+        });
+      }
+    });
+
   });
 });
 

@@ -99,7 +99,7 @@ router.post('/login', function(req, res, next) {
 });
 
 // Log in to app - Karl, updated security to include argon2 4/6/22
-router.post('/get_user_role', function(req, res, next) {
+router.post('/get_user_details', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     connection.release();
@@ -109,7 +109,14 @@ router.post('/get_user_role', function(req, res, next) {
       return;
     }
 
-    res.send(req.session.user_role);
+    connection.query("SELECT first_name, user_role FROM users WHERE user_id = ?;", [req.session.user_id], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        return res.sendStatus(500);
+      }
+      res.json(rows);
+    });
   });
 });
 
@@ -119,8 +126,7 @@ router.post('/createaccount', function(req, res, next)
   req.pool.getConnection(async function(err, connection) {
     if(err) {
       //console.log(err);
-      res.sendStatus(500);
-      return;
+      return res.sendStatus(500);
     }
 
     let hash = null;
