@@ -142,6 +142,13 @@ function load_attendee() {
 var count_add_date = 0;
 function add_date() {
     count_add_date++;
+    if(count_add_friend > 0) {
+        const element = document.getElementById("email-input");
+        const element2 = document.getElementById("name-input");
+        element.remove();
+        element2.remove();
+        count_add_friend = 0;
+    }
     if(count_add_date > 1) return;
     let create_input = document.createElement("input");
     let create_td_date = document.createElement("td");
@@ -164,6 +171,11 @@ function add_date() {
 var count_add_friend = 0;
 function addFriend() {
     count_add_friend++;
+    if(count_add_date > 0) {
+        const element = document.getElementById("datetime-input");
+        element.remove();
+        count_add_date = 0;
+    }
     if(count_add_friend > 1) return;
     let create_tr = document.createElement("tr");
     let create_td_empty = document.createElement("td");
@@ -258,54 +270,16 @@ function saveEventAttendee()  {
         if (this.readyState == 4 && this.status == 200) {
             if(this.responseText === "Error") alert("Error in adding new attendee, please try again.");
             if(this.responseText === "Success!") alert("Add new attendee successfully!");
-            populateUserList();
-            counter++;
         }
     }
     xhttp.open("POST", "/save_event_attendee", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({email_address: email_address, first_name: first_name, event_date_id: vueints.date_id}));
-}
-
-function saveEventAttendeeWhenSaveDate()  {
-    var xhttp = new XMLHttpRequest();
-    var email_address = document.getElementById("email-input").value;
-    var first_name = document.getElementById("name-input").value;
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            if(this.responseText === "Error") alert("Error in adding new attendee, please try again.");
-            if(this.responseText === "Success!") alert("Add new attendee successfully!");
-            populateUserList();
-            saveDate();
-        }
-    }
-    xhttp.open("POST", "/save_event_attendee", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify({email_address: email_address, first_name: first_name, event_date_id: vueints.date_id}));
-}
-
-function populateUserList()  {
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            vueints.users_id_array = [];
-            var detail = JSON.parse(this.responseText);
-            for(var i in detail) {
-                vueints.users_id_array.push(detail[item].user_id);
-            }
-        }
-    }
-    xhttp.open("POST", "/display_attendee", true);
 }
 
 // General function to update information about event-info, add new date, and add new attendee
 function saveData() {
     saveEventInfo();
-    if(count_add_friend > 0 && count_add_date > 0) {
-        saveEventAttendeeWhenSaveDate();
-    }
     if(count_add_friend > 0) {
         saveEventAttendee();
         count_add_friend = 0;
@@ -314,7 +288,6 @@ function saveData() {
         saveDate();
         count_add_date = 0;
     }
-    
 }
 
 // Function for editevent.html
