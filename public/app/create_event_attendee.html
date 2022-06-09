@@ -5,13 +5,14 @@
     <link rel="stylesheet" type="text/css" href="/stylesheets/template.css">
     <script src="https://kit.fontawesome.com/84be2b00fc.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="/javascripts/templatevue.js" defer></script>
-    <script src="/public/javascripts/invited.js" defer></script>
-    <script src="/javascripts/logout.js" defer></script>
+    <!--<script src="/javascripts/templatevue.js" defer></script>-->
+    <!--<script src="/public/javascripts/invited.js" defer></script>-->
+    <!--<script src="/javascripts/logout.js" defer></script>-->
     <script src="/javascripts/user_actions.js" defer></script>
+    <script src="/javascripts/invitation.js" defer></script>
 </head>
 
-<body onload="user_role()">
+<body onload="user_role(); get_event_detail(1);">
 
     <div class="grid-container">
 
@@ -43,7 +44,7 @@
             <div class="flex-container">
 
             <div>
-                <h1 class="content-header">Event name</h1>
+                <h1 class="content-header">{{ event_details[0].event_name }}</h1>
                 <p class="size-16-px-text">You're invited to this event!</p>
 
                 <div class="textField">
@@ -51,17 +52,17 @@
                     <table class="table" style="height: 6em; width: 20em;" id="evdetails" v-on:load="readevent()">
                         <tr>
                             <th class="align-left">Where</th>
-                            <td>{{ place }}</td>
+                            <td>{{ event_details[0].location }}</td>
                             <td></td>
                         </tr>
                         <tr>
                             <th class="align-left">RSVP</th>
-                            <td>{{ date }}</td>
+                            <td>{{ returnRSVP(event_details[0].RSVP) }}</td>
                             <td></td>
                         </tr>
                         <tr>
                             <th class="align-left">Details</th>
-                            <td>{{ details }}</td>
+                            <td>{{ event_details[0].event_description }}</td>
                             <td></td>
                         </tr>
                     </table>
@@ -69,26 +70,27 @@
 
                     <p class="size-16-px-text">Your availability for this event: </p>
                     <div class="textField height-increase">
-                        <table class="table" style="height: fit-content; width: 30em;">
+                        <table>
                             <tr>
                                 <td></td>
+                                <th style="width: 24em"></th>
                                 <th>Yes</th>
-                                <th>Maybe</th>
+                                <th style="width: 1em;"></th>
                                 <th>No</th>
                             </tr>
+                        </table>
+                        <table v-for="element in event_details" class="table" style="height: fit-content; width: 30em;">
                             <!-- checkbox -->
                             <tr>
-                                <th class="align-left">{{ event[0].date }}</th>
-                                <th><input type="radio" name="availability" id="yes"></th>
-                                <th><input type="radio" name="availability" id="maybe"></th>
-                                <th><input type="radio" name="availability" id="no"></th>
+                                <td>{{ returnDateTime(element.event_date) }}</td>
+                                <th><input type="radio" :name="element.event_date_id" value="yes"></th>
+                                <th><input type="radio" :name="element.event_date_id" value="no"></th>
                             </tr>
                         </table>
                     </div>
                     <button class="check-calendar-button">CHECK YOUR CALENDAR<i class="fa-solid fa-calendar-day calendar-icon"></i></button>
                     <div style="float: right;">
-                        <button class="cancel-button">Cancel</button>
-                        <button class="save-button" onclick="avail()">Save</button>
+                        <button class="save-button" onclick="saveClicked()">Save</button>
                     </div>
 
             </div>
