@@ -99,13 +99,26 @@ function createNewEvent() {
     checkGuests(newEvent);
 }
 
-/*
-function emailInvitations() {
-    var password = Math.random().toString(36).slice(-32);
-    console.log(password);
 
+function emailInvitations() {
+    //var password = Math.random().toString(36).slice(-32);
+    //console.log(password);
+
+    for (guest in createEvent.guests) {
+
+        let guestToEmail = {
+            guest_id: createEvent.guests[guest].guestID,
+            guest_name: createEvent.guests[guest].name,
+            guest_email: createEvent.guests[guest].email
+        };
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/email");
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify(guestToEmail));
+    }
 }
-*/
+
 
 var currentDateGuest = 0;
 var currentGuest = 0;
@@ -133,7 +146,7 @@ function addEventGuest(newEvent) {
                 addEventGuest(newEvent);
             } else if (currentGuest === createEvent.guests.length-1) {
                 if (currentDateGuest === createEvent.dates.length-1) {
-
+                    emailInvitations();
                     window.location="/app/dashboard.html";
                     //console.log("done!");
                 } else {
@@ -142,14 +155,13 @@ function addEventGuest(newEvent) {
                 }
             }
         } else if (this.readyState == 4 && this.status >= 400) {
-            alert("Guest add failed");
+            console.log("Guest add failed");
         }
     };
 
     xhttp.open("POST", "/events/add_event_attendee");
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(event_guest));
-
 }
 
 var currentDate = 0;
@@ -173,7 +185,7 @@ function addEventDate(newEvent) {
                 addEventDate(newEvent);
             }
         } else if (this.readyState == 4 && this.status >= 400) {
-            alert("Date add failed");
+            console.log("Date add failed");
         }
     };
 
