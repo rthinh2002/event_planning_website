@@ -6,7 +6,8 @@ var vueints = new Vue ({
         event_id: null,
         event_details: [],
         available: 'available',
-        email: ''
+        email: '',
+        connected: false,
     },
     methods: {
         returnRSVP(date) {
@@ -21,7 +22,10 @@ var vueints = new Vue ({
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    vueints.email = JSON.parse(this.responseText)[0].email;
+                    vueints.email = JSON.parse(this.responseText)[0].email_address;
+                    if (JSON.parse(this.responseText)[0].api_token != null) {
+                        vueints.connected = true;
+                    }
                 }
             }
             xhttp.open("POST", "/get_email", true);
