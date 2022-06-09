@@ -498,8 +498,8 @@ router.post('/update_invite', function(req, res, next){
       return;
     }
     console.log(req.body.event_date);
-    var query = "UPDATE attendee INNER JOIN event_date ON attendee.event_date_id = event_date.event_date_id SET attendee.attendee_response = ? WHERE attendee.user_id = 2 AND attendee.event_date_id = ?;";
-    connection.query(query, [req.body.response_string, req.body.event_date_id] ,function (err, rows, fields) {
+    var query = "UPDATE attendee INNER JOIN event_date ON attendee.event_date_id = event_date.event_date_id SET attendee.attendee_response = ? WHERE attendee.user_id = ? AND attendee.event_date_id = ?;";
+    connection.query(query, [req.body.response_string, req.session.user_id, req.body.event_date_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
