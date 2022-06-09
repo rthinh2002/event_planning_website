@@ -18,7 +18,7 @@
 --
 -- Table structure for table `attendee`
 --
-
+USE event_planning;
 DROP TABLE IF EXISTS `attendee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -71,7 +71,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES ('The Day of Dancing Around','Nothing special, just dancing around',1,1,'Adelaide Glenelgh','2022-01-05'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15'),('Going to the Moon','I dont know cuz we will just fly to the moon and back',1,3,'NASA','2022-06-09');
+INSERT INTO `event` VALUES ('Going to the Moon','I don\'t know cuz we will just fly to the moon and back',1,1,'NASA','2022-06-09',_binary '\0'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15',_binary '\0'),('Going to the Moon','I don\'t know cuz we will just fly to the moon and back',1,3,'NASA','2022-06-09',_binary '\0'),('Rapping with Da Boys','Lets rap',1,4,'Theater','2022-06-08',_binary '\0');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,3 +151,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2022-06-08 19:13:54
+

@@ -20,15 +20,34 @@ var vueints = new Vue ({
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    vueints.email = JSON.parse(this.responseText);
+                    vueints.email = JSON.parse(this.responseText)[0].email;
                 }
             }
             xhttp.open("POST", "/get_email", true);
-            xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.send(JSON.stringify({user_id: vueints.event_id}));
+            xhttp.send();
         }
     }
 });
+
+var vueinst = new Vue ({
+    el: '#invited',
+    data: {
+        email: '',
+    }
+});
+
+
+function getemail() {
+    //send an ajax get request to route /get_email to get the email of the user
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            vueints.email = JSON.parse(this.responseText)[0].email_address;
+        }
+    }
+    xhttp.open("POST", "/get_email", true);
+    xhttp.send();
+}
 
 function getEventID() {
     const queryString = window.location.search;
