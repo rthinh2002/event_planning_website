@@ -24,9 +24,9 @@ function get_event_detail (event_id) {
             vueints.event_details = JSON.parse(this.responseText);
         }
     };
-    xhttp.open("POST", "/display_event_info", true);
+    xhttp.open("POST", "/display_event_info_invite", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify({event_id: event_id}));
+    xhttp.send(JSON.stringify({event_id: 1}));
 }
 
 function saveClicked() {

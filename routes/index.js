@@ -237,15 +237,28 @@ router.post('/display_event_info', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-<<<<<<< HEAD
-    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;";
-    connection.query(query, /*[req.session.user_id, req.body.event_id] ,*/function (err, rows, fields) {
-=======
-    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, \
-                 event.event_description, event.location, event.RSVP, event_date.event_date \
-                 FROM event INNER JOIN event_date ON creator_id = ? && event.event_id = ? && event.event_id = event_date.event_id;";
+    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = ? && event.event_id = event_date.event_id;";
     connection.query(query, [req.session.user_id, req.body.event_id], function (err, rows, fields) {
->>>>>>> 0a8b16c9cc13dfb0e7b87a4da7ca8e503eb08697
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+// Display event info editevent.html - Peter June 2nd 2022
+router.post('/display_event_info_invite', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON event.event_id = event_date.event_id WHERE event.event_id = ?;";
+    connection.query(query, [req.body.event_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -485,8 +498,8 @@ router.post('/update_invite', function(req, res, next){
       return;
     }
     console.log(req.body.event_date);
-    var query = "UPDATE attendee INNER JOIN event_date ON attendee.event_date_id = event_date.event_date_id SET attendee.attendee_response = ? WHERE attendee.user_id = ? AND attendee.event_date_id = ?;";
-    connection.query(query, [req.body.response_string, req.session.user_id, req.body.event_date_id] ,function (err, rows, fields) {
+    var query = "UPDATE attendee INNER JOIN event_date ON attendee.event_date_id = event_date.event_date_id SET attendee.attendee_response = ? WHERE attendee.user_id = 2 AND attendee.event_date_id = ?;";
+    connection.query(query, [req.body.response_string, req.body.event_date_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
