@@ -375,8 +375,8 @@ textarea {
     background-color: white;
     position: relative;
 /*    top: 2%;
-    width: 70%; */
-    max-height: 60%;
+    width: 70%;
+    max-height: 70%; */
     overflow-y: auto;
 }
 
@@ -545,7 +545,7 @@ textarea {
     margin: 0;
     padding: 0;
     width: 100%;
-    max-height: 375px;
+    max-height: 70%;
     overflow-y: auto;
 }
 

@@ -50,17 +50,23 @@
                     <h2 class="content-header">Events you're organising</h2>
                     <p v-if="noEventsOrganising" v-cloak>There are no events organised by you!<br></p>
 
-                    <div class="list" class="organising-container-div" v-if="!noEventsOrganising" v-cloak>
+                    <div class="organising-container-div" v-if="!noEventsOrganising" v-cloak>
 
-                        <div class="event-container" v-for="event in organising" v-cloak>
+                        <div class="event-container"  v-for="event in organising" v-cloak>
+
                             <table style="width: 100%">
-                                <tr >
+                                <tr>
                                     <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
                                     <td style="font-size: 14px">Event date</td>
                                     <td style="text-align: right">Status</td>
                                 </tr>
+
                                 <tr style="vertical-align: bottom">
-                                    <td style="font-size: 26px; word-break: break-all">{{event.event_name}}</td>
+                                    <td>
+                                        <a :href="'/app/event_view_host.html?id=' + event.event_id" style="cursor: pointer; text-decoration: none; font-size: 26px; word-break: break-all">
+                                            {{event.event_name}}
+                                        </a>
+                                    </td>
                                     <td style="text-align: right">
                                         <a :href="'/app/edit_event.html?id=' + event.event_id">Edit</a>
                                         <br>
@@ -69,7 +75,6 @@
                                 </tr>
                             </table>
                         </div>
-
                     </div><!-- end list -->
                     <button style="margin: 0.5em 0 0.5em 0" onclick="location.href='/app/create_event.html'">CREATE NEW EVENT</button>
                 </div>
@@ -78,7 +83,7 @@
                     <h2 class="content-header">Events you're invited to</h2>
                     <p v-if="noEventsInvited" v-cloak>There are no events you're currently invited to!<br></p>
 
-                    <div class="list" class="organising-container-div" v-if="!noEventsInvited" v-cloak>
+                    <div class="organising-container-div" v-if="!noEventsInvited" v-cloak>
 
                         <div class="event-container" v-for="event in invitations" v-cloak>
                             <table style="width: 100%">
@@ -88,10 +93,14 @@
                                     <td style="text-align: right">Status</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
-                                    <td style="font-size: 26px; word-break: break-all">{{event.event_name}}</td>
+                                    <td>
+                                        <a :href="'/app/event_invitation.html?id=' + event.event_id" style="cursor: pointer; text-decoration: none; font-size: 26px; word-break: break-all">
+                                            {{event.event_name}}
+                                        </a>
+                                    </td>
                                     <td style="text-align: right">
-                                        <a :href="'/view_event.html?eventID=' + event.event_id">View</a>
-                                </tr>
+                                        <a :href="'/app/event_invitation.html?id=' + event.event_id">View</a>
+                                    </tr>
                             </table>
                         </div>
 

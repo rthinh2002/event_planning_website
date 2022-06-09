@@ -49,34 +49,35 @@
 
                     <div class="list" v-cloak>
                         <div class="list-div items" v-for="user in users">
-                                <span v-if="user.user_role === 'admin'">
-                                    <i class="fa-solid fas fa-user-cog fa-3x list-icon blue-color"></i>
-                                </span>
-                                <span v-else-if="user.user_role === 'user'">
-                                    <i class="fa-solid fa-user fa-3x list-icon blue-color"></i>
-                                </span>
-                                <span v-else="user.user_role === 'guest'">
-                                    <i class="fa-regular fa-user fa-3x list-icon blue-color"></i>
-                                </span>
-                                <span v-if="user.user_role === 'guest'" class="list-item-name">
-                                    {{user.first_name}} (Guest)
-                                </span>
-                                <span v-else class="list-item-name">
-                                    {{user.first_name}} {{user.last_name}} ({{user.user_name}})
-                                </span>
-                                <br>
-                                <a href="#null" @click="deleteUser(user.user_id)">Delete</a>
-                                <a href="#null" @click="makeAdmin(user.user_id)" v-if="user.user_role === 'user'">Make admin</a>
-                                <a href="#null" @click="makeUser(user.user_id)" v-else>Make user</a>
+                            <span v-if="user.user_role === 'admin'">
+                                <i class="fa-solid fas fa-user-cog fa-3x list-icon blue-color"></i>
+                            </span>
+                            <span v-else-if="user.user_role === 'user'">
+                                <i class="fa-solid fa-user fa-3x list-icon blue-color"></i>
+                            </span>
+                            <span v-else="user.user_role === 'guest'">
+                                <i class="fa-regular fa-user fa-3x list-icon blue-color"></i>
+                            </span>
+                            <span v-if="user.user_role === 'guest'" class="list-item-name">
+                                {{user.first_name}} (Guest)
+                            </span>
+                            <span v-else class="list-item-name">
+                                {{user.first_name}} {{user.last_name}} ({{user.user_name}})
+                            </span>
+                            <br>
+                            <a href="#null" @click="deleteUser(user.user_id)">Delete</a>
+                            <a href="#null" @click="makeAdmin(user.user_id)" v-if="user.user_role === 'user'">Make admin</a>
+                            <a href="#null" @click="makeUser(user.user_id)" v-else>Make user</a>
                         </div>
                     </div>
                 </div>
+
 
                 <div class="standard-width">
                     <h1 class="content-header">Manage events</h1>
                     <input class="textField" type="text" placeholder="Search for event">
 
-                    <div class="list"v-cloak>
+                    <div class="list" v-cloak>
                         <div class="list-div items" v-for="event in events">
                             <i class="fa-regular fa-calendar fa-3x list-icon blue-color"></i>
                             <span class="list-item-name"> {{ event.event_name }} - {{ event.first_name }} {{ event.last_name }}</span>
@@ -85,7 +86,6 @@
                             <a :href="'/app/edit_event.html?id=' + event.event_id">Edit</a>
                         </div>
                     </div>
-
                 </div>
 
             </div><!-- end flex-container -->

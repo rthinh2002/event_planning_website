@@ -21,7 +21,7 @@ var createEvent = new Vue({
                 }
             }
             return true;
-        },
+        }
     },
     methods: {
         removeDate: function(dateIDtoRemove) {
