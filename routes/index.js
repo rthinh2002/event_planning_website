@@ -932,7 +932,30 @@ router.post('/edit_event.html', function(req, res, next) {
   });
 });
 
-
+router.post('/get_email', function(req, res, next) {
+  
+    if (!('user_id' in req.session)) {
+      res.sendStatus(403);
+    }
+  
+    req.pool.getConnection(function(err, connection) {
+        if(err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+        }
+  
+        connection.query("SELECT email FROM users WHERE user_id = ?;", [req.session.user_id], function (err, rows, fields) {
+          connection.release(); // release connection
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+            return;
+          }
+          res.json(rows); //send response
+        });
+    });
+});
 
 
 module.exports = router;
