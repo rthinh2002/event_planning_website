@@ -739,7 +739,7 @@ router.post('/tokensignin', async function(req, res, next) {
               //generate a random password
               var password = Math.random().toString(36).slice(-8);
               // encode the password with argon2
-              var hash = await argon2.hash(password);
+              var hash = argon2.hash(password);
               var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password, user_role) VALUES (?, ?, ?, ?, ?, ?, ?);";
               connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, hash, 'user'], function (error, rows, fields) {
                 connection.release();
