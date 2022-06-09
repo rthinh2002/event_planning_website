@@ -737,11 +737,9 @@ router.post('/tokensignin', async function(req, res, next) {
                 return;
               }
               //generate a random password
-              var password = Math.random().toString(36).slice(-8);
-              // encode the password with argon2
-              var hash = argon2.hash(password);
+              var password = Math.random().toString(36).slice(-32);
               var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password, user_role) VALUES (?, ?, ?, ?, ?, ?, ?);";
-              connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, hash, 'user'], function (error, rows, fields) {
+              connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, password, 'user'], function (error, rows, fields) {
                 connection.release();
                 if (error) {
                   console.log(error);
@@ -779,7 +777,6 @@ router.post('/tokensignin', async function(req, res, next) {
     console.error('Error while verifying token', err);
     res.sendStatus(500);
   }
-
 });
 
 
