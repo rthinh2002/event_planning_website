@@ -20,15 +20,50 @@ const transporter = nodemailer.createTransport({
 });
 
 
-router.get('/email', function(req, res, next) {
-  let info = transporter.sendMail({
-    from: 'sarai.stamm71@ethereal.email',
-    to: 'test@email.com',//req.body.recipient,
-    subject: 'test subject',//req.body.subject,
-    text: "this is a test email",//req.body.text,
-    html: "<body>" + "this is a test email"/*req.body.text*/ + "</b>"
+router.post('/email', function(req, res, next) {
+
+  console.log(req.body);
+
+  req.pool.getConnection(function(err, connection) {
+    connection.release();
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    connection.query("SELECT user_role FROM users WHERE email_address = ?;", [req.body.guest_email], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        return res.sendStatus(500);
+      }
+
+      if (rows.length === 0) {
+        console.log('no data');
+        return res.sendStatus(500);
+      } else if (rows[0].user_role === 'guest') {
+        let info = transporter.sendMail({
+          from: 'sarai.stamm71@ethereal.email',
+          to: req.body.guest_email,
+          subject: 'Email to a guest',//req.body.subject,
+          text: "Hi" + req.body.guest_name + "this is a test email",//req.body.text,
+          html: "<body>" + "this is a test email"/*req.body.text*/ //+ "</b>"
+        });
+      } else {
+
+        let info = transporter.sendMail({
+          from: 'sarai.stamm71@ethereal.email',
+          to: req.body.guest_email,
+          subject: 'Email to a user',//req.body.subject,
+          text: "Hi" + req.body.guest_name + "this is a test email",//req.body.text,
+          html: "<body>" + "this is a test email"/*req.body.text*/ //+ "</b>"
+        });
+      }
+
+      res.send();
+    });
   });
-  res.send();
 });
 
 /* GET home page. */
@@ -50,7 +85,7 @@ router.post('/login', function(req, res, next) {
       return;
     }
 
-    var query = "SELECT user_id, user_role, password FROM users WHERE user_name = ?;";
+    var query = "SELECT user_id, user_role, password FROM users WHERE user_name = ? AND user_role != 'guest';";
     connection.query(query, [req.body.username], async function(error, rows, fields) {
       connection.release();
       if (error) {
@@ -615,7 +650,7 @@ router.post('/check_guests', function(req, res, next) {
               return res.sendStatus(500);
             }
             var queryNewUser = "INSERT INTO users (first_name, last_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?, ?);";
-            connection.query(queryNewUser, [req.body.name, 'GUEST', req.body.email, req.body.email.substring(0,19), 'guest'], function (error, rows, fields) {
+            connection.query(queryNewUser, [req.body.name, 'GUEST', req.body.email, req.body.email, 'guest'], function (error, rows, fields) {
               connection.release();
               if (error) {
                 console.log(error); console.log("line 473");
@@ -932,7 +967,30 @@ router.post('/edit_event.html', function(req, res, next) {
   });
 });
 
-
+router.post('/get_email', function(req, res, next) {
+  
+    if (!('user_id' in req.session)) {
+      res.sendStatus(403);
+    }
+  
+    req.pool.getConnection(function(err, connection) {
+        if(err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+        }
+  
+        connection.query("SELECT email FROM users WHERE user_id = ?;", [req.session.user_id], function (err, rows, fields) {
+          connection.release(); // release connection
+          if (err) {
+            console.log(err);
+            res.sendStatus(500);
+            return;
+          }
+          res.json(rows); //send response
+        });
+    });
+});
 
 
 module.exports = router;
