@@ -30,24 +30,24 @@ var vueints = new Vue ({
 });
 
 var vueinst = new Vue ({
-    el: '#app',
+    el: '#invited',
     data: {
         email: '',
-    },
-    methods: {
-        getemail() {
-            //send an ajax get request to route /get_email to get the email of the user
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    vueints.email = JSON.parse(this.responseText)[0].email_address;
-                }
-            }
-            xhttp.open("POST", "/get_email", true);
-            xhttp.send();
-        }
     }
 });
+
+
+function getemail() {
+    //send an ajax get request to route /get_email to get the email of the user
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            vueints.email = JSON.parse(this.responseText)[0].email_address;
+        }
+    }
+    xhttp.open("POST", "/get_email", true);
+    xhttp.send();
+}
 
 function getEventID() {
     const queryString = window.location.search;
