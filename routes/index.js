@@ -9,31 +9,6 @@ const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 const argon2 = require('argon2');
 
-// const OAuth2Client_calendar = new OAuth2('376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com', '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');
-
-// OAuth2Client_calendar.setCredentials({
-//   refresh_token: '1//04aSPlR4wYHpBCgYIARAAGAQSNwF-L9IrBWxqPedjPwzGuqp9ebN8uyuZxaXUcxCo4XVNUlnVOb3nDuHuRyyiDBeItf7wpnx_oZw'
-// });
-
-// const calendar = google.calendar({version: 'v3', auth: OAuth2Client_calendar});
-// const eventStartTime = new Date();
-// eventStartTime.setDate(eventStartTime.getDay() + 2);
-// const eventEndTime = new Date();
-// eventEndTime.setDate(eventEndTime.getDay() + 2);
-// eventEndTime.setMinutes(eventEndTime.getMinutes() + 45);
-// const event = {
-//    summary: 'Google I/O 2015',
-//    description: 'A chance to hear more about Google\'s developer products.',
-//    start: {
-//      dateTime: eventStartTime,
-//      timeZone: 'Australia/Adelaide'
-//   },
-//   end: {
-//      dateTime: eventEndTime,
-//      timeZone: 'Australia/Adelaide'
-//   }
-// };
-
 function add_event() {
   calendar.events.insert({
     auth: OAuth2Client_calendar,
@@ -788,7 +763,7 @@ router.post('/linkgoogle', async function(req, res, next) {
         audience: CLIENT_ID,
     });
     const payload = ticket.getPayload();
-    const userid = payload['sub'];
+    const userid = payload['sub']; 
     //update the database with the userid
     req.pool.getConnection(function(err, connection){
       if(err) {
