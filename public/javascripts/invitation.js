@@ -6,7 +6,9 @@ var vueints = new Vue ({
         event_id: null,
         event_details: [],
         available: 'available',
-        email: ''
+        email: '',
+        connected: false,
+        apitoken: 0,
     },
     methods: {
         returnRSVP(date) {
@@ -16,17 +18,6 @@ var vueints = new Vue ({
         returnDateTime(date) {
             return ISODateString(new Date(date));
         },
-        getemail() {
-            //send an ajax get request to route /get_email to get the email of the user
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    vueints.email = JSON.parse(this.responseText)[0].email;
-                }
-            }
-            xhttp.open("POST", "/get_email", true);
-            xhttp.send();
-        }
     }
 });
 
@@ -36,6 +27,10 @@ function getemail() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             vueints.email = JSON.parse(this.responseText)[0].email_address;
+            vueints.apitoken = JSON.parse(this.responseText)[0].api_token;
+            if(vueints.apitoken[0] == '1') {
+                vueints.connected = true;
+            }
         }
     }
     xhttp.open("POST", "/get_email", true);
