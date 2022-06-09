@@ -1,5 +1,6 @@
 var count_element_date = 0;
 var count_element_friend = 0;
+var counter = 0;
 var tmp_id;
 var vueints = new Vue ({
     el: '#app',
@@ -33,7 +34,6 @@ function display_event_info() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
             var event_info = JSON.parse(this.responseText);
 
             document.getElementById("eventWhat").value = event_info[0].event_name;
@@ -75,6 +75,7 @@ function display_event_info() {
             vueints.populate_date_id(date_id_array);
         }
     };
+    console.log(vueints.event_id);
     xhttp.open("POST", "/display_event_info", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify( { event_id: vueints.event_id }) );
@@ -134,7 +135,8 @@ function load_attendee() {
         }
     };
     xhttp.open("POST", "/display_attendee", true);
-    xhttp.send();
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify( { event_id: vueints.event_id }) );
 }
 
 var count_add_date = 0;
@@ -212,7 +214,7 @@ function saveEventInfo() {
 
     xhttp.open("POST", "/save_event_info", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify({event_name: event_name, rsvp: rsvp, location: location, event_description: event_description}));
+    xhttp.send(JSON.stringify({event_name: event_name, rsvp: rsvp, location: location, event_description: event_description, event_id: vueints.event_id}));
 }
 
 // Have to save eventdate in event_date and loop to save attendee
@@ -228,16 +230,18 @@ function saveEventDate() {
         if (this.readyState == 4 && this.status == 200) {
             var text = JSON.parse(this.responseText);
             var num = text[1][0].event_date_id;
-            saveEventAttendeeWithDate(num);
+            for(var i in vueints.users_id_array) {
+                saveEventAttendeeWithDate(num, vueints.users_id_array[i]);
+            }
         }
     }
     xhttp.open("POST", "/save_event_date", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify({event_date: event_date}));
+    xhttp.send(JSON.stringify({event_date: event_date, event_id: vueints.event_id}));
 }
 
 // Only call when saveEventDate is call, to populate exist users with the date field
-function saveEventAttendeeWithDate(num) {
+function saveEventAttendeeWithDate(num, user_id) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -247,7 +251,7 @@ function saveEventAttendeeWithDate(num) {
     }
     xhttp.open("POST", "/save_event_attendee_date", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify({event_date_id: num, user_id: vueints.users_id_array}));
+    xhttp.send(JSON.stringify({event_date_id: num, user_id: user_id}));
 }
 
 function saveEventAttendee()  {
@@ -259,6 +263,8 @@ function saveEventAttendee()  {
         if (this.readyState == 4 && this.status == 200) {
             if(this.responseText === "Error") alert("Error in adding new attendee, please try again.");
             if(this.responseText === "Success!") alert("Add new attendee successfully!");
+            populateUserList();
+            counter++;
         }
     }
     xhttp.open("POST", "/save_event_attendee", true);
@@ -266,16 +272,43 @@ function saveEventAttendee()  {
     xhttp.send(JSON.stringify({email_address: email_address, first_name: first_name, event_date_id: vueints.date_id}));
 }
 
-// General function to update information about event-info, add new date, and add new attendee
-function saveData() {
-    saveEventInfo();
-    if(count_add_date > 0) {
-        saveDate();
-        count_add_date = 0;
+function populateUserList()  {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            vueints.users_id_array = [];
+            var detail = JSON.parse(this.responseText);
+            for(var i in detail) {
+                vueints.users_id_array.push(detail[item].user_id);
+            }
+        }
     }
-    if(count_add_friend > 0) {
-        saveEventAttendee();
+    xhttp.open("POST", "/display_attendee", true);
+}
+
+// General function to update information about event-info, add new date, and add new attendee
+async function saveData() {
+    saveEventInfo();
+    if(count_add_date > 0 && count_add_friend > 0) {
+        await saveEventAttendee();
+        console.log(counter);
+        if(counter > 0) {
+            saveDate();
+        }
+        count_add_date = 0;
         count_add_friend = 0;
+        counter = 0;
+    }
+    else {
+        if(count_add_friend > 0) {
+            saveEventAttendee();
+            count_add_friend = 0;
+        }
+        if(count_add_date > 0) {
+            saveDate();
+            count_add_date = 0;
+        }
     }
 }
 

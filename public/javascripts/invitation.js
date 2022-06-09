@@ -25,7 +25,7 @@ var vueints = new Vue ({
             }
             xhttp.open("POST", "/get_email", true);
             xhttp.setRequestHeader("Content-Type", "application/json");
-            xhttp.send(JSON.stringify({user_id: 1}));
+            xhttp.send(JSON.stringify({user_id: vueints.event_id}));
         }
     }
 });
@@ -49,7 +49,7 @@ function get_event_detail () {
     };
     xhttp.open("POST", "/display_event_info_invite", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify({event_id: 1}));
+    xhttp.send(JSON.stringify({event_id: vueints.event_id}));
 }
 
 function saveClicked() {
