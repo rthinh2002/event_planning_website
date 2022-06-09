@@ -243,15 +243,10 @@ function saveEventDate() {
 // Only call when saveEventDate is call, to populate exist users with the date field
 function saveEventAttendeeWithDate(num, user_id) {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            if(this.responseText === "Error") alert("Error in adding new date, please try again.");
-            if(this.responseText === "Success!") alert("Add new date successfully!");
-        }
-    }
     xhttp.open("POST", "/save_event_attendee_date", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({event_date_id: num, user_id: user_id}));
+    alert("Add new date successfully!");
 }
 
 function saveEventAttendee()  {
@@ -288,28 +283,17 @@ function populateUserList()  {
 }
 
 // General function to update information about event-info, add new date, and add new attendee
-async function saveData() {
+function saveData() {
     saveEventInfo();
-    if(count_add_date > 0 && count_add_friend > 0) {
-        await saveEventAttendee();
-        console.log(counter);
-        if(counter > 0) {
-            saveDate();
-        }
-        count_add_date = 0;
+    if(count_add_friend > 0) {
+        saveEventAttendee();
         count_add_friend = 0;
-        counter = 0;
     }
-    else {
-        if(count_add_friend > 0) {
-            saveEventAttendee();
-            count_add_friend = 0;
-        }
-        if(count_add_date > 0) {
-            saveDate();
-            count_add_date = 0;
-        }
+    if(count_add_date > 0) {
+        saveDate();
+        count_add_date = 0;
     }
+    
 }
 
 // Function for editevent.html
