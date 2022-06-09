@@ -38,7 +38,7 @@ html, body {
 }
 
 .header2 {
-    text-align: right;
+    /*text-align: left;*/
     height: 100%;
     vertical-align: middle;
     position: sticky;
@@ -46,6 +46,24 @@ html, body {
     grid-column: 1 / span 2;
     grid-row: 1;
     background-color: #289BD2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.loggedInText {
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    padding: 0 1em 0.5em 0;
+    position: fixed;
+    right: 0;
+}
+
+.loggedInText > #name {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
 }
 
 

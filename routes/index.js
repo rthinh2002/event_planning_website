@@ -8,45 +8,28 @@ const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleuser
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 const argon2 = require('argon2');
+var nodemailer = require('nodemailer');
 
-// const OAuth2Client_calendar = new OAuth2('376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com', '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');
+const transporter = nodemailer.createTransport({
+  host: 'smtp.ethereal.email',
+  port: 587,
+  auth: {
+      user: 'sarai.stamm71@ethereal.email',
+      pass: 'GXktnUSngkcad1hkDf'
+  }
+});
 
-// OAuth2Client_calendar.setCredentials({
-//   refresh_token: '1//04aSPlR4wYHpBCgYIARAAGAQSNwF-L9IrBWxqPedjPwzGuqp9ebN8uyuZxaXUcxCo4XVNUlnVOb3nDuHuRyyiDBeItf7wpnx_oZw'
-// });
 
-// const calendar = google.calendar({version: 'v3', auth: OAuth2Client_calendar});
-// const eventStartTime = new Date();
-// eventStartTime.setDate(eventStartTime.getDay() + 2);
-// const eventEndTime = new Date();
-// eventEndTime.setDate(eventEndTime.getDay() + 2);
-// eventEndTime.setMinutes(eventEndTime.getMinutes() + 45);
-// const event = {
-//    summary: 'Google I/O 2015',
-//    description: 'A chance to hear more about Google\'s developer products.',
-//    start: {
-//      dateTime: eventStartTime,
-//      timeZone: 'Australia/Adelaide'
-//   },
-//   end: {
-//      dateTime: eventEndTime,
-//      timeZone: 'Australia/Adelaide'
-//   }
-// };
-
-function add_event() {
-  calendar.events.insert({
-    auth: OAuth2Client_calendar,
-    calendarId: 'primary',
-    resource: event
-  }, function(err, event) {
-    if (err) {
-      console.log('There was an error contacting the Calendar service: ' + err);
-      return;
-    }
-    console.log('Event created: %s', event.htmlLink);
+router.get('/email', function(req, res, next) {
+  let info = transporter.sendMail({
+    from: 'sarai.stamm71@ethereal.email',
+    to: 'test@email.com',//req.body.recipient,
+    subject: 'test subject',//req.body.subject,
+    text: "this is a test email",//req.body.text,
+    html: "<body>" + "this is a test email"/*req.body.text*/ + "</b>"
   });
-}
+  res.send();
+});
 
 /* GET home page. */
 router.get('/home.html', function(req, res, next) {
@@ -55,6 +38,10 @@ router.get('/home.html', function(req, res, next) {
 
 // Log in to app - Karl, updated security to include argon2 4/6/22
 router.post('/login', function(req, res, next) {
+
+  if (!(req.body.password) || req.body.password === '' || req.body.password === null) {
+    return res.sendStatus(500);
+  }
 
   req.pool.getConnection(function(err, connection) {
     if(err) {
@@ -102,7 +89,7 @@ router.post('/login', function(req, res, next) {
 });
 
 // Log in to app - Karl, updated security to include argon2 4/6/22
-router.post('/get_user_role', function(req, res, next) {
+router.post('/get_user_details', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     connection.release();
@@ -112,18 +99,29 @@ router.post('/get_user_role', function(req, res, next) {
       return;
     }
 
-    res.send(req.session.user_role);
+    connection.query("SELECT first_name, user_role FROM users WHERE user_id = ?;", [req.session.user_id], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        return res.sendStatus(500);
+      }
+      res.json(rows);
+    });
   });
 });
 
 // Create new account - Karl, updated 3/6/22 with DB integration
 router.post('/createaccount', function(req, res, next)
 {
+  // request must have a password, and cannot be empty
+  if (!(req.body.password) || req.body.password === '' || req.body.password === null) {
+    return res.sendStatus(500);
+  }
+
   req.pool.getConnection(async function(err, connection) {
     if(err) {
       //console.log(err);
-      res.sendStatus(500);
-      return;
+      return res.sendStatus(500);
     }
 
     let hash = null;
@@ -239,8 +237,15 @@ router.post('/display_event_info', function(req, res, next){
       res.sendStatus(500);
       return;
     }
+<<<<<<< HEAD
     var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = 1 && event.event_id = 1 && event.event_id = event_date.event_id;";
     connection.query(query, /*[req.session.user_id, req.body.event_id] ,*/function (err, rows, fields) {
+=======
+    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, \
+                 event.event_description, event.location, event.RSVP, event_date.event_date \
+                 FROM event INNER JOIN event_date ON creator_id = ? && event.event_id = ? && event.event_id = event_date.event_id;";
+    connection.query(query, [req.session.user_id, req.body.event_id], function (err, rows, fields) {
+>>>>>>> 0a8b16c9cc13dfb0e7b87a4da7ca8e503eb08697
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -629,7 +634,7 @@ router.post('/create_new_event', function(req, res, next) {
     }
     // add new event to database
     var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.eventName, req.body.details, req.session.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields) {
+    connection.query(query, [req.body.eventName, req.body.details, req.body.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields) {
       if (error) {
         connection.release(); console.log(error); console.log("line 494");
         return res.sendStatus(500);
@@ -648,41 +653,6 @@ router.post('/create_new_event', function(req, res, next) {
 });
 
 router.post('/add_event_date', function(req, res, next) {
-
-  console.log(req.body);
-  req.pool.getConnection(function(error, connection) {
-    if (error) {
-      console.log(error); console.log("line 487");
-      return res.sendStatus(500);
-    }
-
-    connection.query("INSERT INTO event_date (event_date, event_id) VALUES (?, ?);", [req.body.date, req.body.event_id], function (error, rows, fields) {
-      connection.release();
-      if (error) {
-        console.log("Unsuccessful date add"); console.log(error);
-        return res.sendStatus(500);
-      }
-
-      req.pool.getConnection(function(error, connection) {
-        if (error) {
-          console.log(error); console.log("line 487");
-          return res.sendStatus(500);
-        }
-
-        connection.query("SELECT LAST_INSERT_ID() AS id;", function (error, rows, fields) {
-          connection.release();
-          if (error) {
-            console.log(error); console.log("line 494");
-            return res.sendStatus(500);
-          }
-          res.json(rows[0].id); //send response
-        });
-      });
-    });
-  });
-});
-
-router.post('/add_event_attendee', function(req, res, next) {
 
   console.log(req.body);
   req.pool.getConnection(function(error, connection) {
@@ -758,7 +728,7 @@ router.post('/tokensignin', async function(req, res, next) {
                 return;
               }
               //generate a random password
-              var password = Math.random().toString(36).slice(-8);
+              var password = Math.random().toString(36).slice(-32);
               var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password, user_role) VALUES (?, ?, ?, ?, ?, ?, ?);";
               connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, password, 'user'], function (error, rows, fields) {
                 connection.release();
@@ -798,8 +768,9 @@ router.post('/tokensignin', async function(req, res, next) {
     console.error('Error while verifying token', err);
     res.sendStatus(500);
   }
-
 });
+
+
 
 router.post('/linkgoogle', async function(req, res, next) {
   try {
@@ -898,89 +869,6 @@ router.post('/get_all_events', function(req, res, next) {
 });
 
 
-
-router.post('/make_admin', function(req, res, next) {
-
-  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
-      res.sendStatus(403);
-  }
-
-  req.pool.getConnection(function(err, connection) {
-      if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-      }
-
-      connection.query("UPDATE users SET user_role = 'admin' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
-        connection.release(); // release connection
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-          return;
-        }
-        res.sendStatus(200)
-      });
-  });
-});
-
-router.post('/make_user', function(req, res, next) {
-
-  if (!('user_id' in req.session) || !('user_role' in req.session) || (req.session.user_role !== 'admin')) {
-      res.sendStatus(403);
-  }
-
-  req.pool.getConnection(function(err, connection) {
-      if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-      }
-
-      connection.query("UPDATE users SET user_role = 'user' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
-        connection.release(); // release connection
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-          return;
-        }
-        res.sendStatus(200)
-      });
-  });
-});
-
-router.post('/delete_user', function(req, res, next) {
-
-  // check that session is not missing user_role or user_id
-  if (!('user_role' in req.session) || !('user_id' in req.session)) {
-    res.sendStatus(403);
-  // if present, check if user role admin
-  } else if ( req.session.user_role !== 'admin') {
-      // if user role is not admin, check that user is attempting to delete only their account
-      if (req.session.user_id !== req.body.id) {
-        res.sendStatus(403);
-      }
-  }
-
-  req.pool.getConnection(function(err, connection) {
-      if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-      }
-
-      connection.query("DELETE FROM users WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
-        connection.release(); // release connection
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-          return;
-        }
-        res.sendStatus(200)
-      });
-  });
-});
-
 router.post('/delete_event', function(req, res, next) {
 
   if (!('user_id' in req.session)) {
@@ -1031,4 +919,12 @@ router.post('/edit_event.html', function(req, res, next) {
   });
 });
 
+
+
+
 module.exports = router;
+
+
+
+
+

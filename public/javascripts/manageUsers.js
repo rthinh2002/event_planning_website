@@ -19,7 +19,6 @@ function display_user_info() {
             document.getElementById("lname").value = user_info[0].last_name;
             document.getElementById("email").value = user_info[0].email_address;
             document.getElementById("dob").value = user_info[0].DOB.slice(0,10);
-
         }
     };
     xhttp.open("POST", "/display_user_information", true);

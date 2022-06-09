@@ -11,18 +11,21 @@
     <script src="/javascripts/user_actions.js" defer></script>
 </head>
 
-<body onload="set_date(); load_date_response(); user_role()">
+<body onload="set_details(); load_date_response(); user_role()">
     <div class="grid-container">
 
         <!-- HEADER -->
-        <div class="header2">
+        <div class="header2" id="header">
             <a href="/app/dashboard.html">
-                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
+                <img src="/images/W2M_icon.png" class="logo" alt="W2M" />
             </a>
+            <span class="loggedInText">Logged in as
+                <span id="name" v-cloak> {{first_name}}</span>
+            </span>
         </div>
 
         <!-- SIDEBAR -->
-        <div id="sidebar" class="sidebar2">
+        <div class="sidebar2" id="sidebar">
             <div>
                 <a href="/app/dashboard.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>
@@ -75,7 +78,7 @@
                 <h1 class="event-text">Responses</h1>
                 <div class="textField">
                     <table id="responses_table_attendee" class="table">
-                        
+
                     </table>
                 </div>
             </div>
@@ -85,7 +88,7 @@
     </div>
 
     <div class="bottom right">
-        <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
+        <button onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
     </div>
 
 </body>

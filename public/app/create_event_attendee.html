@@ -12,19 +12,21 @@
     <script src="/javascripts/invitation.js" defer></script>
 </head>
 
-<body onload="user_role(); get_event_detail(1);">
-
+<body onload="user_details(); get_event_detail(1);">
     <div class="grid-container">
 
         <!-- HEADER -->
-        <div class="header2">
-            <a href="/dashboard1.html">
-                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
+        <div class="header2" id="header">
+            <a href="/app/dashboard.html">
+                <img src="/images/W2M_icon.png" class="logo" alt="W2M" />
             </a>
+            <span class="loggedInText">Logged in as
+                <span id="name" v-cloak> {{first_name}}</span>
+            </span>
         </div>
 
         <!-- SIDEBAR -->
-        <div id="sidebar" class="sidebar2">
+        <div class="sidebar2" id="sidebar">
             <div>
                 <a href="/app/dashboard.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>
@@ -172,7 +174,7 @@
                 </div>
             </div>
             <div><!--footer-->
-                <p class="bottom right" onclick="toTop()"><button class="fade set-padding"><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
+                <p class="bottom right" onclick="toTop()"><button><i class="fa-solid fa-angle-up fa-2xl"></i></button></p>
             </div>
         </div>
         <!--Dashboard 1 Create Event content-->

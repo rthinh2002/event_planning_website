@@ -3,34 +3,46 @@ var count_element_friend = 0;
 var tmp_id;
 var vueints = new Vue ({
     el: '#app',
-    data: 
+    data:
     {
+        event_id: null,
         date_id: [],
         users_id_array: [],
     },
-    methods: 
+    methods:
     {
         populate_date_id(date_id) {
             this.date_id = date_id;
-        },
-
-        
+        }
     }
 });
 
+function getEventID() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    //console.log(queryString);
+    if (urlParams.has('id')) {
+        vueints.event_id = urlParams.get('id');
+    }
+    console.log(vueints.event_id);
+}
+
 // editevent.html
 function display_event_info() {
+
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
             var event_info = JSON.parse(this.responseText);
+
             document.getElementById("eventWhat").value = event_info[0].event_name;
             document.getElementById("eventLocation").value = event_info[0].location;
 
             var correct_RSVP = new Date(event_info[0].RSVP);
             correct_RSVP.setDate(correct_RSVP.getDate()+1);
             var date = JSON.stringify(correct_RSVP);
-            
+
             document.getElementById("eventRSVP").value = date.slice(1,11);
             document.getElementById("eventDetails").value = event_info[0].event_description;
 
@@ -41,7 +53,7 @@ function display_event_info() {
                 let create_td_empty = document.createElement("td");
                 if(element == 0) {
                     create_td_empty.innerHTML = "When:";
-                } 
+                }
                 let create_td_date = document.createElement("td");
                 let create_input = document.createElement("input");
 
@@ -50,7 +62,7 @@ function display_event_info() {
                 create_input.setAttribute("disabled", "");
                 create_input.classList.add("textField");
                 create_input.classList.add("addMargin-date");
-                
+
                 var d = new Date(event_info[element].event_date);
                 create_input.setAttribute("value", d.toDateTimeLocal());
                 create_td_date.appendChild(create_input);
@@ -64,7 +76,8 @@ function display_event_info() {
         }
     };
     xhttp.open("POST", "/display_event_info", true);
-    xhttp.send();
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify( { event_id: vueints.event_id }) );
 }
 
 // editevent.html
@@ -79,7 +92,7 @@ function load_attendee() {
                 // First row will have to display Who:
                 if(item == 0) {
                     create_td_empty.innerHTML = "Who:";
-                } 
+                }
 
                 let create_td_name = document.createElement("td");
                 let create_td_email = document.createElement("td");
@@ -268,14 +281,15 @@ function saveData() {
 
 // Function for editevent.html
 function start_loading() {
+    getEventID();
     display_event_info();
     load_attendee();
 }
 
 // This function is to set up the prototype of toDateTimeLocal for datetime-local format of input
-Date.prototype.toDateTimeLocal = 
+Date.prototype.toDateTimeLocal =
     function toDateTimeLocal() {
-        var 
+        var
             date = this,
             ten = function (i) {
                 return (i < 10 ? '0' : '') + i;

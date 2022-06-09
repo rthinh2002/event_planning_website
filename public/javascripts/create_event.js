@@ -99,6 +99,14 @@ function createNewEvent() {
     checkGuests(newEvent);
 }
 
+/*
+function emailInvitations() {
+    var password = Math.random().toString(36).slice(-32);
+    console.log(password);
+
+}
+*/
+
 var currentDateGuest = 0;
 var currentGuest = 0;
 
@@ -125,6 +133,7 @@ function addEventGuest(newEvent) {
                 addEventGuest(newEvent);
             } else if (currentGuest === createEvent.guests.length-1) {
                 if (currentDateGuest === createEvent.dates.length-1) {
+
                     window.location="/app/dashboard.html";
                     //console.log("done!");
                 } else {
@@ -137,69 +146,12 @@ function addEventGuest(newEvent) {
         }
     };
 
-    xhttp.open("POST", "/add_event_attendee");
+    xhttp.open("POST", "/events/add_event_attendee");
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(event_guest));
 
 }
-/*
-function addEventGuest(newEvent) {
 
-    let event_guest = {
-        email: createEvent.guests[currentGuest2].email,
-        date1: newEvent.eventDates[currentDateGuest].date,
-        event_id: createEvent.event_id
-    };
-
-    console.log(event_guest.date1);
-    let xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
-            alert("Guest added");
-            if (currentGuest2 === createEvent.guests.length) {
-                window.location="/app/dashboard.html";
-            } else {
-                if (currentDateGuest !== createEvent.dates.length) {
-                    currentDateGuest++;
-                } else {
-                    currentDateGuest = 0;
-                    currentGuest2++;
-                }
-                addEventGuest(newEvent);
-            }
-
-        } else if (this.readyState == 4 && this.status >= 400) {
-            alert("Guest add failed");
-        }
-    };
-
-    xhttp.open("POST", "/add_event_attendee");
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(event_guest));
-
-}
-*/
-/*
-            if (currentGuest !== createEvent.guests.length-1) {
-                if (currentDateGuest === createEvent.dates.length-1) {
-                    currentDateGuest = 0;
-                    currentGuest++;
-                } else {
-                    currentDateGuest++;
-                }
-                addEventGuest(newEvent);
-            } else if (currentGuest === createEvent.guests.length-1) {
-                if (currentDateGuest === createEvent.dates.length-1) {
-                    window.location="/app/dashboard.html";
-                    //console.log("done!");
-                } else {
-                    currentDateGuest++;
-                    addEventGuest(newEvent);
-                }
-            }
-            */
 var currentDate = 0;
 
 function addEventDate(newEvent) {
@@ -225,7 +177,7 @@ function addEventDate(newEvent) {
         }
     };
 
-    xhttp.open("POST", "/add_event_date");
+    xhttp.open("POST", "/events/add_event_date");
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(event_date));
 
@@ -245,7 +197,7 @@ function addEvent(newEvent) {
         }
     };
 
-    xhttp.open("POST", "/create_new_event");
+    xhttp.open("POST", "/events/create_new_event");
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(newEvent));
 }
@@ -276,7 +228,7 @@ function checkGuests(newEvent) {
         }
     };
 
-    xhttp.open("POST", "/check_guests");
+    xhttp.open("POST", "/events/check_guest");
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(thisGuest));
 }

@@ -9,18 +9,21 @@
     <script src="/javascripts/user_actions.js" defer></script>
 </head>
 
-<body onload="user_role()">
+<body onload="user_details()">
     <div class="grid-container">
 
         <!-- HEADER -->
-        <div class="header2">
-            <a href="/dashboard1.html">
-                <img src="/images/W2M_icon.png" class="logo" alt="W2M" >
-            </a>
+        <div class="header2" id="header">
+          <a href="/app/dashboard.html">
+              <img src="/images/W2M_icon.png" class="logo" alt="W2M" />
+          </a>
+          <span class="loggedInText">Logged in as
+              <span id="name" v-cloak> {{first_name}}</span>
+          </span>
         </div>
 
         <!-- SIDEBAR -->
-        <div id="sidebar" class="sidebar2">
+        <div class="sidebar2" id="sidebar">
             <div>
                 <a href="/app/dashboard.html" class="selected"><i class="fa-regular fa-calendar fa-lg sidebar-icon blue-color"></i>My Events</a>
             </div>
@@ -73,7 +76,7 @@
                       <input class="textField" type="text" id="name" name="name" style="max-width: 30%" v-model="item.name" placeholder="Guest name" required />
                       <input class="textField" type="text" id="email" name="email" style="max-width:68%" v-model="item.email" placeholder="Guest email" required />
                       <a @click="removeGuest(item.guestID)" style="text-decoration: none; cursor: pointer">
-                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove guest {{item.guestID}}
+                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove guest
                       </a>
                     </div>
                     <br>
@@ -102,7 +105,7 @@
     </div><!-- end grid-container -->
 
     <div class="bottom right">
-      <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
+      <button onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
     </div>
 
 </body>
