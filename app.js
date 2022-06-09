@@ -55,7 +55,7 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-/*
+
 app.use('/app', (req, res, next) => {
     //console.log('Attempted access to app');
     if (!('user_id' in req.session)) {
@@ -77,7 +77,7 @@ app.use('/admin.html', (req, res, next) => {
     //console.log('Attempt to access admin successful');
     next();
     }
-});*/
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 
