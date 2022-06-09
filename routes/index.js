@@ -735,7 +735,6 @@ router.post('/tokensignin', async function(req, res, next) {
             req.pool.getConnection(function(err, connection){
               if(err) {
                 console.log(err);
-                res.sendStatus(500);
                 return;
               }
               //generate a random password
@@ -748,7 +747,7 @@ router.post('/tokensignin', async function(req, res, next) {
                   res.sendStatus(500);
                   return;
                 }
-                console.log('successful login');
+                console.log('successful login with create new user');
                 //get the user id of the new user
                 req.pool.getConnection(function(err, connection){
                   if(err) {
@@ -774,11 +773,10 @@ router.post('/tokensignin', async function(req, res, next) {
         });
       }});
     });
-
-    res.send();
   }
   catch(err) {
     console.error('Error while verifying token', err);
+    res.sendStatus(500);
   }
 
 });
