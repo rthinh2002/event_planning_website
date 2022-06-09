@@ -49,7 +49,7 @@ function get_event_detail () {
     };
     xhttp.open("POST", "/display_event_info_invite", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify({event_id: vueints.event_id}));
+    xhttp.send(JSON.stringify({event_id: 1}));
 }
 
 function saveClicked() {
