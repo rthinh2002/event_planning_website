@@ -5,6 +5,7 @@ const req = require('express/lib/request');
 var router = express.Router();
 const argon2 = require('argon2');
 var nodemailer = require('nodemailer');
+const client = new OAuth2Client(CLIENT_ID);
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.ethereal.email',
