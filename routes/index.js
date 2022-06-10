@@ -5,6 +5,7 @@ const req = require('express/lib/request');
 var router = express.Router();
 const argon2 = require('argon2');
 var nodemailer = require('nodemailer');
+const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 
