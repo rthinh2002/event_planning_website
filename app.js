@@ -17,8 +17,6 @@ var app = express();
 var dbConnectionPool = mysql.createPool({
     host: 'localhost',
     database: 'event_planning',
-    //user: 'root',
-    //password: 'root',
     typeCast: function castField( field, useDefaultTypeCasting ) { // This field is for casting BIT into boolean data - Peter
 		if ( ( field.type === "BIT" ) && ( field.length === 1 ) ) {
 			var bytes = field.buffer();
@@ -48,10 +46,10 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+// check user is logged in; only admins and users permitted to access app pages
+// guests are redirect to guest_invitation page
 app.use('/app', (req, res, next) => {
-    //console.log('Attempted access to app');
     if (!('user_id' in req.session)) {
-        //console.log('Attempt unsuccessful');
         res.redirect('/login.html');
     } else if ( ('user_id' in req.session) && req.session.user_role === 'guest') {
         if ('event_id' in req.session) {
@@ -59,19 +57,16 @@ app.use('/app', (req, res, next) => {
         } else {
             res.redirect('/login.html');
         }
-    //console.log('Attempt successful');
     }
     next();
 });
 
+// check user is authorised to access admin page
 app.use('/admin.html', (req, res, next) => {
     console.log('Attempted access to admin');
     if (!('user_role' in req.session) || (req.session.user_role !== 'admin')) {
-        //console.log(req.session);
-        //console.log('Attempt to access admin unsuccessful');
         res.sendStatus(403);
     } else {
-    //console.log('Attempt to access admin successful');
     next();
     }
 });

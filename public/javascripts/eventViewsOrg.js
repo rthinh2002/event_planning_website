@@ -68,6 +68,7 @@ function populate_table(date_response, i, y_string, n_string, no_res_string) {
     // 1 tr
     tr_1 = document.createElement("tr");
     th_1 = document.createElement("th");
+    th_1.setAttribute("style", "text-align:left; font-weight: bold");
     th_1.innerHTML = ISODateString(new Date(date_response[i].event_date));
     tr_1.appendChild(th_1);
 
@@ -114,24 +115,34 @@ function load_string_response(date_id, n, date_response) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var attendee_response = JSON.parse(this.responseText);
-            console.log(attendee_response);
+            //console.log(attendee_response);
             var y_string = '', no_string = '', no_res_string = '';
-            for(var i in attendee_response)
-            {
-                if(attendee_response[i].attendee_response === "YES")
-                {
+
+            var yesCount = 0, noCount = 0, noResCount = 0;
+            for(var i in attendee_response) {
+                if(attendee_response[i].attendee_response === "YES") {
+                    yesCount++;
+                } else if (attendee_response[i].attendee_response === "NO") {
+                    noCount++;
+                }  else  {
+                    noResCount++;
+                }
+            }
+
+            var yesCountAdded = 0, noCountAdded  = 0, noResCountAdded = 0;
+            for(var i in attendee_response) {
+                if(attendee_response[i].attendee_response === "YES") {
                     y_string += attendee_response[i].first_name;
-                    y_string += " - ";
-                }
-                else if (attendee_response[i].attendee_response === "NO")
-                {
+                    yesCountAdded++;
+                    if (yesCountAdded !== yesCount) { y_string += ", "; }
+                } else if (attendee_response[i].attendee_response === "NO") {
                     no_string += attendee_response[i].first_name;
-                    no_string += " - ";
-                }
-                else
-                {
+                    noCountAdded++;
+                    if (noCountAdded !== noCount) { no_string += ", "; }
+                } else {
                     no_res_string += attendee_response[i].first_name;
-                    no_res_string += " - ";
+                    noResCountAdded++;
+                    if (noResCountAdded !== noResCount) { no_res_string += ", "; }
                 }
             }
             populate_table(date_response, n, y_string, no_string, no_res_string);
@@ -218,7 +229,7 @@ function confirmClicked(date_id) {
             //alert("Confirm!");
             window.location.reload();
         }
-    }
+    };
 
     xhttp.open("POST", "/update_date_status");
     xhttp.setRequestHeader("Content-Type", "application/json");
@@ -256,7 +267,7 @@ function delete_clicked(date_id) {
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify({event_date_id: date_id}));
     }
-};
+}
 
 
 
@@ -280,7 +291,7 @@ Date.prototype.toDateTimeLocal =
 
     /* use a function for the exact format desired... */
 function ISODateString(d){
-    function pad(n){return n<10 ? '0'+n : n};
+    function pad(n){return n<10 ? '0'+n : n;}
     return d.getUTCFullYear()+'-'
         + pad(d.getUTCMonth()+1)+'-'
         + pad(d.getUTCDate()) +' '

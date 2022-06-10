@@ -71,7 +71,7 @@ router.post('/email_new_event', function(req, res, next) {
 
         // add new account to database
 
-        var query = " UPDATE users SET users.password = ? WHERE users.email_address = ?;";
+        var query = "UPDATE users SET users.password = ? WHERE users.email_address = ?;";
         connection.query(query, [hash, sanitize(req.body.guest_email)], function (error, rows, fields) {
           connection.release();
           if (error) {
@@ -127,6 +127,12 @@ function prepareDates() {
   }
 }
 
+module.exports = router;
+
+
+/*
+
+// BELOW INTENDED FOR INCOMPLETE EMAIL FEATURES
 
 function sendConfirmationEmails() {
 
@@ -165,7 +171,6 @@ router.post('/email_event_confirmation', function(req, res, next) {
       return;
     }
 
-    // ADD QUERY TO LIST
     var query1 = "SELECT * FROM event INNER JOIN users ON users.user_id = event.creator_id WHERE event_id = ?;";
     connection.query(query1, [sanitize(req.session.event_id)], function (error, rows, fields) {
       connection.release();
@@ -181,7 +186,7 @@ router.post('/email_event_confirmation', function(req, res, next) {
     });
   });
   res.send();
-/*
+
   // get event dates
   req.pool.getConnection(function(err, connection) {
     if(err) {
@@ -191,7 +196,6 @@ router.post('/email_event_confirmation', function(req, res, next) {
       return;
     }
 
-    // ADD QUERY TO LIST
     var query2 = "SELECT * FROM event_date WHERE event_id = ?;";
     connection.query(query2, [sanitize(req.session.event_id)], function (error, rows, fields) {
       connection.release();
@@ -236,7 +240,7 @@ router.post('/email_event_confirmation', function(req, res, next) {
 
   sendConfirmationEmails(guests);
   return;
-  */
-});
 
-module.exports = router;
+});
+*/
+

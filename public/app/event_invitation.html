@@ -48,6 +48,11 @@
                     <!-- a 3 by 3 table -->
                     <table class="table" style="height: 6em; width: 20em;" id="evdetails" v-on:load="readevent()">
                         <tr>
+                            <th class="align-left">Hosts</th>
+                            <td>{{ event_details[0].first_name }}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
                             <th class="align-left">Where</th>
                             <td>{{ event_details[0].location }}</td>
                             <td></td>
@@ -62,14 +67,9 @@
                             <td>{{ event_details[0].event_description }}</td>
                             <td></td>
                         </tr>
-                        <tr>
-                            <th class="align-left">Hosts</th>
-                            <td>{{ event_details[0].first_name }}</td>
-                            <td></td>
-                        </tr>
                     </table>
                 </div>
-                    <p class="size-16-px-text">Your availability for this event: </p>
+                    <p class="size-16-px-text">Are you available? </p>
                     <div class="textField height-increase">
                         <table>
                             <tr>

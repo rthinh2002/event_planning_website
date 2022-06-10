@@ -7,7 +7,7 @@
           var id_token = googleUser.credential;
           var xhr = new XMLHttpRequest();
           xhr.open('POST', '/linkgoogle');
-    
+
           xhr.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
                   alert("Successfully connected to Google Calendar");
@@ -17,19 +17,19 @@
           };
           xhr.setRequestHeader('Content-Type', 'application/json');
           xhr.send(JSON.stringify({'idtoken': id_token}));
-    
+
       }
-    
+
       function signOut() {
           var auth2 = gapi.auth2.getAuthInstance();
           auth2.signOut().then(function () {
               console.log('User signed out.');
           });
-    
+
           // Do our logout on server here
-    
+
       }
-    
+
       function init() {
           gapi.load('auth2', function() {
               gapi.auth2.init();
@@ -111,9 +111,9 @@
                         data-logo_alignment="center">
                     </div>
                   </div>
-                  <div>
-                    <a href="password" style="text-decoration: none;"><i class="fa-solid fa-lock fa-2x blue-color"></i>   Change password</a>
-                  </div>
+                  <!--<div>
+                    <a href="" style="text-decoration: none;"><i class="fa-solid fa-lock fa-2x blue-color"></i>   Change password</a>
+                  </div>-->
                 </div>
                 <h2 style="margin: 1em 0 0 0" class="content-header">Email preferences</h2>
                 <div class="flex-container form-div-2-columns" v-cloak>

@@ -54,61 +54,61 @@ CREATE TABLE `users` (
 );
 
 Draft Queries:
-/email: 
-SELECT first_name, last_name, email_address 
+/email:
+SELECT first_name, last_name, email_address
 FROM users WHERE user_id = ?;
-SELECT user_role 
-FROM users 
+SELECT user_role
+FROM users
 WHERE email_address = ?;
 
 /home.html:
-SELECT user_id, user_role, password 
-FROM users 
+SELECT user_id, user_role, password
+FROM users
 WHERE user_name = ? AND user_role != 'guest';
 
 /get_user_details:
-SELECT first_name, user_role 
-FROM users 
+SELECT first_name, user_role
+FROM users
 WHERE user_id = ?;
 
 /createaccount:
-INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role) 
+INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role)
 VALUES (?, ?, ?, ?, ?, ?);
-SELECT user_id 
-FROM users 
+SELECT user_id
+FROM users
 WHERE user_id = LAST_INSERT_ID();
 
 /display_user_information:
-SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation 
-FROM users 
+SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation
+FROM users
 WHERE user_id = ?;
 
 /change_user_info:
-UPDATE users 
-SET first_name = ?, last_name = ?, email_address = ?, DOB = ?, email_notification_users_response = ?, email_notification_event = ?, email_notification_attendee = ?, email_notification_cancelation = ? 
+UPDATE users
+SET first_name = ?, last_name = ?, email_address = ?, DOB = ?, email_notification_users_response = ?, email_notification_event = ?, email_notification_attendee = ?, email_notification_cancelation = ?
 WHERE user_id = ?;
 
 /display_event_info:
-SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date 
-FROM event 
+SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date
+FROM event
 INNER JOIN event_date ON creator_id = ? && event.event_id = ? && event.event_id = event_date.event_id;
 
 /display_event_info_invite:
-SELECT users.first_name, event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response 
-FROM event 
-INNER JOIN users ON users.user_id = event.creator_id 
-INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id 
+SELECT users.first_name, event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response
+FROM event
+INNER JOIN users ON users.user_id = event.creator_id
+INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id
 WHERE event.event_id = ? AND attendee.user_id = ?;
 
 /display_attendee:
-SELECT DISTINCT users.first_name, users.email_address, users.user_id 
-FROM users 
-INNER JOIN attendee ON attendee.user_id = users.user_id 
-INNER JOIN event_date on attendee.event_date_id = event_date.event_date_id 
+SELECT DISTINCT users.first_name, users.email_address, users.user_id
+FROM users
+INNER JOIN attendee ON attendee.user_id = users.user_id
+INNER JOIN event_date on attendee.event_date_id = event_date.event_date_id
 WHERE event_date.event_id = ?;
 
 /get_hosting_event:
-SELECT * FROM event 
+SELECT * FROM event
 WHERE creator_id = ? ORDER BY RSVP DESC;
 
 /get_attending_event:
@@ -217,3 +217,10 @@ UPDATE users SET user_role = 'user' WHERE user_id = ?;
 
 /delete_user:
 DELETE FROM users WHERE user_id = ?;
+
+/email_new_event:
+SELECT first_name, last_name, email_address FROM users WHERE user_id = ?;
+
+SELECT user_role FROM users WHERE email_address = ?;
+
+UPDATE users SET users.password = ? WHERE users.email_address = ?;
