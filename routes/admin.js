@@ -30,7 +30,7 @@ router.post('/get_all_users', function(req, res, next) {
       }
 
       var query = "SELECT first_name, last_name, user_name, user_role, user_id FROM users WHERE user_id != ? ORDER BY first_name ASC;";
-      connection.query(query, [req.session.user_id], function (err, rows, fields) {
+      connection.query(query, [sanitize(req.session.user_id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
@@ -82,7 +82,7 @@ router.post('/make_admin', function(req, res, next) {
       return;
       }
 
-      connection.query("UPDATE users SET user_role = 'admin' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+      connection.query("UPDATE users SET user_role = 'admin' WHERE user_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
@@ -107,7 +107,7 @@ router.post('/make_user', function(req, res, next) {
       return;
       }
 
-      connection.query("UPDATE users SET user_role = 'user' WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+      connection.query("UPDATE users SET user_role = 'user' WHERE user_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
@@ -139,7 +139,7 @@ router.post('/delete_user', function(req, res, next) {
       return;
       }
 
-      connection.query("DELETE FROM users WHERE user_id = ?;", [req.body.id], function (err, rows, fields) {
+      connection.query("DELETE FROM users WHERE user_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
