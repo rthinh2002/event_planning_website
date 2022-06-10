@@ -69,8 +69,9 @@ router.post('/email_new_event', function(req, res, next) {
       } else if (rows[0].user_role === 'guest') {
 
         // add new account to database
-        var query = "INSERT INTO users (password) VALUES (?);";
-        connection.query(query, [hash], function (error, rows, fields) {
+
+        var query = " UPDATE users SET users.password = ? WHERE users.email_address = ?;";
+        connection.query(query, [hash, req.body.guest_email], function (error, rows, fields) {
           connection.release();
           if (error) {
               return res.sendStatus(500);
