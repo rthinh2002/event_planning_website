@@ -27,8 +27,8 @@ var createEvent = new Vue({
         removeDate: function(dateIDtoRemove) {
             if (this.dates.length > 1) {
                 for (item in this.dates) {
-                    if (item.dateID === dateIDtoRemove) {
-                        this.dates.splice(dateIDtoRemove, 1);
+                    if (this.dates[item].dateID === dateIDtoRemove) {
+                        this.dates.splice(item, 1);
                         return;
                     }
                 }
@@ -43,8 +43,8 @@ var createEvent = new Vue({
         removeGuest: function(guestIDtoRemove) {
             if (this.guests.length > 1) {
                 for (item in this.guests) {
-                    if (item.guestID === guestIDtoRemove) {
-                        this.guests.splice(guestIDtoRemove, 1);
+                    if (this.guests[item].guestID === guestIDtoRemove) {
+                        this.guests.splice(item, 1);
                         return;
                     }
                 }
