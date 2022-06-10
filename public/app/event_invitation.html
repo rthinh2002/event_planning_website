@@ -14,7 +14,6 @@
 
 <body onload="getEventID(); user_details(); get_event_detail(); getemail();">
     <div class="grid-container">
-
         <!-- HEADER -->
         <div class="header2" id="header">
             <a href="/app/dashboard.html">
@@ -24,7 +23,6 @@
                 <span id="name" v-cloak> {{first_name}}</span>
             </span>
         </div>
-
         <!-- SIDEBAR -->
         <div class="sidebar2" id="sidebar">
             <div>
@@ -40,15 +38,12 @@
                 <a class="fade" onclick="logout()"><i class="fa-solid fa-sign-out-alt fa-lg sidebar-icon"></i>Log out</a>
             </div>
         </div>
-
         <!-- CONTENT -->
         <div class="page-content" id="app">
             <div class="flex-container">
-
             <div>
                 <h1 class="content-header">{{ event_details[0].event_name }}</h1>
                 <p class="size-16-px-text">You're invited to this event!</p>
-
                 <div class="textField">
                     <!-- a 3 by 3 table -->
                     <table class="table" style="height: 6em; width: 20em;" id="evdetails" v-on:load="readevent()">
@@ -74,7 +69,6 @@
                         </tr>
                     </table>
                 </div>
-
                     <p class="size-16-px-text">Your availability for this event: </p>
                     <div class="textField height-increase">
                         <table>
@@ -107,15 +101,12 @@
                     </div>
 
             </div>
-
             </div><!-- end flex-container -->
         </div><!-- end page content -->
     </div><!-- end grid-container -->
-
     <div class="bottom right">
         <button class="fade set-padding" onclick="toTop()"><i class="fa-solid fa-angle-up" style="color:white"></i></button>
     </div>
 </div>
-
 </body>
 </html>

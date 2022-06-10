@@ -10,11 +10,11 @@ const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 
 
-
-// Log in to app - Karl, 2/6/22
+// Log out of app - Karl, 2/6/22
 router.post('/logout', function(req, res, next) {
   if ('user_id' in req.session) {
     delete req.session.user_id;
+    delete req.session.user_role;
     res.sendStatus(200);
   }
 });
