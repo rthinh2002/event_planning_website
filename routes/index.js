@@ -4,19 +4,11 @@ var session = require('express-session');
 const req = require('express/lib/request');
 var router = express.Router();
 const argon2 = require('argon2');
-var nodemailer = require('nodemailer');
 const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.ethereal.email',
-  port: 587,
-  auth: {
-      user: 'sarai.stamm71@ethereal.email',
-      pass: 'GXktnUSngkcad1hkDf'
-  }
-});
+
 
 // Log in to app - Karl, 2/6/22
 router.post('/logout', function(req, res, next) {
@@ -91,96 +83,6 @@ router.post('/update_invite', function(req, res, next){
 });
 
 
-router.post('/email', function(req, res, next) {
-
-  console.log(req.body);
-
-  req.pool.getConnection(async function(err, connection) {
-    connection.release();
-    if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-    }
-
-    var password = Math.random().toString(36).slice(-32);
-    let hash = null;
-
-    try {
-      hash = await argon2.hash(password);
-    } catch (err) {
-      //console.log(err);
-      res.sendStatus(500);
-      return;
-    }
-
-    // get details of user
-    var event_host;
-    connection.query("SELECT first_name, last_name, email_address FROM users WHERE user_id = ?;", [req.session.user_id], function (error, rows, fields) {
-      connection.release();
-      if (error) {
-        //console.log(error);
-        return res.sendStatus(500);
-      }
-      if (rows.length === 0) {
-        return res.sendStatus(500);
-      } else {
-        event_host = rows[0];
-      }
-    });
-
-    //send email to guests
-    connection.query("SELECT user_role FROM users WHERE email_address = ?;", [req.body.guest_email], function (error, rows, fields) {
-      connection.release();
-      if (error) {
-        //console.log(error);
-        return res.sendStatus(500);
-      }
-
-      if (rows.length === 0) {
-        console.log('no data');
-        return res.sendStatus(500);
-      } else if (rows[0].user_role === 'guest') {
-
-        // add new account to database
-        var query = "INSERT INTO users (password) VALUES (?);";
-        connection.query(query, [hash], function (error, rows, fields) {
-          connection.release();
-          if (error) {
-              return res.sendStatus(500);
-            }
-        });
-
-        var emailText = ("Hi " + req.body.guest_name + "!" + event_host.first_name + "is inviting you to meet up!\n" + "Respond to " + req.body.guest_name + " at: when2meet/login.html\n" + "Your password to log in is: " + password);
-        let info = transporter.sendMail({
-          from: event_host.email_address,
-          to: req.body.guest_email,
-          subject: "when2meet invitation",
-          text: emailText,
-          html: "<body><p>Hi" + req.body.guest_name + "!</p>" +
-                "<p>" + event_host.first_name + "is inviting you to meet up!</p>" +
-                "<p>Respond to " + req.body.guest_name + " at: <a href=\"when2meet.com/login.html\">when2meet</a></p>" +
-                "<p>Your password to log in is: " + password + "</p></body>",
-        });
-      } else {
-
-        var emailText = "Hi" + req.body.guest_name + "!" + event_host.first_name + "is inviting you to meet up!\n" + "Log in to your account to respond to " + req.body.guest_name + " at: when2meet/login.html\n";
-
-        let info = transporter.sendMail({
-          from: event_host.email_address,
-          to: req.body.guest_email,
-          subject: "when2meet invitation",
-          text: emailText,
-          html: "<body><p>Hi " + req.body.guest_name + "!</p>" +
-                "<p>" + event_host.first_name + "is inviting you to meet up!</p>" +
-                "<p>Log in to your account to respond to " + req.body.guest_name + " at: <a href=\"when2meet.com/login.html\">when2meet</a></p></body>",
-        });
-      }
-
-      res.send();
-    });
-  });
-});
 
 /* GET home page. */
 router.get('/home.html', function(req, res, next) {
@@ -530,6 +432,22 @@ router.post('/update_date_status', function(req, res, next){
         return;
       }
       res.json(rows); //send response
+    });
+  });
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "UPDATE event SET event.event_status = 1 FROM event INNER JOIN event_date ON event.event_id = event_date.event_id WHERE event_date.event_date_id = ?;";
+    connection.query(query, [req.body.date_id] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
     });
   });
 });

@@ -57,8 +57,9 @@
                             <table style="width: 100%">
                                 <tr>
                                     <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                    <td style="font-size: 14px">Event date</td>
-                                    <td style="text-align: right">Status</td>
+                                    <td>View event for details</td>
+                                    <td v-if="event.event_status" style="text-align: right">Confirmed!</td>
+                                    <td v-else="event.event_status" style="text-align: right">Unconfirmed</td>
                                 </tr>
 
                                 <tr style="vertical-align: bottom">
@@ -89,8 +90,9 @@
                             <table style="width: 100%">
                                 <tr >
                                     <td style="width: 2em" rowspan="2"><i class="fa-solid fa-calendar-day fa-3x list-icon blue-color"></i></td>
-                                    <td style="font-size: 14px">Event date</td>
-                                    <td style="text-align: right">Status</td>
+                                    <td>View event for details</i></td>
+                                    <td v-if="event.event_status" style="text-align: right">Confirmed!</td>
+                                    <td v-else="event.event_status" style="text-align: right">Unconfirmed</td>
                                 </tr>
                                 <tr style="vertical-align: bottom">
                                     <td>
