@@ -39,7 +39,38 @@ CREATE TABLE `attendee` (
 
 LOCK TABLES `attendee` WRITE;
 /*!40000 ALTER TABLE `attendee` DISABLE KEYS */;
-INSERT INTO `attendee` VALUES ('YES',2,51),('YES',2,54);
+INSERT INTO `attendee`
+VALUES
+('NONE','2','1'),
+('NONE','3','1'),
+('NONE','7','1'),
+('NONE','2','2'),
+('NONE','3','2'),
+('NONE','7','2'),
+('NONE','4','3'),
+('NONE','9','3'),
+('NONE','10','3'),
+('NONE','3','3'),
+('NONE','4','4'),
+('NONE','9','4'),
+('NONE','10','4'),
+('NONE','3','4'),
+('NONE','4','5'),
+('NONE','9','5'),
+('NONE','10','5'),
+('NONE','3','5'),
+('NONE','7','6'),
+('NONE','5','6'),
+('NONE','6','7'),
+('NONE','1','7'),
+('NONE','2','7'),
+('NONE','6','8'),
+('NONE','1','8'),
+('NONE','2','8'),
+('NONE','8','9'),
+('NONE','2','9'),
+('NONE','8','10'),
+('NONE','2','10');
 /*!40000 ALTER TABLE `attendee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,7 +102,12 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES ('Going to the Moon','I don\'t know cuz we will just fly to the moon and back',1,1,'NASA','2022-06-09',_binary '\0'),('Sing till Death','Just sing lol',1,2,'Botanic Garden','2022-06-15',_binary '\0'),('Going to the Moon','I don\'t know cuz we will just fly to the moon and back',1,3,'NASA','2022-06-09',_binary '\0'),('Rapping with Da Boys','Lets rap',1,4,'Theater','2022-06-08',_binary '\0');
+INSERT INTO `event` VALUES
+('Event1_user_id_1','Description1','1','1','Location_1','2022-06-10',_binary '\0'),
+('Event2_user_id_1','Description2','1','2','Location_2','2022-06-11',_binary '\0'),
+('Event3_user_id_3','Description3','3','3','Location_3','2022-06-12',_binary '\0'),
+('Event4_user_id_4','Description4','4','4','Location_4','2022-06-13',_binary '\0'),
+('Event5_user_id_5','Description5','5','5','Location_5','2022-06-14',_binary '\0');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +135,17 @@ CREATE TABLE `event_date` (
 
 LOCK TABLES `event_date` WRITE;
 /*!40000 ALTER TABLE `event_date` DISABLE KEYS */;
-INSERT INTO `event_date` VALUES ('2022-06-22 00:00:00',2,_binary '',7),('2022-06-23 00:00:00',2,_binary '',8),('2022-06-02 19:35:00',1,_binary '',51),('2022-06-22 19:35:00',1,_binary '\0',54),('2022-06-09 09:57:00',4,_binary '\0',55);
+INSERT INTO `event_date` VALUES
+('2022-07-08 15:00:00','1',_binary '\0','1'),
+('2022-07-16 17:00:00','1',_binary '\0','2'),
+('2022-08-0 14:00:00','2',_binary '\0','3'),
+('2022-08-0 18:00:00','2',_binary '\0','4'),
+('2022-09-0 14:00:00','2',_binary '\0','5'),
+('2022-09-27 05:00:00','3',_binary '\0','6'),
+('2022-07-12 17:00:00','4',_binary '\0','7'),
+('2022-07-13 17:00:00','4',_binary '\0','8'),
+('2022-08-21 17:00:00','5',_binary '\0','9'),
+('2022-08-22 17:00:00','5',_binary '\0','10');
 /*!40000 ALTER TABLE `event_date` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,7 +183,17 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('Peter','Le','rthinh2002@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$m7w2o9qH7StTS2uim3Efsw$jX4ce7OOgPIKY3wwtpWnzHLxgkRwixADNJJPEOc8bwI','peterle','admin',1,'rasdfasdfasdr-gasdf','2005-06-19',_binary '',_binary '',_binary '',_binary ''),('Josh','NoGay','hjosh@gmail.com','$argon2i$v=19$m=4096,t=3,p=1$2eem+yixp2eeXgYxLYT2qA$Zsg+pf+ze+3Smheg7HzSIHhJPZUYPOmjZNVFHTW3J60','joshgie','user',2,'sds-gasdf','1997-05-02',_binary '',_binary '',_binary '',_binary '');
+INSERT INTO `users` VALUES
+('Fname_admin1','Lname_admin1','email_admin1@email.com','$argon2i$v=19$m=4096,t=3,p=1$EROFlVVvGf9ta9fM54EHbg$LyEo78A0TP+syMAFX7D7RYgnteWknbwBGOJSFYv9A0w','admin1','admin','1',NULL,'2000-01-01',_binary '\1',_binary '\1',_binary '\1',_binary '\1'),
+('Fname_admin2','Lname_admin2','email_admin2@email.com','$argon2i$v=19$m=4096,t=3,p=1$KIzw0sZuCVdAKfIoZrWDhw$LucJj9dUS6bgWMh9NXyY4o9q6sKmqQ77uKbKov0CAZA','admin2','admin','2',NULL,'2000-01-02',_binary '\0',_binary '\1',_binary '\0',_binary '\0'),
+('Fname_user1','Lname_user1','email_user1@email.com','$argon2i$v=19$m=4096,t=3,p=1$71lQV1UzWdbG3SCusDOleg$p1SiaIh0F0JagB/Q9E7iCKnsz1isnkah2nJdRdk+A1E','user1','user','3',NULL,'2000-01-03',_binary '\0',_binary '\1',_binary '\1',_binary '\1'),
+('Fname_user2','Lname_user2','email_user2@email.com','$argon2i$v=19$m=4096,t=3,p=1$jl4cr0wKZZLdePW5W+24Mg$A3ZnlRCfW4nPqY+zZIS6wdiqsfOqctiwjxo8NGFaMxs','user2','user','4',NULL,'2000-01-04',_binary '\1',_binary '\0',_binary '\1',_binary '\1'),
+('Fname_user3','Lname_user3','email_user3@email.com','$argon2i$v=19$m=4096,t=3,p=1$QhhmW1K10st95KX7ZXurPA$QFLUszS0mCX28x1ewgQTafuB4tcoMezN/OZBE2j1j0Q','user3','user','5',NULL,'2000-01-05',_binary '\1',_binary '\0',_binary '\1',_binary '\0'),
+('Fname_user4','Lname_user4','email_user4@email.com','$argon2i$v=19$m=4096,t=3,p=1$EHa7z3w12FM7m88raqScMg$xmY6Ftu0q3IwSV3NnLiKJ+bnYgO6/WT0R6nlMWxwrzo','user4','user','6',NULL,'2000-01-06',_binary '\0',_binary '\1',_binary '\0',_binary '\1'),
+('Fname_guest1','Lname_guest1','email_guest1@email.com','$argon2i$v=19$m=4096,t=3,p=1$AR8vjqs8pJaI/ZtpS5933Q$KF4/KBig2DfkB7ZPUsY/1iC1BoWP+lnYDrxi5dPC15I','guest1','guest','7',NULL,'2000-01-07',_binary '\0',_binary '\0',_binary '\0',_binary '\0'),
+('Fname_guest2','Lname_guest2','email_guest2@email.com','$argon2i$v=19$m=4096,t=3,p=1$jvmLs4XOTXJ8XQaz7xSCgQ$Q+GkcNp7zK8R7D77lAZsvg6xvs4t2IA5FuVuNEwHt6U','guest2','guest','8',NULL,'2000-01-08',_binary '\0',_binary '\0',_binary '\0',_binary '\0'),
+('Fname_guest3','Lname_guest3','email_guest3@email.com','$argon2i$v=19$m=4096,t=3,p=1$Kubmo1NPC/xjlaZJZIfOyg$NawWmt/GFGy4VmpCH4m1IbozpKhawYlmn/Gmx4t/zbs','guest3','guest','9',NULL,'2000-01-09',_binary '\0',_binary '\0',_binary '\0',_binary '\0'),
+('Fname_guest4','Lname_guest4','email_guest4@email.com','$argon2i$v=19$m=4096,t=3,p=1$ZEFYT4BGlLzwWsrCYVzjcw$8RXHgcBPl5jYZdhE2buJptiuWpi1qvNq2YkUMLZwfFM','guest4','guest','10',NULL,'2000-01-10',_binary '\0',_binary '\0',_binary '\0',_binary '\0');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
