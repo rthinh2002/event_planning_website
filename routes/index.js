@@ -532,8 +532,10 @@ router.post('/update_date_status', function(req, res, next){
         res.sendStatus(500);
         return;
       }
+      res.sendStatus(200);
     });
   });
+/*
   req.pool.getConnection(function(err, connection){
     if(err) {
       console.log(err);
@@ -550,6 +552,7 @@ router.post('/update_date_status', function(req, res, next){
       }
     });
   });
+  */
 });
 
 // Route to save only event info, not add date and attendee - Peter 3/6/2022

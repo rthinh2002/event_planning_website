@@ -59,7 +59,7 @@
                     <div v-for="item in dates">
                         <input class="textField" type="datetime-local" id="date" :name="item.dateID" style="min-width: 25%; max-width: 50%" v-model="item.date" required />
                         <a @click="removeDate(item.dateID)" style="text-decoration: none; cursor: pointer;">
-                            <i class="fa-solid fa-lg fa-calendar-minus blue-color" style="padding-left: 0.5em; padding-right: 0.5em"></i>Remove date
+                            <i class="fa-solid fa-lg fa-calendar-minus blue-color" style="padding-left: 0.5em; padding-right: 0.5em"></i>Remove this date
                         </a>
                     </div>
                     <br>
@@ -75,7 +75,7 @@
                       <input class="textField" type="text" id="name" name="name" style="max-width: 30%" v-model="item.name" placeholder="Guest name" required />
                       <input class="textField" type="text" id="email" name="email" style="max-width:68%" v-model="item.email" placeholder="Guest email" required />
                       <a @click="removeGuest(item.guestID)" style="text-decoration: none; cursor: pointer">
-                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove guest
+                        <i class="fa-solid fa-lg fa-user-minus blue-color" style="padding-right: 0.5em"></i>Remove this guest
                       </a>
                     </div>
                     <br>
@@ -86,7 +86,7 @@
                   <div>
                     <label for="email">R.S.V.P.</label>
                     <br>
-                    <input class="textField" type="date" id="rsvp" name="rsvp" v-model="rsvp" style="min-width: 25%; max-width: 50%"/>
+                    <input class="textField" type="date" id="rsvp" name="rsvp" v-model="rsvp" style="min-width: 25%; max-width: 50%" required />
                   </div>
                   <div>
                     <label for="eventDetails">Details</label><br>

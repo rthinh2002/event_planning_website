@@ -1,7 +1,7 @@
 # wdc_project_2022
 PEKS - Group Project
 
-Dependencies used in the project: 
+Dependencies used in the project:
 
     "alert": "^5.0.12",
     "argon": "^2.0.21",
@@ -29,10 +29,11 @@ Web pages include in the project:
         dashboard.html - dashboard page where users can see their events
         edit_event.html - page for users or admins to edit details of an event
         event_invitation.html - page for invitation confirmation
+        guest_invitation.html - page for invitation confirmation for guest accounts (limited access to app)
         event_view_host.html - page for event hosts to check the details and responses from other users
+        admin.html - page for admin to see and manage all users and events
 
     No login required:
-        admin.html - page for admin to see and manage all users and events
         createAccount.html - page for users to create an user account
         index.html - Lobby page that contains a short description of the website, and provide options for users to sign up and sign in
         login.html - Login page that provide username and password login and google login options
@@ -73,7 +74,7 @@ Website features by page:
                 Including:
                     Event responses
                     Event confirmation
-                    Event cancelllation 
+                    Event cancelllation
                     Attendee availability
 
             Save changes:
@@ -96,7 +97,7 @@ Website features by page:
 
             Create event:
                 Event will be created and the details obtain from the page will be stored in the database
-            
+
         dashboard.html
 
             Organised events display:
@@ -123,7 +124,7 @@ Website features by page:
 
             Cancel changes:
                 Abort any unsaved change made by the host
-            
+
             Save changes:
                 Save the changes made in the input fields and update the entries in the database
 
@@ -131,18 +132,26 @@ Website features by page:
 
             Event detail display:
                 Title, location, date and host of the event that the user have been invited to will be retrieved from the database and shown on the page
-            
+
             Specify availability:
-                User who have been invited to the event can specify their availability for every potential dates of the event 
+                User who have been invited to the event can specify their availability for every potential dates of the event
                 Available options including:
                     Yes,
                     No
-            
+
             Check Calendar:
                 If the user have connected their uesr account with their Google account, A container contains their Google Calendar will be displayed for the user to check their availability
 
-            Save: 
-                Availability changes made by the user will be passed to the server and the database will be updated accordingly 
+            Save:
+                Availability changes made by the user will be passed to the server and the database will be updated accordingly
+
+        guest_invitation.html
+
+            General:
+                    Limited access to the app - can log in, respond to specific event (with specific link from email). Can view event page only
+
+            Event detail display:
+                    Title, location, date and host of the event that the user have been invited to will be retrieved from the database and shown on the page
 
         event_view_host.html
 
@@ -153,11 +162,9 @@ Website features by page:
                 Confirmations to the event made by invited users will be shown
 
             Responses display:
-                Responses to the event made by invited users will be shown   
+                Responses to the event made by invited users will be shown
 
-    No login required:
-
-        admin.html
+            admin.html
 
             Manage users:
                 A list of all users will be shown on the page with their first name, last name and username, admins can delete account of users, promote user to be admins and demote admins to be users by using the corresponding buttons attached on each item in the list
@@ -165,10 +172,13 @@ Website features by page:
             Manage events:
                 A list of all events will be shown on the page with their name, admins can delete and edit the event by using the corresponding buttons attached on each item in the list
 
+
+    No login required:
+
         createAccount.html
 
             Details input:
-                6 textfields will be shown on the page for inputting the user's first name, last name, email, username, password, and password confirmation, where their email and username must be unique among users and the characters in the passwords will be displayed as '*'s 
+                6 textfields will be shown on the page for inputting the user's first name, last name, email, username, password, and password confirmation, where their email and username must be unique among users and the characters in the passwords will be displayed as '*'s
 
             Show password:
                 display the original text inputted by the user instead of '*'s
@@ -186,11 +196,11 @@ Website features by page:
 
         login.html
 
-            Google login: 
+            Google login:
                 A button that allow the user to login or signin with their google account
 
             Username login:
                 Existing users can login by using their username and password
-            
+
             Create account:
                 A link that navigates the user to the create account page of the website

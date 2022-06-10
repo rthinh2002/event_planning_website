@@ -209,18 +209,38 @@ function set_date() {
 }
 
 function confirmClicked(date_id) {
+
+    // change date status to confirmed
     var xhttp = new XMLHttpRequest();
-    alert("Confirm!");
-    xhttp.open("POST", "/update_date_status", true);
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            //alert("Confirm!");
+            window.location.reload();
+        }
+    }
+
+    xhttp.open("POST", "/update_date_status");
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({date_id: date_id}));
-    window.location.reload();
+
 }
+
+// send confirmation email
+function sendConfirmationEmail() {
+
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.open("POST", "/comms/email_event_confirmation");
+    xhttp2.setRequestHeader("Content-Type", "application/json");
+    xhttp2.send(JSON.stringify({event_id: second_app.event_id}));
+
+}
+
 
 function delete_clicked(date_id) {
     if(this.count_box == 1)
     {
-        alert("Unable to Delete! Event can't have date!");
+        //alert("Unable to Delete! Event can't have date!");
     }
     else
     {

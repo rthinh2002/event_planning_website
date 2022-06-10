@@ -219,7 +219,7 @@ var currentGuest1 = 0;
 
 function checkGuests(newEvent) {
 
-    console.log(newEvent.eventGuests[currentGuest1].name);
+    //console.log(newEvent.eventGuests[currentGuest1].name);
     var thisGuest = {
         name: newEvent.eventGuests[currentGuest1].name,
         email: newEvent.eventGuests[currentGuest1].email
@@ -229,7 +229,7 @@ function checkGuests(newEvent) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log("Guest added");
+            //console.log("Guest added");
             if (currentGuest1 === createEvent.guests.length-1) {
                 addEvent(newEvent);
             } else {
@@ -237,7 +237,7 @@ function checkGuests(newEvent) {
                 checkGuests(newEvent);
             }
         } else if (this.readyState == 4 && this.status >= 400) {
-            console.log("Guest add failed");
+            //console.log("Guest add failed");
         }
     };
 

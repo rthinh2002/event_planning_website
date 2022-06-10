@@ -28,7 +28,7 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="page-content" id="app">
+        <div class="page-content" id="app" v-cloak>
             <div class="flex-container">
 
             <div>
@@ -75,7 +75,7 @@
                         <table v-for="element in event_details" class="table" style="height: fit-content; width: 30em;">
                             <!-- checkbox -->
                             <tr>
-                                <td style="width: 23.5em;">{{ returnDateTime(element.event_date) }} <p v-if="element.date_status">Confirmed</p></td>
+                                <td style="width: 23.5em;">{{ returnDateTime(element.event_date) }} <span v-if="element.date_status" style="color: #289BD2; font-weight: bold">  Confirmed!</span></td>
                                 <th v-if="element.attendee_response == 'YES'"><input type="radio" :name="element.event_date_id" value="yes" checked></th>
                                 <th v-else><input type="radio" :name="element.event_date_id" value="yes"></th>
                                 <th v-if="element.attendee_response == 'NO'"><input type="radio" :name="element.event_date_id" value="no" checked></th>

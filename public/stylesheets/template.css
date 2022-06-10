@@ -502,7 +502,7 @@ textarea {
 }
 
 .height-increase {
-    height: 20%;
+    max-height: 50%;
     overflow-y: auto;
 }
 

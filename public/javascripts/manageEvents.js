@@ -50,10 +50,10 @@ function display_event_info() {
             // populate with all date;
             for (var element in event_info) {
                 let create_tr = document.createElement("tr");
-                let create_td_empty = document.createElement("td");
-                if(element == 0) {
-                    create_td_empty.innerHTML = "When:";
-                }
+                //let create_td_empty = document.createElement("td");
+                //if(element == 0) {
+                //    create_td_empty.innerHTML = "When:";
+                //}
                 let create_td_date = document.createElement("td");
                 let create_input = document.createElement("input");
 
@@ -61,12 +61,12 @@ function display_event_info() {
                 create_input.setAttribute("size", "14");
                 create_input.setAttribute("disabled", "");
                 create_input.classList.add("textField");
-                create_input.classList.add("addMargin-date");
+                //create_input.classList.add("addMargin-date");
 
                 var d = new Date(event_info[element].event_date);
                 create_input.setAttribute("value", d.toDateTimeLocal());
                 create_td_date.appendChild(create_input);
-                create_tr.appendChild(create_td_empty);
+                //create_tr.appendChild(create_td_empty);
                 create_tr.appendChild(create_td_date);
                 document.getElementById("table_when").appendChild(create_tr);
                 count_element_date++;
@@ -89,11 +89,11 @@ function load_attendee() {
             var attendee_info = JSON.parse(this.responseText);
             for(var item in attendee_info) {
                 let create_tr = document.createElement("tr");
-                let create_td_empty = document.createElement("td");
+                //let create_td_empty = document.createElement("td");
                 // First row will have to display Who:
-                if(item == 0) {
-                    create_td_empty.innerHTML = "Who:";
-                }
+                //if(item == 0) {
+                //    create_td_empty.innerHTML = "Who:";
+                //}
 
                 let create_td_name = document.createElement("td");
                 let create_td_email = document.createElement("td");
@@ -101,11 +101,11 @@ function load_attendee() {
                 let create_input_email =document.createElement("input");
 
                 // add class
-                create_input_name.classList.add("textField2");
-                create_input_name.classList.add("margin-increase");
+                create_input_name.classList.add("textField");
+                //create_input_name.classList.add("margin-increase");
 
-                create_input_email.classList.add("textField2");
-                create_input_email.classList.add("addMargin-intense");
+                create_input_email.classList.add("textField");
+                //create_input_email.classList.add("addMargin-intense");
                 create_input_email.classList.add("setInputWidth");
 
                 // set type
@@ -126,7 +126,7 @@ function load_attendee() {
                 create_td_name.appendChild(create_input_name);
                 create_td_email.appendChild(create_input_email);
 
-                create_tr.appendChild(create_td_empty);
+                //create_tr.appendChild(create_td_empty);
                 create_tr.appendChild(create_td_name);
                 create_tr.append(create_td_email);
                 vueints.users_id_array.push(attendee_info[item].user_id);
@@ -153,16 +153,16 @@ function add_date() {
     let create_input = document.createElement("input");
     let create_td_date = document.createElement("td");
     let create_tr = document.createElement("tr");
-    let create_td_empty = document.createElement("td");
+    //let create_td_empty = document.createElement("td");
 
     create_input.setAttribute("type", "datetime-local");
     create_input.setAttribute("size", "14");
     create_input.setAttribute("id", "datetime-input");
     create_input.classList.add("textField");
-    create_input.classList.add("addMargin-date");
+    //create_input.classList.add("addMargin-date");
 
     create_td_date.appendChild(create_input);
-    create_tr.appendChild(create_td_empty);
+    //create_tr.appendChild(create_td_empty);
     create_tr.appendChild(create_td_date);
     document.getElementById("table_when").appendChild(create_tr);
     count_element_date++;
@@ -178,18 +178,18 @@ function addFriend() {
     }
     if(count_add_friend > 1) return;
     let create_tr = document.createElement("tr");
-    let create_td_empty = document.createElement("td");
+    //let create_td_empty = document.createElement("td");
     let create_td_name = document.createElement("td");
     let create_td_email = document.createElement("td");
     let create_input_name =document.createElement("input");
     let create_input_email =document.createElement("input");
 
     // add class
-    create_input_name.classList.add("textField2");
-    create_input_name.classList.add("margin-increase");
+    create_input_name.classList.add("textField");
+    //create_input_name.classList.add("margin-increase");
 
-    create_input_email.classList.add("textField2");
-    create_input_email.classList.add("addMargin-intense");
+    create_input_email.classList.add("textField");
+   // create_input_email.classList.add("addMargin-intense");
     create_input_email.classList.add("setInputWidth");
 
     // set type
@@ -210,7 +210,7 @@ function addFriend() {
     create_td_name.appendChild(create_input_name);
     create_td_email.appendChild(create_input_email);
 
-    create_tr.appendChild(create_td_empty);
+    //create_tr.appendChild(create_td_empty);
     create_tr.appendChild(create_td_name);
     create_tr.append(create_td_email);
     document.getElementById("table_who").appendChild(create_tr);
@@ -255,10 +255,15 @@ function saveEventDate() {
 // Only call when saveEventDate is call, to populate exist users with the date field
 function saveEventAttendeeWithDate(num, user_id) {
     var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            //alert("Add new date successfully!");
+        }
+    };
     xhttp.open("POST", "/save_event_attendee_date", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({event_date_id: num, user_id: user_id}));
-    alert("Add new date successfully!");
+
 }
 
 function saveEventAttendee()  {
