@@ -50,7 +50,7 @@ router.post('/display_event_info_invite', function(req, res, next){
       return;
     }
     var query = "SELECT users.first_name, event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response FROM event INNER JOIN users ON users.user_id = event.creator_id INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id WHERE event.event_id = ? AND attendee.user_id = ?;"
-    connection.query(query, [req.body.event_id, req.session.user_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(req.body.event_id), sanitize(req.session.user_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -71,7 +71,7 @@ router.post('/update_invite', function(req, res, next){
     }
     for(var i in req.body.event_date_id) {
       var query = "UPDATE attendee SET attendee.attendee_response = ? WHERE attendee.event_date_id = ?;";
-      connection.query(query, [req.body.response_string[i], req.body.event_date_id[i]] ,function (err, rows, fields) {
+      connection.query(query, [sanitize(req.body.response_string[i]), sanitize(req.body.event_date_id[i])] ,function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
@@ -82,7 +82,7 @@ router.post('/update_invite', function(req, res, next){
     }
 
     var query = "UPDATE event_date SET attendee.attendee_response = ? WHERE attendee.event_date_id = ?;";
-      connection.query(query, [req.body.response_string[i], req.body.event_date_id[i]] ,function (err, rows, fields) {
+      connection.query(query, [sanitize(req.body.response_string[i]), sanitize(req.body.event_date_id[i])] ,function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
@@ -94,6 +94,96 @@ router.post('/update_invite', function(req, res, next){
 });
 
 
+router.post('/email', function(req, res, next) {
+
+  console.log(req.body);
+
+  req.pool.getConnection(async function(err, connection) {
+    connection.release();
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    var password = Math.random().toString(36).slice(-32);
+    let hash = null;
+
+    try {
+      hash = await argon2.hash(password);
+    } catch (err) {
+      //console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    // get details of user
+    var event_host;
+    connection.query("SELECT first_name, last_name, email_address FROM users WHERE user_id = ?;", [sanitize(req.session.user_id)], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        return res.sendStatus(500);
+      }
+      if (rows.length === 0) {
+        return res.sendStatus(500);
+      } else {
+        event_host = rows[0];
+      }
+    });
+
+    //send email to guests
+    connection.query("SELECT user_role FROM users WHERE email_address = ?;", [sanitize(req.body.guest_email)], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        return res.sendStatus(500);
+      }
+
+      if (rows.length === 0) {
+        console.log('no data');
+        return res.sendStatus(500);
+      } else if (rows[0].user_role === 'guest') {
+
+        // add new account to database
+        var query = "INSERT INTO users (password) VALUES (?);";
+        connection.query(query, [hash], function (error, rows, fields) {
+          connection.release();
+          if (error) {
+              return res.sendStatus(500);
+            }
+        });
+
+        var emailText = ("Hi " + req.body.guest_name + "!" + event_host.first_name + "is inviting you to meet up!\n" + "Respond to " + req.body.guest_name + " at: when2meet/login.html\n" + "Your password to log in is: " + password);
+        let info = transporter.sendMail({
+          from: event_host.email_address,
+          to: req.body.guest_email,
+          subject: "when2meet invitation",
+          text: emailText,
+          html: "<body><p>Hi" + req.body.guest_name + "!</p>" +
+                "<p>" + event_host.first_name + "is inviting you to meet up!</p>" +
+                "<p>Respond to " + req.body.guest_name + " at: <a href=\"when2meet.com/login.html\">when2meet</a></p>" +
+                "<p>Your password to log in is: " + password + "</p></body>",
+        });
+      } else {
+
+        var emailText = "Hi" + req.body.guest_name + "!" + event_host.first_name + "is inviting you to meet up!\n" + "Log in to your account to respond to " + req.body.guest_name + " at: when2meet/login.html\n";
+
+        let info = transporter.sendMail({
+          from: event_host.email_address,
+          to: req.body.guest_email,
+          subject: "when2meet invitation",
+          text: emailText,
+          html: "<body><p>Hi " + req.body.guest_name + "!</p>" +
+                "<p>" + event_host.first_name + "is inviting you to meet up!</p>" +
+                "<p>Log in to your account to respond to " + req.body.guest_name + " at: <a href=\"when2meet.com/login.html\">when2meet</a></p></body>",
+        });
+      }
+
+      res.send();
+    });
+  });
+});
 
 /* GET home page. */
 router.get('/home.html', function(req, res, next) {
@@ -116,7 +206,7 @@ router.post('/login', function(req, res, next) {
     }
 
     var query = "SELECT user_id, user_role, password FROM users WHERE user_name = ?;";
-    connection.query(query, [req.body.username], async function(error, rows, fields) {
+    connection.query(query, [sanitize(req.body.username)], async function(error, rows, fields) {
       connection.release();
       if (error) {
         console.log(error);
@@ -183,7 +273,7 @@ router.post('/createaccount', function(req, res, next)
 
     // add new account to database
     var query = "INSERT INTO users (first_name, last_name, email_address, user_name, password, user_role) VALUES (?, ?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.firstname, req.body.lastname, req.body.email, req.body.username, hash, 'user'], function (error, rows, fields) {
+    connection.query(query, [sanitize(req.body.firstname), sanitize(req.body.lastname), sanitize(req.body.email), sanitize(req.body.username), hash, 'user'], function (error, rows, fields) {
 
       if (error) {
         connection.release();
@@ -235,7 +325,7 @@ router.post('/display_user_information', function(req, res, next){
       return;
     }
     var query = "SELECT first_name, last_name, email_address, DOB, email_notification_users_response, email_notification_event, email_notification_attendee, email_notification_cancelation FROM users WHERE user_id = ?;";
-    connection.query(query, [req.session.user_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(req.session.user_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -267,7 +357,7 @@ router.post('/change_user_info', function(req, res, next){
     var notification_attendee = req.body.notification_attendee;
     var notification_cancelation = req.body.notification_cancelation;
     var query = "UPDATE users SET first_name = ?, last_name = ?, email_address = ?, DOB = ?, email_notification_users_response = ?, email_notification_event = ?, email_notification_attendee = ?, email_notification_cancelation = ? WHERE user_id = ?;";
-    connection.query(query, [first_name, last_name, email, correct_dob, users_response, notification_event, notification_cancelation, notification_attendee, req.session.user_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(first_name), sanitize(last_name), sanitize(email), sanitize(correct_dob), sanitize(users_response), sanitize(notification_event), sanitize(notification_cancelation), sanitize(notification_attendee), sanitize(req.session.user_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -287,7 +377,7 @@ router.post('/display_event_info', function(req, res, next){
       return;
     }
     var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = ? && event.event_id = ? && event.event_id = event_date.event_id;";
-    connection.query(query, [req.session.user_id, req.body.event_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(req.session.user_id), sanitize(req.body.event_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -306,7 +396,7 @@ router.post('/display_event_info_orgs', function(req, res, next){
       return;
     }
     var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = ? && event.event_id = ? && event.event_id = event_date.event_id;";
-    connection.query(query, [req.session.user_id, req.body.event_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(req.session.user_id), sanitize(req.body.event_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -326,7 +416,7 @@ router.post('/display_event_info_invite', function(req, res, next){
       return;
     }
     var query = "SELECT users.first_name, event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response FROM event INNER JOIN users ON users.user_id = event.creator_id INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id WHERE event.event_id = ? AND attendee.user_id = ?;"
-    connection.query(query, [req.body.event_id, req.session.user_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(req.body.event_id), sanitize(req.session.user_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -347,7 +437,7 @@ router.post('/display_attendee', function(req, res, next){
       return;
     }
     var query = "SELECT DISTINCT users.first_name, users.email_address, users.user_id FROM users INNER JOIN attendee ON attendee.user_id = users.user_id INNER JOIN event_date on attendee.event_date_id = event_date.event_date_id WHERE event_date.event_id = ?;";
-    connection.query(query, [req.body.event_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(req.body.event_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -369,7 +459,7 @@ router.post('/get_hosting_event', function(req, res, next){
     var user_id = req.session.user_id;
     //var query = "SELECT * FROM event WHERE creator_id = ? GROUP BY RSVP;";
     var query = "SELECT * FROM event WHERE creator_id = ? ORDER BY RSVP DESC;";
-    connection.query(query, [user_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(user_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -393,7 +483,7 @@ router.post('/get_attending_event', function(req, res, next){
                  INNER JOIN event_date ON event.event_id = event_date.event_id \
                  INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id \
                  WHERE attendee.user_id = ?;";
-    connection.query(query, [user_id], function (err, rows, fields) {
+    connection.query(query, [sanitize(user_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
@@ -414,7 +504,7 @@ router.post('/delete_date', function(req, res, next){
       return;
     }
     var query = "DELETE FROM event_date WHERE event_date_id = ?";
-    connection.query(query, [req.body.event_date_id] ,function (err, rows, fields) {
+    connection.query(query, [sanitize(req.body.event_date_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
@@ -435,7 +525,7 @@ router.post('/update_date_status', function(req, res, next){
       return;
     }
     var query = "UPDATE event_date SET date_status = 1 WHERE event_date_id = ?;UPDATE event INNER JOIN event_date ON event_date.event_id = event.event_id INNER JOIN attendee ON attendee.event_date_id = event_date.event_date_id SET event.event_status = 1 WHERE attendee.event_date_id = ?;";
-    connection.query(query, [req.body.date_id, req.body.date_id] ,function (err, rows, fields) {
+    connection.query(query, [sanitize(req.body.date_id), sanitize(req.body.date_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
@@ -471,7 +561,7 @@ router.post('/save_event_info', function(req, res, next){
       return;
     }
     var query = "UPDATE event SET event_name = ?, event_description = ?, location = ?, RSVP = ? WHERE event_id = ?;";
-    connection.query(query, [req.body.event_name, req.body.event_description, req.body.location, req.body.rsvp, req.body.event_id] ,function (err, rows, fields) {
+    connection.query(query, [sanitize(req.body.event_name), sanitize(req.body.event_description), sanitize(req.body.location), sanitize(req.body.rsvp), sanitize(req.body.event_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
@@ -493,7 +583,7 @@ router.post('/save_event_date', function(req, res, next){
     }
     console.log(req.body.event_date);
     var query = "INSERT INTO event_date(event_date, event_id) VALUES ( ?, ? ); SELECT event_date_id FROM event_date WHERE event_date = ? AND event_id = ?;";
-    connection.query(query, [req.body.event_date, req.body.event_id, req.body.event_date, req.body.event_id] ,function (err, rows, fields) {
+    connection.query(query, [sanitize(req.body.event_date), sanitize(req.body.event_id), sanitize(req.body.event_date), sanitize(req.body.event_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
@@ -514,7 +604,7 @@ router.post('/save_event_attendee_date', function(req, res, next){
       return;
     }
     var query = "INSERT INTO attendee(user_id, event_date_id) VALUES(?, ?);";
-    connection.query(query, [req.body.user_id, req.body.event_date_id] ,function (err, fields) {
+    connection.query(query, [sanitize(req.body.user_id), sanitize(req.body.event_date_id)] ,function (err, fields) {
       connection.release(); // release connection
       if(err) {
         console.log(err);
@@ -536,7 +626,7 @@ router.post('/save_event_attendee', function(req, res, next){
     }
     for(var i in req.body.event_date_id) {
       var query = "INSERT INTO attendee(user_id, event_date_id) VALUES((SELECT user_id FROM users WHERE first_name = ? AND email_address = ?), ?);";
-      connection.query(query, [req.body.first_name, req.body.email_address, req.body.event_date_id[i]] ,function (err, fields) {
+      connection.query(query, [sanitize(req.body.first_name), sanitize(req.body.email_address), sanitize(req.body.event_date_id[i])] ,function (err, fields) {
         connection.release(); // release connection
         if(err) {
           console.log(err);
@@ -559,7 +649,7 @@ router.post('/get_attendee', function(req, res, next){
     }
     console.log(req.body.event_date);
     var query = "SELECT attendee.attendee_response, users.first_name FROM attendee INNER JOIN users ON users.user_id = attendee.user_id WHERE event_date_id = ?;";
-    connection.query(query, [req.body.event_date_id] ,function (err, rows, fields) {
+    connection.query(query, [sanitize(req.body.event_date_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
@@ -583,7 +673,7 @@ router.get('/invited', function(req, res, next)
       return;
     }
     var query = "SELECT event_description, location, RSVP FROM event WHERE event_id = ?;";
-    connection.query(query, [evid], function (err, rows, fields) {
+    connection.query(query, [sanitize(evid)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -603,7 +693,7 @@ router.post('/check_guests', function(req, res, next) {
       }
 
       // check if user email exists - must be unique, so if not then user has no account
-      connection.query("SELECT * FROM users WHERE email_address = ?;", [req.body.email], function (error, userRows, fields) {
+      connection.query("SELECT * FROM users WHERE email_address = ?;", [sanitize(req.body.email)], function (error, userRows, fields) {
         connection.release();
         if (error) {
           console.log(error); console.log("line 459");
@@ -617,7 +707,7 @@ router.post('/check_guests', function(req, res, next) {
               return res.sendStatus(500);
             }
             var queryNewUser = "INSERT INTO users (first_name, last_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?, ?);";
-            connection.query(queryNewUser, [req.body.name, 'GUEST', req.body.email, req.body.email, 'guest'], function (error, rows, fields) {
+            connection.query(queryNewUser, [sanitize(req.body.name), 'GUEST', sanitize(req.body.email), sanitize(req.body.email), 'guest'], function (error, rows, fields) {
               connection.release();
               if (error) {
                 console.log(error); console.log("line 473");
@@ -649,7 +739,7 @@ router.post('/create_new_event', function(req, res, next) {
     }
     // add new event to database
     var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
-    connection.query(query, [req.body.eventName, req.body.details, req.body.user_id, req.body.eventLocation, req.body.rsvp], function (error, rows, fields) {
+    connection.query(query, [sanitize(req.body.eventName), sanitize(req.body.details), sanitize(req.body.user_id), sanitize(req.body.eventLocation), sanitize(req.body.rsvp)], function (error, rows, fields) {
       if (error) {
         connection.release(); console.log(error); console.log("line 494");
         return res.sendStatus(500);
@@ -679,7 +769,7 @@ router.post('/add_event_date', function(req, res, next) {
     var query = "INSERT INTO attendee (user_id, event_date_id) \
                  VALUES ((SELECT user_id FROM users WHERE email_address = ?), \
                          (SELECT event_date_id FROM event_date WHERE event_date = ? AND event_id = ?));"
-    connection.query(query, [req.body.email, req.body.date, req.body.event_id], function (error, rows, fields) {
+    connection.query(query, [sanitize(req.body.email), sanitize(req.body.date), sanitize(req.body.event_id)], function (error, rows, fields) {
       connection.release();
       if (error) {
         console.log("Unsuccessful date add"); console.log(error);
@@ -716,7 +806,7 @@ router.post('/tokensignin', async function(req, res, next) {
         return;
       }
       var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
-      connection.query(query, [userid], function (error, rows, fields) {
+      connection.query(query, [sanitize(userid)], function (error, rows, fields) {
         connection.release();
         if (error) {
           console.log(error);
@@ -738,7 +828,7 @@ router.post('/tokensignin', async function(req, res, next) {
               //generate a random password
               var password = Math.random().toString(36).slice(-32);
               var query = "INSERT INTO users (user_name, email_address, first_name, last_name, api_token, password, user_role) VALUES (?, ?, ?, ?, ?, ?, ?);";
-              connection.query(query, [payload.email, payload.email, payload.given_name, payload.family_name, userid, password, 'user'], function (error, rows, fields) {
+              connection.query(query, [sanitize(payload.email), sanitize(payload.email), sanitize(payload.given_name), sanitize(payload.family_name), sanitize(userid), password, 'user'], function (error, rows, fields) {
                 connection.release();
                 if (error) {
                   console.log(error);
@@ -754,7 +844,7 @@ router.post('/tokensignin', async function(req, res, next) {
                     return;
                   }
                   var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
-                  connection.query(query, [userid], function (error, rows, fields) {
+                  connection.query(query, [sanitize(userid)], function (error, rows, fields) {
                     connection.release();
                     if (error) {
                       console.log(error);
@@ -796,7 +886,7 @@ router.post('/linkgoogle', async function(req, res, next) {
         return;
       }
       var query = "UPDATE users SET api_token = ? WHERE user_id = ?";
-      connection.query(query, [userid, req.session.user_id], function (error, rows, fields) {
+      connection.query(query, [sanitize(userid), sanitize(req.session.user_id)], function (error, rows, fields) {
         connection.release();
         if (error) {
           console.log(error);
@@ -836,7 +926,7 @@ router.post('/get_all_users', function(req, res, next) {
       }
 
       var query = "SELECT first_name, last_name, user_name, user_role, user_id FROM users WHERE user_id != ? ORDER BY first_name ASC;";
-      connection.query(query, [req.session.user_id], function (err, rows, fields) {
+      connection.query(query, [sanitize(req.session.user_id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
@@ -890,7 +980,7 @@ router.post('/delete_event', function(req, res, next) {
       return;
       }
 
-      connection.query("DELETE FROM event WHERE event_id = ?;", [req.body.id], function (err, rows, fields) {
+      connection.query("DELETE FROM event WHERE event_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
@@ -915,7 +1005,7 @@ router.post('/edit_event.html', function(req, res, next) {
       return;
       }
 
-      connection.query("DELETE FROM event WHERE event_id = ?;", [req.body.id], function (err, rows, fields) {
+      connection.query("DELETE FROM event WHERE event_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
           console.log(err);
@@ -940,7 +1030,7 @@ router.post('/get_email', function(req, res, next) {
         return;
         }
 
-        connection.query("SELECT email_address, api_token FROM users WHERE user_id = ?;", [req.session.user_id], function (err, rows, fields) {
+        connection.query("SELECT email_address, api_token FROM users WHERE user_id = ?;", [sanitize(req.session.user_id)], function (err, rows, fields) {
           connection.release(); // release connection
           if (err) {
             console.log(err);
