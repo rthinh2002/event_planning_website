@@ -12,14 +12,6 @@ var adminRouter = require('./routes/admin');
 
 var app = express();
 
-// var window = require('window');
-// var gapi = require('gapi');
-// window.gapi.load('client:auth2', () => {
-//     window.gapi.client.init({
-//         clientId: '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com',
-//         plugin_name: "chat"
-//     })});
-
 // Create pool connection for database
 var dbConnectionPool = mysql.createPool({
     host: 'localhost',

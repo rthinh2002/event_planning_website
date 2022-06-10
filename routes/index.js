@@ -3,12 +3,11 @@ var express = require('express');
 var session = require('express-session');
 const req = require('express/lib/request');
 var router = express.Router();
-var gapi = require('googleapis');
+const argon2 = require('argon2');
+var nodemailer = require('nodemailer');
 const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
-const argon2 = require('argon2');
-var nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.ethereal.email',
@@ -18,7 +17,6 @@ const transporter = nodemailer.createTransport({
       pass: 'GXktnUSngkcad1hkDf'
   }
 });
-
 
 router.post('/email', function(req, res, next) {
 
@@ -611,66 +609,6 @@ router.get('/invited', function(req, res, next)
   });
 });
 
-//router.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
-
-//router.get('/google/callback',' google', passport.authenticate('google', { successRedirect:'/auth/success' , failureRedirect: '/auth/fail' }));
-
-// router.get('/auth/success', function(req, res, next){
-//   req.session.user_id ? function() { //if user is logged in
-//     //update the google id into the users table's api token column
-//     req.pool.getConnection(function(err, connection){
-//       if(err) {
-//         console.log(err);
-//         res.sendStatus(500);
-//         return;
-//       }
-//       var query = "UPDATE users SET api_token = ? WHERE user_id = ?;";
-//       connection.query(query, [req.user.id, req.session.user_id], function (err, rows, fields) {
-//         connection.release(); // release connection
-//         if (err) {
-//           res.sendStatus(500);
-//           return;
-//         }
-//         res.redirect('/');
-//       });
-//     });
-//   }
-//   :
-//   function() { //if user is not logged in
-//     req.pool.getConnection(function(err, connection) {
-//     if(err) {
-//       console.log(err);
-//       res.sendStatus(500);
-//       return;
-//     }
-//     var query = "SELECT users.user_id FROM users WHERE users.api_token = ?";
-//     connection.query(query, [req.user.id], function (error, rows, fields) {
-//       connection.release();
-//       if (error) {
-//         console.log(error);
-//         res.sendStatus(500);
-//         return;
-//       }
-//       if (rows.length > 0) {
-//         console.log('successful login');
-//         req.session.user_id = rows[0].user_id;
-//         console.log(req.session);
-//         res.sendStatus(200);
-//       } else {
-//           console.log('bad login request');
-//           res.sendStatus(401);
-//       }
-//     });
-//   });
-//   };
-// });
-
-// router.get('/auth/fail', function(req, res, next){
-//   alert('Failed to authenticate');
-//   window.location.href = "/public/login.html";
-// });
-
-
 router.post('/check_guests', function(req, res, next) {
 
     req.pool.getConnection(function(error, connection) {
@@ -776,13 +714,6 @@ function signOut() {
   // Do our logout on server here
 
 }
-
-// function getApiKey() {
-//   var auth2 = gapi.auth2.getAuthInstance();
-//   var apiKey = auth2.currentUser.get().getAuthResponse().id_token;
-//   console.log(apiKey);
-//   return apiKey;
-// }
 
 router.post('/tokensignin', async function(req, res, next) {
   try {
@@ -1036,10 +967,4 @@ router.post('/get_email', function(req, res, next) {
     });
 });
 
-
 module.exports = router;
-
-
-
-
-

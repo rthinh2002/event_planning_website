@@ -8,7 +8,7 @@ function display_user_info() {
                 el: '#app',
                 data:
                 {
-                    Username: user_info[0].first_name + " " + user_info[0].last_name,
+                    Username: user_info[0].first_name,
                     users_response: user_info[0].email_notification_users_response,
                     notification_event: user_info[0].email_notification_event,
                     notification_attendee: user_info[0].email_notification_attendee,
