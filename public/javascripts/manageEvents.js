@@ -25,7 +25,7 @@ function getEventID() {
     if (urlParams.has('id')) {
         vueints.event_id = urlParams.get('id');
     }
-    console.log(vueints.event_id);
+    // console.log(vueints.event_id);
 }
 
 // editevent.html
@@ -75,7 +75,7 @@ function display_event_info() {
             vueints.populate_date_id(date_id_array);
         }
     };
-    console.log(vueints.event_id);
+    // console.log(vueints.event_id);
     xhttp.open("POST", "/display_event_info", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify( { event_id: vueints.event_id }) );

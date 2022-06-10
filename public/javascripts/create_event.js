@@ -80,13 +80,13 @@ function createNewEvent() {
         var currentEmail = newEvent.guests[guest].email;
         if ( !regex.test(currentEmail) || currentName === '' ) {
             errors = false;
-            console.log('Incomplete guest detail');
+            // console.log('Incomplete guest detail');
             break;
         }
     }
 
     if (newEvent.eventName.length === 0 || newEvent.eventLocation.length === 0) {
-        console.log('Must provide event name and location');
+        // console.log('Must provide event name and location');
         errors = true;
     }
 
@@ -136,7 +136,7 @@ function addEventGuest(newEvent) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+            // console.log(this.responseText);
             if (currentGuest !== createEvent.guests.length-1) {
                 if (currentDateGuest === createEvent.dates.length-1) {
                     currentDateGuest = 0;
@@ -156,7 +156,7 @@ function addEventGuest(newEvent) {
                 }
             }
         } else if (this.readyState == 4 && this.status >= 400) {
-            console.log("Guest add failed");
+            // console.log("Guest add failed");
         }
     };
 
@@ -178,7 +178,7 @@ function addEventDate(newEvent) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(this.responseText);
+            // console.log(this.responseText);
             if (currentDate === createEvent.dates.length-1) {
                 addEventGuest(newEvent);
             } else {
@@ -186,7 +186,7 @@ function addEventDate(newEvent) {
                 addEventDate(newEvent);
             }
         } else if (this.readyState == 4 && this.status >= 400) {
-            console.log("Date add failed");
+            // console.log("Date add failed");
         }
     };
 
@@ -202,11 +202,11 @@ function addEvent(newEvent) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log("Event created successfully");
+            // console.log("Event created successfully");
             createEvent.event_id = JSON.parse(this.responseText);
             addEventDate(newEvent);
         } else if (this.readyState == 4 && this.status >= 400) {
-            console.log("Event creation failed");
+            // console.log("Event creation failed");
         }
     };
 
@@ -219,7 +219,7 @@ var currentGuest1 = 0;
 
 function checkGuests(newEvent) {
 
-    //console.log(newEvent.eventGuests[currentGuest1].name);
+    // console.log(newEvent.eventGuests[currentGuest1].name);
     var thisGuest = {
         name: newEvent.eventGuests[currentGuest1].name,
         email: newEvent.eventGuests[currentGuest1].email
@@ -229,7 +229,7 @@ function checkGuests(newEvent) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            //console.log("Guest added");
+            // console.log("Guest added");
             if (currentGuest1 === createEvent.guests.length-1) {
                 addEvent(newEvent);
             } else {
@@ -237,7 +237,7 @@ function checkGuests(newEvent) {
                 checkGuests(newEvent);
             }
         } else if (this.readyState == 4 && this.status >= 400) {
-            //console.log("Guest add failed");
+            // console.log("Guest add failed");
         }
     };
 

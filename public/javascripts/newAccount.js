@@ -51,11 +51,11 @@ function createaccount() {
     let errors = false;
 
     if (user.password !== user.passwordConfirm) {
-      console.log('passwords don\'t match');
+    //   console.log('passwords don\'t match');
       errors = true;
     }
     if ( !(/^[^\s@]+@([^\s@.]+\.)+[^\s@.]+$/.test(user.email)) ) {
-      console.log('email is not valid');
+    //   console.log('email is not valid');
       errors = true;
     }
     if (user.firstname.length === 0 || user.lastname.length === 0) {
@@ -63,7 +63,7 @@ function createaccount() {
       errors = true;
     }
     if (user.username.length === 0 || user.username.length === 0) {
-        console.log('Must provide username');
+        // console.log('Must provide username');
         errors = true;
       }
     if (errors) {
@@ -74,7 +74,7 @@ function createaccount() {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            console.log("Signup Successful");
+            // console.log("Signup Successful");
             window.location='/app/dashboard.html';
         } else if (this.readyState == 4 && this.status == 409) {
             alert("email/username already in use");

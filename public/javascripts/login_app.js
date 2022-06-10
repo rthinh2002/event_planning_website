@@ -17,7 +17,7 @@ function login() {
 
     // guard to check for empty input
     if (user.username.length === 0 || user.password.length === 0) {
-      console.log('Fields cannot be empty');
+    //   console.log('Fields cannot be empty');
       return;
     }
 
