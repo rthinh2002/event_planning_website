@@ -95,7 +95,7 @@
                     <div v-if="connected">
                         <p class="content-header">Check Your Calendar</p>
                         <!-- embed google calender with the users gmail -->
-                        <iframe v-bind:src="'https://calendar.google.com/calendar/embed?src=' + email + '&ctz=Australia%2FAdelaide'" style="border: 0" frameborder="0" scrolling="no"></iframe>
+                        <iframe v-bind:src="'https://calendar.google.com/calendar/embed?src=' + email + '&ctz=Australia%2FAdelaide'" style="border: 0; width: 30em; height: 30em;" frameborder="0" scrolling="no"></iframe>
                     </div>
                     <div style="float: right;">
                         <button class="save-button" onclick="saveClicked()">Save</button>
