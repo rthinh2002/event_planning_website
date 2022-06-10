@@ -1,8 +1,18 @@
+function getEventID() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    if (urlParams.has('e_id')) {
+        return urlParams.get('e_id');
+    } else return null;
+}
+
 function login() {
 
     let user = {
         username: document.getElementsByName('username')[0].value,
-        password: document.getElementsByName('password')[0].value
+        password: document.getElementsByName('password')[0].value,
+        event_id: getEventID()
     };
 
     // guard to check for empty input

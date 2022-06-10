@@ -29,9 +29,9 @@ function display_event_info_eventvieworg(){
             second_app.location = event_detail[0].location;
 
             var date = new Date(event_detail[0].RSVP);
-            
+
             second_app.rsvp = (JSON.stringify(date)).slice(1,11);
-            
+
             second_app.description = event_detail[0].event_description;
         }
     };
@@ -53,7 +53,7 @@ function load_date_response() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            var date_response = JSON.parse(this.responseText); 
+            var date_response = JSON.parse(this.responseText);
             for(var i in date_response) {
                 load_string_response(date_response[i].event_date_id, i, date_response);
             }
@@ -100,7 +100,7 @@ function populate_table(date_response, i, y_string, n_string, no_res_string) {
 
     // 5 tr
     tr_5 = document.createElement("tr");
-    
+
     // append
     document.getElementById("responses_table_attendee").appendChild(tr_1);
     document.getElementById("responses_table_attendee").appendChild(tr_2);
@@ -113,7 +113,7 @@ function load_string_response(date_id, n, date_response) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            var attendee_response = JSON.parse(this.responseText); 
+            var attendee_response = JSON.parse(this.responseText);
             console.log(attendee_response);
             var y_string = '', no_string = '', no_res_string = '';
             for(var i in attendee_response)
@@ -123,7 +123,7 @@ function load_string_response(date_id, n, date_response) {
                     y_string += attendee_response[i].first_name;
                     y_string += " - ";
                 }
-                else if (attendee_response[i].attendee_response === "NO") 
+                else if (attendee_response[i].attendee_response === "NO")
                 {
                     no_string += attendee_response[i].first_name;
                     no_string += " - ";
@@ -214,20 +214,22 @@ function confirmClicked(date_id) {
     xhttp.open("POST", "/update_date_status", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({date_id: date_id}));
+    window.location.reload();
 }
 
 function delete_clicked(date_id) {
-    if(this.count_box == 1) 
+    if(this.count_box == 1)
     {
         alert("Unable to Delete! Event can't have date!");
     }
-    else 
+    else
     {
         var xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                alert("Date deleted! Please refresh the page");
+                //alert("Date deleted! Please refresh the page");
+                window.location.reload();
             }
         }
         xhttp.open("POST", "/delete_date", true);
@@ -235,13 +237,13 @@ function delete_clicked(date_id) {
         xhttp.send(JSON.stringify({event_date_id: date_id}));
     }
 };
-    
+
 
 
 // This function is to set up the prototype of toDateTimeLocal for datetime-local format of input
-Date.prototype.toDateTimeLocal = 
+Date.prototype.toDateTimeLocal =
     function toDateTimeLocal() {
-        var 
+        var
             date = this,
             ten = function (i) {
                 return (i < 10 ? '0' : '') + i;

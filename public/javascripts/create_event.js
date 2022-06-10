@@ -109,11 +109,12 @@ function emailInvitations() {
         let guestToEmail = {
             guest_id: createEvent.guests[guest].guestID,
             guest_name: createEvent.guests[guest].name,
-            guest_email: createEvent.guests[guest].email
+            guest_email: createEvent.guests[guest].email,
+            event_id: createEvent.event_id
         };
 
         let xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/email");
+        xhttp.open("POST", "/comms/email_new_event");
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send(JSON.stringify(guestToEmail));
     }
@@ -205,7 +206,7 @@ function addEvent(newEvent) {
             createEvent.event_id = JSON.parse(this.responseText);
             addEventDate(newEvent);
         } else if (this.readyState == 4 && this.status >= 400) {
-            alert("Event creation failed");
+            console.log("Event creation failed");
         }
     };
 
@@ -236,7 +237,7 @@ function checkGuests(newEvent) {
                 checkGuests(newEvent);
             }
         } else if (this.readyState == 4 && this.status >= 400) {
-            alert("Guest add failed");
+            console.log("Guest add failed");
         }
     };
 

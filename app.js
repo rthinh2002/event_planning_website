@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var eventsRouter = require('./routes/events');
 var adminRouter = require('./routes/admin');
+var commsRouter = require('./routes/comms');
 
 var app = express();
 
@@ -47,16 +48,20 @@ app.use(session({
     cookie: { secure: false }
 }));
 
-
 app.use('/app', (req, res, next) => {
     //console.log('Attempted access to app');
     if (!('user_id' in req.session)) {
         //console.log('Attempt unsuccessful');
         res.redirect('/login.html');
-    } else {
+    } else if ( ('user_id' in req.session) && req.session.user_role === 'guest') {
+        if ('event_id' in req.session) {
+            res.redirect('/guest_invitation.html?e_id=' + req.session.event_id);
+        } else {
+            res.redirect('/login.html');
+        }
     //console.log('Attempt successful');
-    next();
     }
+    next();
 });
 
 app.use('/admin.html', (req, res, next) => {
@@ -77,5 +82,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/events', eventsRouter);
 app.use('/admin', adminRouter);
+app.use('/comms', commsRouter);
 
 module.exports = app;

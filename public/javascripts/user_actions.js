@@ -22,6 +22,7 @@ function user_details() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var response = JSON.parse(this.responseText);
+            console.log(this.responseText);
             headerVue.first_name = response[0].first_name;
             if (response[0].user_role === 'admin') sidebarVue.admin = true;
             else if (response[0].user_role === 'guest') sidebarVue.guest = true;
