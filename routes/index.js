@@ -337,8 +337,8 @@ router.post('/display_event_info_invite', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON event.event_id = event_date.event_id WHERE event.event_id = ?;";
-    connection.query(query, [req.body.event_id], function (err, rows, fields) {
+    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response FROM event INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id WHERE event.event_id = ? AND attendee.user_id = ?;";
+    connection.query(query, [req.body.event_id, req.session.user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -348,6 +348,7 @@ router.post('/display_event_info_invite', function(req, res, next){
     });
   });
 });
+
 
 // Display attendee for editevent.html - Peter 4/6/2022
 router.post('/display_attendee', function(req, res, next){
@@ -574,16 +575,17 @@ router.post('/update_invite', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    console.log(req.body.event_date);
-    var query = "UPDATE attendee INNER JOIN event_date ON attendee.event_date_id = event_date.event_date_id SET attendee.attendee_response = ? WHERE attendee.user_id = ? AND attendee.event_date_id = ?;";
-    connection.query(query, [req.body.response_string, req.session.user_id, req.body.event_date_id] ,function (err, rows, fields) {
-      connection.release(); // release connection
-      if (err) {
-        console.log(err);
-        res.sendStatus(500);
-        return;
-      }
-    });
+    for(var i in req.body.event_date_id) {
+      var query = "UPDATE attendee SET attendee.attendee_response = ? WHERE attendee.event_date_id = ?;";
+      connection.query(query, [req.body.response_string[i], req.body.event_date_id[i]] ,function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+      });
+    }
   });
 });
 

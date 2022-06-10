@@ -5,7 +5,12 @@ var vueints = new Vue ({
     data: {
         event_id: null,
         event_details: [],
+        event_response: [],
+        event_date_id: [],
         available: 'available',
+        yes: false,
+        no: false,
+        confirm: false,
         email: '',
         connected: false,
         apitoken: 0,
@@ -44,7 +49,6 @@ function getEventID() {
     if (urlParams.has('id')) {
         vueints.event_id = urlParams.get('id');
     }
-    console.log(vueints.event_id);
 }
 
 function get_event_detail () {
@@ -65,8 +69,10 @@ function saveClicked() {
         var radio_buttons = document.getElementsByName(vueints.event_details[i].event_date_id);
         if(radio_buttons[0].checked) response_string = 'YES';
         else if(radio_buttons[1].checked) response_string = 'NO';
-        saveActivate(vueints.event_details[i].event_date_id, response_string);
+        vueints.event_response.push(response_string); 
+        vueints.event_date_id.push(vueints.event_details[i].event_date_id);
     }
+    saveActivate(vueints.event_date_id, vueints.event_response);
     alert("Your response will be send to organizer! Thank you!");
 }
 

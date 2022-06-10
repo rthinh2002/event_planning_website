@@ -84,9 +84,11 @@
                         <table v-for="element in event_details" class="table" style="height: fit-content; width: 30em;">
                             <!-- checkbox -->
                             <tr>
-                                <td>{{ returnDateTime(element.event_date) }}</td>
-                                <th><input type="radio" :name="element.event_date_id" value="yes"></th>
-                                <th><input type="radio" :name="element.event_date_id" value="no"></th>
+                                <td style="width: 23.5em;">{{ returnDateTime(element.event_date) }} <p v-if="element.date_status">Confirmed</p></td>
+                                <th v-if="element.attendee_response == 'YES'"><input type="radio" :name="element.event_date_id" value="yes" checked></th>
+                                <th v-else><input type="radio" :name="element.event_date_id" value="yes"></th>
+                                <th v-if="element.attendee_response == 'NO'"><input type="radio" :name="element.event_date_id" value="no" checked></th>
+                                <th v-else><input type="radio" :name="element.event_date_id" value="no"></th>
                             </tr>
                         </table>
                     </div>
