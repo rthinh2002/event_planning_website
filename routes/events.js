@@ -269,7 +269,7 @@ router.post('/edit_event.html', function(req, res, next) {
           res.sendStatus(500);
           return;
         }
-        res.sendStatus(200)
+        res.sendStatus(200);
       });
   });
 });
