@@ -231,7 +231,7 @@ function delete_clicked(date_id) {
                 //alert("Date deleted! Please refresh the page");
                 window.location.reload();
             }
-        }
+        };
         xhttp.open("POST", "/delete_date", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify({event_date_id: date_id}));
@@ -260,11 +260,11 @@ Date.prototype.toDateTimeLocal =
 
     /* use a function for the exact format desired... */
 function ISODateString(d){
-    function pad(n){return n<10 ? '0'+n : n}
+    function pad(n){return n<10 ? '0'+n : n};
     return d.getUTCFullYear()+'-'
         + pad(d.getUTCMonth()+1)+'-'
         + pad(d.getUTCDate()) +' '
         + pad(d.getUTCHours())+':'
         + pad(d.getUTCMinutes())+':'
-        + pad(d.getUTCSeconds())
+        + pad(d.getUTCSeconds());
   }

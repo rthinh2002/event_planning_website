@@ -37,7 +37,7 @@ function getemail() {
                 vueints.connected = true;
             }
         }
-    }
+    };
     xhttp.open("POST", "/get_email", true);
     xhttp.send();
 }
@@ -69,7 +69,7 @@ function saveClicked() {
         var radio_buttons = document.getElementsByName(vueints.event_details[i].event_date_id);
         if(radio_buttons[0].checked) response_string = 'YES';
         else if(radio_buttons[1].checked) response_string = 'NO';
-        vueints.event_response.push(response_string); 
+        vueints.event_response.push(response_string);
         vueints.event_date_id.push(vueints.event_details[i].event_date_id);
     }
     saveActivate(vueints.event_date_id, vueints.event_response);
@@ -85,11 +85,11 @@ function saveActivate(event_date_id, update_string) {
 
 /* use a function for the exact format desired... */
 function ISODateString(d){
-    function pad(n){return n<10 ? '0'+n : n}
+    function pad(n){return n<10 ? '0'+n : n};
     return d.getUTCFullYear()+'-'
         + pad(d.getUTCMonth()+1)+'-'
         + pad(d.getUTCDate()) +' '
         + pad(d.getUTCHours())+':'
         + pad(d.getUTCMinutes())+':'
-        + pad(d.getUTCSeconds())
+        + pad(d.getUTCSeconds());
 }
