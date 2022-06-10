@@ -214,6 +214,7 @@ function confirmClicked(date_id) {
     xhttp.open("POST", "/update_date_status", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({date_id: date_id}));
+    window.location.reload();
 }
 
 function delete_clicked(date_id) {
