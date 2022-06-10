@@ -2,6 +2,7 @@ const { application } = require('express');
 var express = require('express');
 var session = require('express-session');
 const req = require('express/lib/request');
+const sanitize = require('sanitize-html');
 var router = express.Router();
 const argon2 = require('argon2');
 var nodemailer = require('nodemailer');
@@ -37,7 +38,7 @@ router.post('/get_user_details', function(req, res, next) {
       return;
     }
 
-    connection.query("SELECT first_name, user_role FROM users WHERE user_id = ?;", [req.session.user_id], function (error, rows, fields) {
+    connection.query("SELECT first_name, user_role FROM users WHERE user_id = ?;", [sanitize(req.session.user_id)], function (error, rows, fields) {
       connection.release();
       if (error) {
         //console.log(error);
@@ -87,6 +88,16 @@ router.post('/update_invite', function(req, res, next){
         }
       });
     }
+
+    var query = "UPDATE event_date SET attendee.attendee_response = ? WHERE attendee.event_date_id = ?;";
+      connection.query(query, [req.body.response_string[i], req.body.event_date_id[i]] ,function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+      });
   });
 });
 
@@ -521,15 +532,14 @@ router.post('/update_date_status', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "UPDATE event_date SET date_status = 1 WHERE event_date_id = ?;";
-    connection.query(query, [req.body.date_id] ,function (err, rows, fields) {
+    var query = "UPDATE event_date SET date_status = 1 WHERE event_date_id = ?;UPDATE event INNER JOIN event_date ON event_date.event_id = event.event_id INNER JOIN attendee ON attendee.event_date_id = event_date.event_date_id SET event.event_status = 1 WHERE attendee.event_date_id = ?;";
+    connection.query(query, [req.body.date_id, req.body.date_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
         res.sendStatus(500);
         return;
       }
-      res.json(rows); //send response
     });
   });
 });
@@ -542,7 +552,7 @@ router.post('/save_event_info', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "UPDATE event SET event_name = ?, event_description = ?, location = ?, RSVP = ? WHERE event_id = ? ";
+    var query = "UPDATE event SET event_name = ?, event_description = ?, location = ?, RSVP = ? WHERE event_id = ?;";
     connection.query(query, [req.body.event_name, req.body.event_description, req.body.location, req.body.rsvp, req.body.event_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
