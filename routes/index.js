@@ -21,11 +21,11 @@ router.post('/logout', function(req, res, next) {
 
 // Log in to app - Karl, updated security to include argon2 4/6/22
 router.post('/get_user_details', function(req, res, next) {
-  console.log(req.session.user_id);
+  // console.log(req.session.user_id);
   req.pool.getConnection(function(err, connection) {
     connection.release();
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -45,7 +45,7 @@ router.post('/get_user_details', function(req, res, next) {
 router.post('/display_event_info_invite', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -65,7 +65,7 @@ router.post('/display_event_info_invite', function(req, res, next){
 router.post('/update_invite', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -74,7 +74,7 @@ router.post('/update_invite', function(req, res, next){
       connection.query(query, [sanitize(req.body.response_string[i]), sanitize(req.body.event_date_id[i])] ,function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
@@ -85,7 +85,7 @@ router.post('/update_invite', function(req, res, next){
       connection.query(query, [sanitize(req.body.response_string[i]), sanitize(req.body.event_date_id[i])] ,function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
@@ -96,12 +96,12 @@ router.post('/update_invite', function(req, res, next){
 
 router.post('/email', function(req, res, next) {
 
-  console.log(req.body);
+  // console.log(req.body);
 
   req.pool.getConnection(async function(err, connection) {
     connection.release();
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -141,7 +141,7 @@ router.post('/email', function(req, res, next) {
       }
 
       if (rows.length === 0) {
-        console.log('no data');
+        // console.log('no data');
         return res.sendStatus(500);
       } else if (rows[0].user_role === 'guest') {
 
@@ -200,7 +200,7 @@ router.post('/login', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -209,7 +209,7 @@ router.post('/login', function(req, res, next) {
     connection.query(query, [sanitize(req.body.username)], async function(error, rows, fields) {
       connection.release();
       if (error) {
-        console.log(error);
+        // console.log(error);
         res.sendStatus(500);
         return;
       }
@@ -226,7 +226,7 @@ router.post('/login', function(req, res, next) {
             }
             req.session.user_id = rows[0].user_id;
             req.session.user_role = rows[0].user_role;
-            console.log(req.session);
+            // console.log(req.session);
             return res.sendStatus(200);
           } else {
             // password did not match
@@ -277,9 +277,9 @@ router.post('/createaccount', function(req, res, next)
 
       if (error) {
         connection.release();
-        console.log(error);
+        // console.log(error);
         if (error.code === "ER_DUP_ENTRY") {
-          console.log('account with username and/or email already exists');
+          // console.log('account with username and/or email already exists');
           return res.sendStatus(409);
         } else {
           return res.sendStatus(500);
@@ -320,7 +320,7 @@ router.get('/', function(req, res, next) {
 router.post('/display_user_information', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -372,7 +372,7 @@ router.post('/change_user_info', function(req, res, next){
 router.post('/display_event_info', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -391,7 +391,7 @@ router.post('/display_event_info', function(req, res, next){
 router.post('/display_event_info_orgs', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -411,7 +411,7 @@ router.post('/display_event_info_orgs', function(req, res, next){
 router.post('/display_event_info_invite', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -432,7 +432,7 @@ router.post('/display_event_info_invite', function(req, res, next){
 router.post('/display_attendee', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -451,7 +451,7 @@ router.post('/display_attendee', function(req, res, next){
 router.post('/get_hosting_event', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -473,7 +473,7 @@ router.post('/get_hosting_event', function(req, res, next){
 router.post('/get_attending_event', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -486,7 +486,7 @@ router.post('/get_attending_event', function(req, res, next){
     connection.query(query, [sanitize(user_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
       }
@@ -499,7 +499,7 @@ router.post('/get_attending_event', function(req, res, next){
 router.post('/delete_date', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -507,7 +507,7 @@ router.post('/delete_date', function(req, res, next){
     connection.query(query, [sanitize(req.body.event_date_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
       }
@@ -520,7 +520,7 @@ router.post('/delete_date', function(req, res, next){
 router.post('/update_date_status', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -528,7 +528,7 @@ router.post('/update_date_status', function(req, res, next){
     connection.query(query, [sanitize(req.body.date_id), sanitize(req.body.date_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
       }
@@ -559,7 +559,7 @@ router.post('/update_date_status', function(req, res, next){
 router.post('/save_event_info', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -567,7 +567,7 @@ router.post('/save_event_info', function(req, res, next){
     connection.query(query, [sanitize(req.body.event_name), sanitize(req.body.event_description), sanitize(req.body.location), sanitize(req.body.rsvp), sanitize(req.body.event_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
       }
@@ -580,16 +580,16 @@ router.post('/save_event_info', function(req, res, next){
 router.post('/save_event_date', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
-    console.log(req.body.event_date);
+    // console.log(req.body.event_date);
     var query = "INSERT INTO event_date(event_date, event_id) VALUES ( ?, ? ); SELECT event_date_id FROM event_date WHERE event_date = ? AND event_id = ?;";
     connection.query(query, [sanitize(req.body.event_date), sanitize(req.body.event_id), sanitize(req.body.event_date), sanitize(req.body.event_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
       }
@@ -602,7 +602,7 @@ router.post('/save_event_date', function(req, res, next){
 router.post('/save_event_attendee_date', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -610,7 +610,7 @@ router.post('/save_event_attendee_date', function(req, res, next){
     connection.query(query, [sanitize(req.body.user_id), sanitize(req.body.event_date_id)] ,function (err, fields) {
       connection.release(); // release connection
       if(err) {
-        console.log(err);
+        // console.log(err);
         res.send("Error");
         return;
       }
@@ -623,7 +623,7 @@ router.post('/save_event_attendee_date', function(req, res, next){
 router.post('/save_event_attendee', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -632,7 +632,7 @@ router.post('/save_event_attendee', function(req, res, next){
       connection.query(query, [sanitize(req.body.first_name), sanitize(req.body.email_address), sanitize(req.body.event_date_id[i])] ,function (err, fields) {
         connection.release(); // release connection
         if(err) {
-          console.log(err);
+          // console.log(err);
           res.send("Error");
           return;
         }
@@ -646,16 +646,16 @@ router.post('/save_event_attendee', function(req, res, next){
 router.post('/get_attendee', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
-    console.log(req.body.event_date);
+    // console.log(req.body.event_date);
     var query = "SELECT attendee.attendee_response, users.first_name FROM attendee INNER JOIN users ON users.user_id = attendee.user_id WHERE event_date_id = ?;";
     connection.query(query, [sanitize(req.body.event_date_id)] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
       }
@@ -671,7 +671,7 @@ router.get('/invited', function(req, res, next)
   //get the event name
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -691,7 +691,7 @@ router.post('/check_guests', function(req, res, next) {
 
     req.pool.getConnection(function(error, connection) {
       if (error) {
-        console.log(error); console.log("line 451");
+        // console.log(error); console.log("line 451");
         return res.sendStatus(500);
       }
 
@@ -699,21 +699,22 @@ router.post('/check_guests', function(req, res, next) {
       connection.query("SELECT * FROM users WHERE email_address = ?;", [sanitize(req.body.email)], function (error, userRows, fields) {
         connection.release();
         if (error) {
-          console.log(error); console.log("line 459");
+          // console.log(error); console.log("line 459");
           return res.sendStatus(500);
         }
 
-        if (userRows.length === 0) { console.log("no user");
+        if (userRows.length === 0) { 
+          // console.log("no user");
           req.pool.getConnection(function(error, connection) {
             if (error) {
-              console.log(error); console.log("line 466");
+              // console.log(error); console.log("line 466");
               return res.sendStatus(500);
             }
             var queryNewUser = "INSERT INTO users (first_name, last_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?, ?);";
             connection.query(queryNewUser, [sanitize(req.body.name), 'GUEST', sanitize(req.body.email), sanitize(req.body.email), 'guest'], function (error, rows, fields) {
               connection.release();
               if (error) {
-                console.log(error); console.log("line 473");
+                // console.log(error); console.log("line 473");
                 return res.sendStatus(500);
               }
             });
@@ -729,7 +730,7 @@ router.post('/create_new_event', function(req, res, next) {
   // check a user is logged in
 
   if (!req.session.user_id) {
-      console.log("No user logged in to session");
+      // console.log("No user logged in to session");
       res.sendStatus(500);
       return;
   }
@@ -737,14 +738,15 @@ router.post('/create_new_event', function(req, res, next) {
   // get connection
   req.pool.getConnection(function(error, connection) {
     if (error) {
-      console.log(error); console.log("line 487");
+      // console.log(error); console.log("line 487");
       return res.sendStatus(500);
     }
     // add new event to database
     var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
     connection.query(query, [sanitize(req.body.eventName), sanitize(req.body.details), sanitize(req.body.user_id), sanitize(req.body.eventLocation), sanitize(req.body.rsvp)], function (error, rows, fields) {
       if (error) {
-        connection.release(); console.log(error); console.log("line 494");
+        connection.release(); 
+        // console.log(error); console.log("line 494");
         return res.sendStatus(500);
       }
     });
@@ -752,7 +754,7 @@ router.post('/create_new_event', function(req, res, next) {
     connection.query("SELECT LAST_INSERT_ID() AS id;", function (error, rows2, fields) {
       connection.release();
       if (error) {
-        console.log(error); console.log("line 494");
+        // console.log(error); console.log("line 494");
         return res.sendStatus(500);
       }
       res.json(rows2[0].id); //send response
@@ -762,10 +764,10 @@ router.post('/create_new_event', function(req, res, next) {
 
 router.post('/add_event_date', function(req, res, next) {
 
-  console.log(req.body);
+  // console.log(req.body);
   req.pool.getConnection(function(error, connection) {
     if (error) {
-      console.log(error); console.log("line 487");
+      // console.log(error); console.log("line 487");
       return res.sendStatus(500);
     }
 
@@ -775,7 +777,7 @@ router.post('/add_event_date', function(req, res, next) {
     connection.query(query, [sanitize(req.body.email), sanitize(req.body.date), sanitize(req.body.event_id)], function (error, rows, fields) {
       connection.release();
       if (error) {
-        console.log("Unsuccessful date add"); console.log(error);
+        // console.log("Unsuccessful date add"); console.log(error);
         return res.sendStatus(500);
       }
       res.sendStatus(200);
@@ -786,7 +788,7 @@ router.post('/add_event_date', function(req, res, next) {
 function signOut() {
   var auth2 = gapi.auth2.getAuthInstance();
   auth2.signOut().then(function () {
-    console.log('User signed out.');
+    // console.log('User signed out.');
   });
 
   // Do our logout on server here
@@ -804,7 +806,7 @@ router.post('/tokensignin', async function(req, res, next) {
     //check if the userid is in the database
     req.pool.getConnection(function(err, connection){
       if(err) {
-        console.log(err);
+        // console.log(err);
         // res.sendStatus(500);
         return;
       }
@@ -812,20 +814,20 @@ router.post('/tokensignin', async function(req, res, next) {
       connection.query(query, [sanitize(userid)], function (error, rows, fields) {
         connection.release();
         if (error) {
-          console.log(error);
+          // console.log(error);
           res.sendStatus(500);
           return;
         }
         if (rows.length > 0) {
-          console.log('successful login');
+          // console.log('successful login');
           req.session.user_id = rows[0].user_id;
-          console.log(req.session);
+          // console.log(req.session);
           res.sendStatus(200);
         } else {
             //create new user in database with the data from google and api key
             req.pool.getConnection(function(err, connection){
               if(err) {
-                console.log(err);
+                // console.log(err);
                 return;
               }
               //generate a random password
@@ -834,15 +836,15 @@ router.post('/tokensignin', async function(req, res, next) {
               connection.query(query, [sanitize(payload.email), sanitize(payload.email), sanitize(payload.given_name), sanitize(payload.family_name), sanitize(userid), password, 'user'], function (error, rows, fields) {
                 connection.release();
                 if (error) {
-                  console.log(error);
+                  // console.log(error);
                   res.sendStatus(500);
                   return;
                 }
-                console.log('successful login with create new user');
+                // console.log('successful login with create new user');
                 //get the user id of the new user
                 req.pool.getConnection(function(err, connection){
                   if(err) {
-                    console.log(err);
+                    // console.log(err);
                     res.sendStatus(500);
                     return;
                   }
@@ -850,12 +852,12 @@ router.post('/tokensignin', async function(req, res, next) {
                   connection.query(query, [sanitize(userid)], function (error, rows, fields) {
                     connection.release();
                     if (error) {
-                      console.log(error);
+                      // console.log(error);
                       res.sendStatus(500);
                       return;
                     }
                     req.session.user_id = rows[0].user_id;
-                    console.log(req.session);
+                    // console.log(req.session);
                     res.sendStatus(200);
                   });
               });
@@ -884,7 +886,7 @@ router.post('/linkgoogle', async function(req, res, next) {
     //update the database with the userid
     req.pool.getConnection(function(err, connection){
       if(err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
       }
@@ -892,17 +894,17 @@ router.post('/linkgoogle', async function(req, res, next) {
       connection.query(query, [sanitize(userid), sanitize(req.session.user_id)], function (error, rows, fields) {
         connection.release();
         if (error) {
-          console.log(error);
+          // console.log(error);
           res.sendStatus(500);
           return;
         }
         if (rows.length > 0) {
-          console.log('successful login');
+          // console.log('successful login');
           req.session.user_id = rows[0].user_id;
-          console.log(req.session);
+          // console.log(req.session);
           res.sendStatus(200);
         } else {
-            console.log('bad login request');
+            // console.log('bad login request');
             res.sendStatus(401);
         }
       });
@@ -923,7 +925,7 @@ router.post('/get_all_users', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -932,7 +934,7 @@ router.post('/get_all_users', function(req, res, next) {
       connection.query(query, [sanitize(req.session.user_id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
@@ -950,7 +952,7 @@ router.post('/get_all_events', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -959,11 +961,11 @@ router.post('/get_all_events', function(req, res, next) {
       connection.query(query, function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
-        console.log(rows[0]);
+        // console.log(rows[0]);
         res.json(rows); //send response
       });
   });
@@ -978,7 +980,7 @@ router.post('/delete_event', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -986,7 +988,7 @@ router.post('/delete_event', function(req, res, next) {
       connection.query("DELETE FROM event WHERE event_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
@@ -1003,7 +1005,7 @@ router.post('/edit_event.html', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -1011,7 +1013,7 @@ router.post('/edit_event.html', function(req, res, next) {
       connection.query("DELETE FROM event WHERE event_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
@@ -1028,7 +1030,7 @@ router.post('/get_email', function(req, res, next) {
     }
     req.pool.getConnection(function(err, connection) {
         if(err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
         }
@@ -1036,7 +1038,7 @@ router.post('/get_email', function(req, res, next) {
         connection.query("SELECT email_address, api_token FROM users WHERE user_id = ?;", [sanitize(req.session.user_id)], function (err, rows, fields) {
           connection.release(); // release connection
           if (err) {
-            console.log(err);
+            // console.log(err);
             res.sendStatus(500);
             return;
           }

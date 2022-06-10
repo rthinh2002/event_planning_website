@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
 router.post('/get_hosting_event', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -41,7 +41,7 @@ router.post('/get_hosting_event', function(req, res, next){
 router.post('/get_attending_event', function(req, res, next){
   req.pool.getConnection(function(err, connection){
     if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
     }
@@ -54,7 +54,7 @@ router.post('/get_attending_event', function(req, res, next){
     connection.query(query, [sanitize(user_id)], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(500);
         return;
       }
@@ -68,7 +68,7 @@ router.post('/check_guest', function(req, res, next) {
 
     req.pool.getConnection(function(error, connection) {
       if (error) {
-        console.log(error); console.log("line 451");
+        // console.log(error); console.log("line 451");
         return res.sendStatus(500);
       }
 
@@ -76,21 +76,22 @@ router.post('/check_guest', function(req, res, next) {
       connection.query("SELECT * FROM users WHERE email_address = ?;", [sanitize(req.body.email)], function (error, userRows, fields) {
         connection.release();
         if (error) {
-          console.log(error); console.log("line 459");
+          // console.log(error); console.log("line 459");
           return res.sendStatus(500);
         }
 
-        if (userRows.length === 0) { console.log("no user");
+        if (userRows.length === 0) { 
+          // console.log("no user");
           req.pool.getConnection(function(error, connection) {
             if (error) {
-              console.log(error); console.log("line 466");
+              // console.log(error); console.log("line 466");
               return res.sendStatus(500);
             }
             var queryNewUser = "INSERT INTO users (first_name, last_name, email_address, user_name, user_role) VALUES (?, ?, ?, ?, ?);";
             connection.query(queryNewUser, [sanitize(req.body.name), 'GUEST', sanitize(req.body.email), sanitize(req.body.email.substring(0,19)), 'guest'], function (error, rows, fields) {
               connection.release();
               if (error) {
-                console.log(error); console.log("line 473");
+                // console.log(error); console.log("line 473");
                 return res.sendStatus(500);
               }
             });
@@ -108,7 +109,7 @@ router.post('/create_new_event', function(req, res, next) {
   // check a user is logged in
 
   if (!req.session.user_id) {
-      console.log("No user logged in to session");
+      // console.log("No user logged in to session");
       res.sendStatus(500);
       return;
   }
@@ -116,14 +117,15 @@ router.post('/create_new_event', function(req, res, next) {
   // get connection
   req.pool.getConnection(function(error, connection) {
     if (error) {
-      console.log(error); console.log("line 487");
+      // console.log(error); console.log("line 487");
       return res.sendStatus(500);
     }
     // add new event to database
     var query = "INSERT INTO event (event_name, event_description, creator_id, location, RSVP) VALUES (?, ?, ?, ?, ?);";
     connection.query(query, [sanitize(req.body.eventName), sanitize(req.body.details), sanitize(req.session.user_id), sanitize(req.body.eventLocation), sanitize(req.body.rsvp)], function (error, rows, fields) {
       if (error) {
-        connection.release(); console.log(error); console.log("line 494");
+        connection.release(); 
+        // console.log(error); console.log("line 494");
         return res.sendStatus(500);
       }
     });
@@ -131,7 +133,7 @@ router.post('/create_new_event', function(req, res, next) {
     connection.query("SELECT LAST_INSERT_ID() AS id;", function (error, rows2, fields) {
       connection.release();
       if (error) {
-        console.log(error); console.log("line 494");
+        // console.log(error); console.log("line 494");
         return res.sendStatus(500);
       }
       res.json(rows2[0].id); //send response
@@ -142,30 +144,30 @@ router.post('/create_new_event', function(req, res, next) {
 // add date to an event - KG last edited 8/6/22
 router.post('/add_event_date', function(req, res, next) {
 
-  console.log(req.body);
+  // console.log(req.body);
   req.pool.getConnection(function(error, connection) {
     if (error) {
-      console.log(error); console.log("line 487");
+      // console.log(error); console.log("line 487");
       return res.sendStatus(500);
     }
 
     connection.query("INSERT INTO event_date (event_date, event_id) VALUES (?, ?);", [sanitize(req.body.date), sanitize(req.body.event_id)], function (error, rows, fields) {
       connection.release();
       if (error) {
-        console.log("Unsuccessful date add"); console.log(error);
+        // console.log("Unsuccessful date add"); console.log(error);
         return res.sendStatus(500);
       }
 
       req.pool.getConnection(function(error, connection) {
         if (error) {
-          console.log(error); console.log("line 487");
+          // console.log(error); console.log("line 487");
           return res.sendStatus(500);
         }
 
         connection.query("SELECT LAST_INSERT_ID() AS id;", function (error, rows, fields) {
           connection.release();
           if (error) {
-            console.log(error); console.log("line 494");
+            // console.log(error); console.log("line 494");
             return res.sendStatus(500);
           }
           res.json(rows[0].id); //send response
@@ -178,20 +180,20 @@ router.post('/add_event_date', function(req, res, next) {
 // add attendee to an event - KG last edited 8/6/22
 router.post('/add_event_attendee', function(req, res, next) {
 
-  console.log(req.body);
+  // console.log(req.body);
   req.pool.getConnection(function(error, connection) {
     if (error) {
-      console.log(error); console.log("line 487");
+      // console.log(error); console.log("line 487");
       return res.sendStatus(500);
     }
 
     var query = "INSERT INTO attendee (user_id, event_date_id) \
                  VALUES ((SELECT user_id FROM users WHERE email_address = ?), \
-                         (SELECT event_date_id FROM event_date WHERE event_date = ? AND event_id = ?));"
+                         (SELECT event_date_id FROM event_date WHERE event_date = ? AND event_id = ?));";
     connection.query(query, [sanitize(req.body.email), sanitize(req.body.date), sanitize(req.body.event_id)], function (error, rows, fields) {
       connection.release();
       if (error) {
-        console.log("Unsuccessful date add"); console.log(error);
+        // console.log("Unsuccessful date add"); console.log(error);
         return res.sendStatus(500);
       }
       res.sendStatus(200);
@@ -216,7 +218,7 @@ router.post('/delete_event', function(req, res, next) {
     connection.query("SELECT event_id FROM event WHERE event_id = ? && creator_id = ?;", [sanitize(req.body.id), sanitize(req.session.user_id)], function (err, rows, fields) {
       connection.release();
       if (err) {
-        console.log(err);
+        // console.log(err);
         return res.sendStatus(500);
       }
 
@@ -255,7 +257,7 @@ router.post('/edit_event.html', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -263,7 +265,7 @@ router.post('/edit_event.html', function(req, res, next) {
       connection.query("DELETE FROM event WHERE event_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }

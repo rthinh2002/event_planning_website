@@ -24,7 +24,7 @@ router.post('/get_all_users', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -33,7 +33,7 @@ router.post('/get_all_users', function(req, res, next) {
       connection.query(query, [sanitize(req.session.user_id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
@@ -50,7 +50,7 @@ router.post('/get_all_events', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -59,11 +59,11 @@ router.post('/get_all_events', function(req, res, next) {
       connection.query(query, function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
-        console.log(rows[0]);
+        // console.log(rows[0]);
         res.json(rows); //send response
       });
   });
@@ -77,7 +77,7 @@ router.post('/make_admin', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -85,11 +85,11 @@ router.post('/make_admin', function(req, res, next) {
       connection.query("UPDATE users SET user_role = 'admin' WHERE user_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
-        res.sendStatus(200)
+        res.sendStatus(200);
       });
   });
 });
@@ -102,7 +102,7 @@ router.post('/make_user', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -110,11 +110,11 @@ router.post('/make_user', function(req, res, next) {
       connection.query("UPDATE users SET user_role = 'user' WHERE user_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
-        res.sendStatus(200)
+        res.sendStatus(200);
       });
   });
 });
@@ -134,7 +134,7 @@ router.post('/delete_user', function(req, res, next) {
 
   req.pool.getConnection(function(err, connection) {
       if(err) {
-      console.log(err);
+      // console.log(err);
       res.sendStatus(500);
       return;
       }
@@ -142,11 +142,11 @@ router.post('/delete_user', function(req, res, next) {
       connection.query("DELETE FROM users WHERE user_id = ?;", [sanitize(req.body.id)], function (err, rows, fields) {
         connection.release(); // release connection
         if (err) {
-          console.log(err);
+          // console.log(err);
           res.sendStatus(500);
           return;
         }
-        res.sendStatus(200)
+        res.sendStatus(200);
       });
   });
 });
