@@ -327,6 +327,25 @@ router.post('/display_event_info', function(req, res, next){
   });
 });
 
+router.post('/display_event_info_orgs', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = ? && event.event_id = ? && event.event_id = event_date.event_id;";
+    connection.query(query, [req.session.user_id, req.body.event_id], function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
 // Display event info editevent.html - Peter June 2nd 2022
 router.post('/display_event_info_invite', function(req, res, next){
   req.pool.getConnection(function(err, connection){
