@@ -5,6 +5,7 @@ var second_app = new Vue ({
     el: '#inner',
     data:
     {
+        event_id: null,
         event_name: '',
         location: '',
         rsvp: '',
@@ -16,32 +17,37 @@ var second_app = new Vue ({
         no: '',
         no_response: '',
         event_date_id: 0
-    },
-    created() {
-        this.display_event_info_eventvieworg();
-    },
-    methods: {
-        // This function is for eventvieworg.html
-        display_event_info_eventvieworg: function(){
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var event_detail = JSON.parse(this.responseText);
-                    second_app.event_name = event_detail[0].event_name;
-                    second_app.location = event_detail[0].location;
-
-                    var date = new Date(event_detail[0].RSVP);
-                    
-                    second_app.rsvp = (JSON.stringify(date)).slice(1,11);
-                    
-                    second_app.description = event_detail[0].event_description;
-                }
-            };
-            xhttp.open("POST", "/display_event_info", true);
-            xhttp.send();
-        },
     }
 });
+
+function display_event_info_eventvieworg(){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var event_detail = JSON.parse(this.responseText);
+            second_app.event_name = event_detail[0].event_name;
+            second_app.location = event_detail[0].location;
+
+            var date = new Date(event_detail[0].RSVP);
+            
+            second_app.rsvp = (JSON.stringify(date)).slice(1,11);
+            
+            second_app.description = event_detail[0].event_description;
+        }
+    };
+    xhttp.open("POST", "/display_event_info_orgs", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({event_id: second_app.event_id}));
+}
+
+function getEventID() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    //console.log(queryString);
+    if (urlParams.has('id')) {
+        second_app.event_id = urlParams.get('id');
+    }
+}
 
 function load_date_response() {
     var xhttp = new XMLHttpRequest();
@@ -53,8 +59,9 @@ function load_date_response() {
             }
         }
     };
-    xhttp.open("POST", "/display_event_info", true);
-    xhttp.send();
+    xhttp.open("POST", "/display_event_info_orgs", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({event_id: second_app.event_id}));
 }
 
 function populate_table(date_response, i, y_string, n_string, no_res_string) {
@@ -196,8 +203,9 @@ function set_date() {
             setCountBox(tmp);
         }
     };
-    xhttp.open("POST", "/display_event_info", true);
-    xhttp.send();
+    xhttp.open("POST", "/display_event_info_orgs", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify({event_id: second_app.event_id}));
 }
 
 function confirmClicked(date_id) {
