@@ -9,6 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var eventsRouter = require('./routes/events');
 var adminRouter = require('./routes/admin');
+var commsRouter = require('./routes/comms');
 
 var app = express();
 
@@ -16,8 +17,8 @@ var app = express();
 var dbConnectionPool = mysql.createPool({
     host: 'localhost',
     database: 'event_planning',
-    user: 'root',
-    password: 'root',
+    //user: 'root',
+    //password: 'root',
     typeCast: function castField( field, useDefaultTypeCasting ) { // This field is for casting BIT into boolean data - Peter
 		if ( ( field.type === "BIT" ) && ( field.length === 1 ) ) {
 			var bytes = field.buffer();
@@ -81,5 +82,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/events', eventsRouter);
 app.use('/admin', adminRouter);
+app.use('/comms', commsRouter);
 
 module.exports = app;

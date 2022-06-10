@@ -5,19 +5,11 @@ const req = require('express/lib/request');
 const sanitize = require('sanitize-html');
 var router = express.Router();
 const argon2 = require('argon2');
-var nodemailer = require('nodemailer');
 const CLIENT_ID = '376889211664-23uvkba9h1eb2shsj4htgr6avk4jq8qp.apps.googleusercontent.com';
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(CLIENT_ID);
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.ethereal.email',
-  port: 587,
-  auth: {
-      user: 'sarai.stamm71@ethereal.email',
-      pass: 'GXktnUSngkcad1hkDf'
-  }
-});
+
 
 // Log in to app - Karl, 2/6/22
 router.post('/logout', function(req, res, next) {
@@ -534,6 +526,22 @@ router.post('/update_date_status', function(req, res, next){
     }
     var query = "UPDATE event_date SET date_status = 1 WHERE event_date_id = ?;UPDATE event INNER JOIN event_date ON event_date.event_id = event.event_id INNER JOIN attendee ON attendee.event_date_id = event_date.event_date_id SET event.event_status = 1 WHERE attendee.event_date_id = ?;";
     connection.query(query, [sanitize(req.body.date_id), sanitize(req.body.date_id)] ,function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        console.log(err);
+        res.sendStatus(500);
+        return;
+      }
+    });
+  });
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "UPDATE event SET event.event_status = 1 FROM event INNER JOIN event_date ON event.event_id = event_date.event_id WHERE event_date.event_date_id = ?;";
+    connection.query(query, [req.body.date_id] ,function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         console.log(err);
