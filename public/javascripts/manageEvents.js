@@ -22,8 +22,8 @@ function getEventID() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     //console.log(queryString);
-    if (urlParams.has('id')) {
-        vueints.event_id = urlParams.get('id');
+    if (urlParams.has('e_id')) {
+        vueints.event_id = urlParams.get('e_id');
     }
     console.log(vueints.event_id);
 }
@@ -246,7 +246,7 @@ function saveEventDate() {
                 saveEventAttendeeWithDate(num, vueints.users_id_array[i]);
             }
         }
-    }
+    };
     xhttp.open("POST", "/save_event_date", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({event_date: event_date, event_id: vueints.event_id}));
@@ -271,7 +271,7 @@ function saveEventAttendee()  {
             if(this.responseText === "Error") alert("Error in adding new attendee, please try again.");
             if(this.responseText === "Success!") alert("Add new attendee successfully!");
         }
-    }
+    };
     xhttp.open("POST", "/save_event_attendee", true);
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send(JSON.stringify({email_address: email_address, first_name: first_name, event_date_id: vueints.date_id}));

@@ -18,6 +18,79 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// Log in to app - Karl, 2/6/22
+router.post('/logout', function(req, res, next) {
+  if ('user_id' in req.session) {
+    delete req.session.user_id;
+    res.sendStatus(200);
+  }
+});
+
+// Log in to app - Karl, updated security to include argon2 4/6/22
+router.post('/get_user_details', function(req, res, next) {
+  console.log(req.session.user_id);
+  req.pool.getConnection(function(err, connection) {
+    connection.release();
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+
+    connection.query("SELECT first_name, user_role FROM users WHERE user_id = ?;", [req.session.user_id], function (error, rows, fields) {
+      connection.release();
+      if (error) {
+        //console.log(error);
+        return res.sendStatus(500);
+      }
+      res.json(rows);
+    });
+  });
+});
+
+// Display event info editevent.html - Peter June 2nd 2022
+router.post('/display_event_info_invite', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    var query = "SELECT users.first_name, event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response FROM event INNER JOIN users ON users.user_id = event.creator_id INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id WHERE event.event_id = ? AND attendee.user_id = ?;"
+    connection.query(query, [req.body.event_id, req.session.user_id], function (err, rows, fields) {
+      connection.release(); // release connection
+      if (err) {
+        res.sendStatus(500);
+        return;
+      }
+      res.json(rows); //send response
+    });
+  });
+});
+
+
+router.post('/update_invite', function(req, res, next){
+  req.pool.getConnection(function(err, connection){
+    if(err) {
+      console.log(err);
+      res.sendStatus(500);
+      return;
+    }
+    for(var i in req.body.event_date_id) {
+      var query = "UPDATE attendee SET attendee.attendee_response = ? WHERE attendee.event_date_id = ?;";
+      connection.query(query, [req.body.response_string[i], req.body.event_date_id[i]] ,function (err, rows, fields) {
+        connection.release(); // release connection
+        if (err) {
+          console.log(err);
+          res.sendStatus(500);
+          return;
+        }
+      });
+    }
+  });
+});
+
+
 router.post('/email', function(req, res, next) {
 
   console.log(req.body);
@@ -114,6 +187,7 @@ router.get('/home.html', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+
 // Log in to app - Karl, updated security to include argon2 4/6/22
 router.post('/login', function(req, res, next) {
 
@@ -128,7 +202,7 @@ router.post('/login', function(req, res, next) {
       return;
     }
 
-    var query = "SELECT user_id, user_role, password FROM users WHERE user_name = ? AND user_role != 'guest';";
+    var query = "SELECT user_id, user_role, password FROM users WHERE user_name = ?;";
     connection.query(query, [req.body.username], async function(error, rows, fields) {
       connection.release();
       if (error) {
@@ -143,10 +217,14 @@ router.post('/login', function(req, res, next) {
             // password match
             //console.log('successful login');
             delete rows[0].password; // remove password from retrieved data
+
+            if (rows[0].user_role === 'guest' && req.body.event_id) {
+              req.session.event_id = req.body.event_id;
+            }
             req.session.user_id = rows[0].user_id;
             req.session.user_role = rows[0].user_role;
             console.log(req.session);
-            res.sendStatus(200);
+            return res.sendStatus(200);
           } else {
             // password did not match
             //console.log('bad password');
@@ -162,28 +240,6 @@ router.post('/login', function(req, res, next) {
         //console.log('bad user');
         res.sendStatus(401);
       }
-    });
-  });
-});
-
-// Log in to app - Karl, updated security to include argon2 4/6/22
-router.post('/get_user_details', function(req, res, next) {
-
-  req.pool.getConnection(function(err, connection) {
-    connection.release();
-    if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-    }
-
-    connection.query("SELECT first_name, user_role FROM users WHERE user_id = ?;", [req.session.user_id], function (error, rows, fields) {
-      connection.release();
-      if (error) {
-        //console.log(error);
-        return res.sendStatus(500);
-      }
-      res.json(rows);
     });
   });
 });
@@ -246,14 +302,16 @@ router.post('/createaccount', function(req, res, next)
   });
 });
 
-
-// Log in to app - Karl, 2/6/22
-router.post('/logout', function(req, res, next) {
-  if ('user_id' in req.session) {
-    delete req.session.user_id;
-    res.sendStatus(200);
+// ------------------------------------------------- //
+// check user is guest - KG added 9/6/22
+router.get('/', function(req, res, next) {
+  if (!('user_role' in req.session) || (req.session.user_role !== 'guest')) {
+      res.sendStatus(403);
+  } else {
+  next();
   }
 });
+// ------------------------------------------------- //
 
 // Display user information - account.html - Peter update June 1st, 2022
 router.post('/display_user_information', function(req, res, next){
@@ -317,26 +375,6 @@ router.post('/display_event_info', function(req, res, next){
     }
     var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date FROM event INNER JOIN event_date ON creator_id = ? && event.event_id = ? && event.event_id = event_date.event_id;";
     connection.query(query, [req.session.user_id, req.body.event_id], function (err, rows, fields) {
-      connection.release(); // release connection
-      if (err) {
-        res.sendStatus(500);
-        return;
-      }
-      res.json(rows); //send response
-    });
-  });
-});
-
-// Display event info editevent.html - Peter June 2nd 2022
-router.post('/display_event_info_invite', function(req, res, next){
-  req.pool.getConnection(function(err, connection){
-    if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-    }
-    var query = "SELECT users.first_name, event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response FROM event INNER JOIN users ON users.user_id = event.creator_id INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id WHERE event.event_id = ? AND attendee.user_id = ?;"
-    connection.query(query, [req.body.event_id, req.session.user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
         res.sendStatus(500);
@@ -566,26 +604,6 @@ router.post('/get_attendee', function(req, res, next){
   });
 });
 
-router.post('/update_invite', function(req, res, next){
-  req.pool.getConnection(function(err, connection){
-    if(err) {
-      console.log(err);
-      res.sendStatus(500);
-      return;
-    }
-    for(var i in req.body.event_date_id) {
-      var query = "UPDATE attendee SET attendee.attendee_response = ? WHERE attendee.event_date_id = ?;";
-      connection.query(query, [req.body.response_string[i], req.body.event_date_id[i]] ,function (err, rows, fields) {
-        connection.release(); // release connection
-        if (err) {
-          console.log(err);
-          res.sendStatus(500);
-          return;
-        }
-      });
-    }
-  });
-});
 
 router.get('/invited', function(req, res, next)
 {
