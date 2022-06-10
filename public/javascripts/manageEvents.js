@@ -22,8 +22,8 @@ function getEventID() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     //console.log(queryString);
-    if (urlParams.has('e_id')) {
-        vueints.event_id = urlParams.get('e_id');
+    if (urlParams.has('id')) {
+        vueints.event_id = urlParams.get('id');
     }
     console.log(vueints.event_id);
 }
