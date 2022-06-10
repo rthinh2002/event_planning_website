@@ -337,7 +337,7 @@ router.post('/display_event_info_invite', function(req, res, next){
       res.sendStatus(500);
       return;
     }
-    var query = "SELECT event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response FROM event INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id WHERE event.event_id = ? AND attendee.user_id = ?;";
+    var query = "SELECT users.first_name, event_date.date_status, event_date.event_date_id, event.event_name, event.event_description, event.location, event.RSVP, event_date.event_date, attendee.attendee_response FROM event INNER JOIN users ON users.user_id = event.creator_id INNER JOIN event_date ON event.event_id = event_date.event_id INNER JOIN attendee ON event_date.event_date_id = attendee.event_date_id WHERE event.event_id = ? AND attendee.user_id = ?;"
     connection.query(query, [req.body.event_id, req.session.user_id], function (err, rows, fields) {
       connection.release(); // release connection
       if (err) {
